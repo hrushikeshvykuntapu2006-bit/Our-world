@@ -55,11 +55,9 @@ html{scroll-behavior:smooth;}
 }
 
 /* SECTIONS */
-section{
-  padding:35px 15px;
-}
+section{padding:35px 15px;}
 
-/* SCROLL GALLERIES */
+/* GALLERIES */
 .gallery,.movies{
   display:flex;
   overflow-x:auto;
@@ -113,15 +111,62 @@ section{
   object-fit:cover;
 }
 
-.musicInfo{
-  flex:1;
-}
+.musicInfo{flex:1;}
 
 .musicCard iframe{
   width:100%;
   height:75px;
   border:none;
   border-radius:12px;
+}
+
+/* 💌 ENVELOPE */
+.envelope{
+  position:relative;
+  width:160px;
+  height:110px;
+  margin:0 auto 10px;
+}
+
+.envelope .body{
+  position:absolute;
+  bottom:0;
+  width:100%;
+  height:70px;
+  background: rgba(255,255,255,0.35);
+  backdrop-filter: blur(20px);
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.4);
+}
+
+.envelope .flap{
+  position:absolute;
+  top:0;
+  width:0;
+  height:0;
+  border-left:80px solid transparent;
+  border-right:80px solid transparent;
+  border-bottom:60px solid rgba(255,255,255,0.45);
+  transform-origin:top;
+  transition:0.6s ease;
+}
+
+.envelope .seal{
+  position:absolute;
+  top:35px;
+  left:50%;
+  transform:translateX(-50%);
+  transition:0.4s ease;
+}
+
+.envelope.open .flap{
+  transform:rotateX(180deg);
+  opacity:0;
+}
+
+.envelope.open .seal{
+  transform:translateX(-50%) scale(0);
+  opacity:0;
 }
 
 /* HEARTS */
@@ -133,6 +178,13 @@ section{
   0%{transform:translateY(0);opacity:1;}
   100%{transform:translateY(-600px);opacity:0;}
 }
+
+/* CURSOR */
+.cursor::after{
+  content:"|";
+  animation:blink 1s infinite;
+}
+@keyframes blink{50%{opacity:0;}}
 
 </style>
 </head>
@@ -150,7 +202,7 @@ section{
 
 <section><h1>💖 Our World 💖</h1></section>
 
-<!-- 📸 PHOTOS -->
+<!-- PHOTOS -->
 <section>
 <h2>📸 fav clicks</h2>
 <div class="gallery">
@@ -160,7 +212,7 @@ section{
 </div>
 </section>
 
-<!-- 🎬 MOVIES -->
+<!-- MOVIES -->
 <section>
 <h2>🎬 comfort Movies</h2>
 <div class="movies">
@@ -170,60 +222,42 @@ section{
 </div>
 </section>
 
-<!-- 🎵 MUSIC -->
+<!-- MUSIC -->
 <section>
-<h2>🎵 Our Music</h2>
+<h2>🎵 songs we love</h2>
 <div class="musicGrid" id="musicGrid"></div>
 </section>
 
-<!-- 💖 DAYS -->
+<!-- DAYS -->
 <section>
-<h2>⏳ Our Days</h2>
+<h2>⏳Days together </h2>
 <div class="card" id="time"></div>
 </section>
 
-<!-- 💌 LETTER -->
-<sectionlet i = 0;
-let started = false;
-
-const msg = `hie pandu dhanaa,
-
-I don’t really know how to express myself perfectly, but I want you to understand what I feel.
-
-We’ve been together for so long 💖
-
-Take care always 🫂
-
-I love you ❤️`;
-
-function startLetter(){
-  if(started) return;
-  started = true;
-
-  document.getElementById("gift").style.display = "none";
-
-  const el = document.getElementById("text");
-  el.innerHTML = "";
-
-  function type(){
-    if(i < msg.length){
-      el.innerHTML += msg[i] === "\n" ? "<br>" : msg[i];
-      i++;
-      setTimeout(type, 35);
-    }
-  }
-
-  type();
-}
+<!-- LETTER -->
 <section>
-  
+<h2>💌 A Letter</h2>
+
+<div class="card" onclick="startLetter()">
+
+  <div class="envelope" id="envelope">
+    <div class="flap"></div>
+    <div class="body"></div>
+    <div class="seal">💖</div>
+  </div>
+
+  <div id="gift">🎁 Tap to Open Letter</div>
+  <div id="text"></div>
+  <span class="cursor"></span>
+
+</div>
 </section>
 
-<!-- 💞 DISTANCE -->
+<!-- DISTANCE -->
 <section>
 <h2>📍 Distance Between Us</h2>
 <div class="card">
-<p id="distanceText">Calculating...</p>
+<p>612 kms 💖 but hearts always close</p>
 </div>
 </section>
 
@@ -245,15 +279,25 @@ setInterval(()=>{
 
 /* LETTER */
 let i=0, started=false;
+
 const msg=`hie pandu dhanaa,
+
+I don’t really know how to express myself perfectly, but I want you to understand what I feel.
+
+We’ve been together for so long 💖
+
+Take care always 🫂
 
 I love you ❤️`;
 
 function startLetter(){
   if(started) return;
   started=true;
+
+  document.getElementById("envelope").classList.add("open");
   document.getElementById("gift").style.display="none";
-  let el=document.getElementById("text");
+
+  const el=document.getElementById("text");
 
   function type(){
     if(i<msg.length){
@@ -262,10 +306,11 @@ function startLetter(){
       setTimeout(type,40);
     }
   }
-  type();
+
+  setTimeout(type,600);
 }
 
-/* SPOTIFY ROW UI */
+/* MUSIC */
 const tracks=[
 "3vCzLB6kS2lGcIpm1OOUsy",
 "6lanRgr6wXibZr8KgzXxBl",
@@ -296,10 +341,6 @@ async function loadMusic(){
   }
 }
 loadMusic();
-
-/* DISTANCE (example static logic) */
-document.getElementById("distanceText").innerText =
-"Distance is just a number, hearts are always close but still its actually 612kms 💖";
 
 </script>
 
