@@ -8,200 +8,230 @@
 <style>
 body{
   margin:0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg,#ffd6e0,#e0c3fc);
-  color:#333;
+  font-family:'Segoe UI',sans-serif;
+  background: linear-gradient(135deg,#ff9a9e,#fad0c4);
+  overflow-x:hidden;
+  transition:0.3s;
+}
+
+/* DARK MODE */
+.dark{
+  background:#111;
+  color:white;
+}
+
+/* LOCK */
+#lockScreen{
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:black;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  color:white;
+  z-index:999;
+}
+
+/* MAIN */
+#main{display:none;}
+
+section{
+  padding:40px 20px;
   text-align:center;
 }
 
-/* Sections */
-section{
-  padding:40px 20px;
-  margin:20px 10px;
-}
-
-/* Headings */
-h1,h2{
-  margin-bottom:20px;
-}
-
-/* Gallery */
+/* SCROLL */
 .gallery, .movies{
   display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
+  overflow-x:auto;
   gap:15px;
+  padding:10px;
 }
 
-.gallery img, .movies img{
-  width:150px;
-  height:150px;
+/* PORTRAIT */
+img{
+  flex:0 0 auto;
+  width:160px;
+  height:260px;
   object-fit:cover;
   border-radius:20px;
-  box-shadow:0 4px 10px rgba(0,0,0,0.2);
+  transition:0.3s;
 }
 
-/* Music */
-.music{
-  display:flex;
-  flex-direction:column;
-  gap:20px;
-  align-items:center;
-}
+/* ZOOM */
+img:hover{transform:scale(1.08);}
 
-iframe{
-  border-radius:12px;
-}
-
-/* Glass card */
+/* CARD */
 .card{
   background:rgba(255,255,255,0.3);
   backdrop-filter:blur(10px);
   padding:20px;
   border-radius:20px;
-  width:90%;
+  margin:10px auto;
   max-width:400px;
-  box-shadow:0 8px 20px rgba(0,0,0,0.2);
 }
 
-/* Button */
-button{
-  padding:10px 20px;
-  border:none;
-  border-radius:20px;
-  background:#ff4d6d;
-  color:white;
-  font-size:16px;
+/* FULLSCREEN IMAGE */
+#viewer{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:black;
+  display:none;
+  justify-content:center;
+  align-items:center;
+}
+
+#viewer img{
+  width:90%;
+  height:auto;
+}
+
+/* GIFT MESSAGE */
+#giftMsg{
+  display:none;
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  background:white;
+  padding:15px;
+  border-radius:15px;
+}
+
+/* HEART */
+.heart{
+  position:fixed;
+  animation:float 4s linear;
+}
+
+@keyframes float{
+  from{transform:translateY(0);}
+  to{transform:translateY(-200px);}
 }
 </style>
 </head>
 
-<body>
+<body onclick="heartBurst(event)">
 
-<!-- Title -->
+<!-- LOCK -->
+<div id="lockScreen">
+  <h2>🔒 Password</h2>
+  <input type="password" id="pass">
+  <button onclick="unlock()">Unlock 💖</button>
+</div>
+
+<!-- VIEWER -->
+<div id="viewer" onclick="closeViewer()">
+  <img id="viewImg">
+</div>
+
+<!-- GIFT -->
+<div id="giftMsg">I love you forever 🫂</div>
+
+<!-- MAIN -->
+<div id="main">
+
+<button onclick="toggleDark()">🌙</button>
+
 <section>
-  <h1>💖 Our World 💖</h1>
-  <p>Everything about us in one place ✨</p>
+<h1> 🩷 Our World 🩷 </h1>
 </section>
 
-<!-- Memories -->
 <section>
-  <h2>📸 Memories</h2>
-  <div class="gallery">
-    <img src="photo01.jpg">
-    <img src="photo02.jpg">
-    <img src="photo03.jpg">
-  </div>
+<h2>📸 Memories</h2>
+<div class="gallery">
+<img src="photo01.jpg" onclick="openViewer(this.src)">
+<img src="photo02.jpg" onclick="openViewer(this.src)">
+<img src="photo03.jpg" onclick="openViewer(this.src)">
+</div>
 </section>
 
-<!-- Movies -->
 <section>
-  <h2>🎬 Our Favourite Movies</h2>
-  <div class="movies">
-    <img src="movie01.jpg">
-    <img src="movie02.jpg">
-    <img src="movie03.jpg">
-    <img src="movie04.jpg">
-  </div>
+<h2>🎬 Movies</h2>
+<div class="movies">
+<img src="movie01.jpg" onclick="openViewer(this.src)">
+<img src="movie02.jpg" onclick="openViewer(this.src)">
+<img src="movie03.jpg" onclick="openViewer(this.src)">
+<img src="movie04.jpg" onclick="openViewer(this.src)">
+</div>
 </section>
 
-<!-- Music -->
 <section>
-  <h2>🎵 Our Songs</h2>
-  <div class="music">
-
-    <div class="card">
-      <iframe src="https://open.spotify.com/embed/track/3hB9lDLyAClYVZivMMl20N"
-      width="100%" height="80"></iframe>
-    </div>
-
-    <div class="card">
-      <iframe src="https://open.spotify.com/embed/track/7FwYs4qSJCJi2Hd6ZV8Q3M"
-      width="100%" height="80"></iframe>
-    </div>
-
-    <div class="card">
-      <iframe src="https://open.spotify.com/embed/track/1nH2PkJL1XoUq8oE6tBZoU"
-      width="100%" height="80"></iframe>
-    </div>
-
-  </div>
+<h2>💌 For You</h2>
+<div class="card">You are my everything 💖</div>
 </section>
 
-<!-- Love Letter -->
 <section>
-  <h2>💌 For You</h2>
-  <div class="card">
-    <p>
-      Hey my love 💖<br><br>
-      Every moment with you feels like magic ✨  
-      This little website is just a piece of how much you mean to me ❤️
-    </p>
-  </div>
+<h2>⏳ Our time together</h2>
+<div class="card" id="time"></div>
 </section>
 
-<!-- Time Together -->
 <section>
-  <h2>⏳ Our Time</h2>
-  <div class="card">
-    <p id="time"></p>
-  </div>
+<h2>🎁 Surprise</h2>
+<div class="card">
+<button onclick="gift()">Open 🎀</button>
+</div>
 </section>
 
-<!-- Surprise -->
-<section>
-  <h2>🎁 Surprise</h2>
-  <div class="card">
-    <button onclick="openGift()">Tap to Open 🎀</button>
-  </div>
-</section>
+</div>
 
-<!-- Reasons -->
-<section>
-  <h2>💭 Why I Love You</h2>
-  <div class="card">
-    <ul style="text-align:left;">
-      <li>Your smile 😊</li>
-      <li>Your voice 🎶</li>
-      <li>Your kindness ❤️</li>
-      <li>Everything about you 💖</li>
-    </ul>
-  </div>
-</section>
+<!-- MUSIC -->
+<audio autoplay loop>
+<source src="https://www2.cs.uic.edu/~i101/SoundFiles/StarWars60.wav">
+</audio>
 
-<!-- Future -->
-<section>
-  <h2>🌌 Our Future</h2>
-  <div class="card">
-    <p>
-      Trips together ✈️<br>
-      Late night talks 🌙<br>
-      Endless memories 💕<br>
-      Forever with you 💖
-    </p>
-  </div>
-</section>
-
-<!-- SCRIPT -->
 <script>
 
-// Time counter
-const startDate = new Date("2023-01-01"); // CHANGE THIS
-
-function updateTime(){
-  const now = new Date();
-  const diff = now - startDate;
-
-  const days = Math.floor(diff / (1000*60*60*24));
-  document.getElementById("time").innerText =
-    days + " days together 💖";
+// PASSWORD
+function unlock(){
+  if(document.getElementById("pass").value==="2209"){
+    lockScreen.style.display="none";
+    main.style.display="block";
+  }else alert("Wrong password");
 }
 
-setInterval(updateTime,1000);
+// TIME
+const startDate=new Date("2020-05-13");
+setInterval(()=>{
+  const diff=new Date()-startDate;
+  document.getElementById("time").innerText=
+  Math.floor(diff/(1000*60*60*24))+" days 💖";
+},1000);
 
-// Surprise
-function openGift(){
-  alert("I love you sooo much 💖✨");
+// GIFT
+function gift(){
+  giftMsg.style.display="block";
+  setTimeout(()=>giftMsg.style.display="none",3000);
+}
+
+// VIEWER
+function openViewer(src){
+  viewer.style.display="flex";
+  viewImg.src=src;
+}
+function closeViewer(){
+  viewer.style.display="none";
+}
+
+// DARK MODE
+function toggleDark(){
+  document.body.classList.toggle("dark");
+}
+
+// HEART BURST
+function heartBurst(e){
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerText="💖";
+  h.style.left=e.clientX+"px";
+  h.style.top=e.clientY+"px";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),1000);
 }
 
 </script>
