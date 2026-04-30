@@ -13,6 +13,11 @@ body{
   text-align:center;
   color:#333;
   overflow-x:hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+html{
+  scroll-behavior:smooth;
 }
 
 /* LOCK SCREEN */
@@ -57,10 +62,12 @@ section{
   padding:40px 20px;
 }
 
+/* gallery & movies */
 .gallery,.movies{
   display:flex;
   overflow-x:auto;
   gap:20px;
+  scroll-snap-type:x mandatory;
 }
 
 .gallery img,.movies img{
@@ -68,6 +75,7 @@ section{
   height:260px;
   object-fit:cover;
   border-radius:20px;
+  scroll-snap-align:center;
 }
 
 /* card */
@@ -120,103 +128,63 @@ section{
 .musicGrid{
   display:flex;
   flex-direction:column;
-  gap:20px;
-  align-items:center;
-}
-
-.musicCard{
-  position:relative;
-  width:90%;
-  max-width:400px;
-  border-radius:20px;
-  overflow:hidden;
-  background:rgba(255,255,255,0.2);
-  backdrop-filter:blur(20px);
-  box-shadow:0 10px 30px rgba(0,0,0,0.15);
-  transition:0.3s;
-}
-
-.musicGrid{
-  display:flex;
-  flex-direction:column;
-  gap:28px;              /* BIG SPACE = premium feel */
-  align-items:center;
-  padding:20px 10px;
-}
-
-/* 🧊 iOS GLASS CARD */
-  .musicGrid{
-  display:flex;
-  flex-direction:column;
   gap:35px;
   align-items:center;
   padding:25px 10px;
 }
 
-/* 🍏 iOS CARD */
 .musicCard{
   position:relative;
   width:92%;
   max-width:430px;
-
   background:rgba(255,255,255,0.18);
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
-
   border-radius:28px;
   overflow:hidden;
-
   border:1px solid rgba(255,255,255,0.25);
-
-  box-shadow:
-    0 15px 40px rgba(0,0,0,0.18),
-    inset 0 1px 0 rgba(255,255,255,0.4);
-
+  box-shadow:0 15px 40px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.4);
   transition:0.4s ease;
 }
 
-/* hover lift */
 .musicCard:hover{
   transform:translateY(-6px) scale(1.02);
 }
 
-/* 🌫 album cover BIG */
 .album{
   width:100%;
-  height:280px;          /* BIG ALBUM COVER */
+  height:280px;
   object-fit:cover;
   border-radius:28px 28px 0 0;
 }
 
-/* glass layer */
 .glassOverlay{
   position:absolute;
   inset:0;
-  background:linear-gradient(
-    180deg,
-    rgba(255,255,255,0.25),
-    rgba(255,255,255,0.05)
-  );
+  background:linear-gradient(180deg,rgba(255,255,255,0.25),rgba(255,255,255,0.05));
   pointer-events:none;
 }
 
-/* 🎧 spotify player */
 .musicCard iframe{
   width:100%;
   height:90px;
   border:none;
-  position:relative;
+}
+
+/* TIME FIX */
+#time{
+  font-size:18px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- LOCK SCREEN -->
+<!-- LOCK -->
 <div id="lockScreen">
   <div class="lockBox">
     <h2>💖 Enter Password</h2>
-    <input type="password" id="password" placeholder="2209">
+    <input type="password" id="password" placeholder="password 🦋">
     <br>
     <button onclick="unlock()">Unlock</button>
   </div>
@@ -265,31 +233,31 @@ section{
 <div class="musicGrid">
 
   <div class="musicCard">
-    <img class="album" src="https://i.scdn.co/image/ab67616d0000b273000000000000000000000000">
+    <img class="album" src="photo01.jpg">
     <div class="glassOverlay"></div>
     <iframe src="https://open.spotify.com/embed/track/3vCzLB6kS2lGcIpm1OOUsy"></iframe>
   </div>
 
   <div class="musicCard">
-    <img class="album" src="https://i.scdn.co/image/ab67616d0000b273000000000000000000000000">
+    <img class="album" src="photo02.jpg">
     <div class="glassOverlay"></div>
     <iframe src="https://open.spotify.com/embed/track/6lanRgr6wXibZr8KgzXxBl"></iframe>
   </div>
 
   <div class="musicCard">
-    <img class="album" src="https://i.scdn.co/image/ab67616d0000b273000000000000000000000000">
+    <img class="album" src="photo03.jpg">
     <div class="glassOverlay"></div>
     <iframe src="https://open.spotify.com/embed/track/3hB9lDLyAClYVZivMMl20N"></iframe>
   </div>
 
   <div class="musicCard">
-    <img class="album" src="https://i.scdn.co/image/ab67616d0000b273000000000000000000000000">
+    <img class="album" src="photo04.jpg">
     <div class="glassOverlay"></div>
     <iframe src="https://open.spotify.com/embed/track/7FwYs4qSJCJi2Hd6ZV8Q3M"></iframe>
   </div>
 
   <div class="musicCard">
-    <img class="album" src="https://i.scdn.co/image/ab67616d0000b273000000000000000000000000">
+    <img class="album" src="photo05.jpg">
     <div class="glassOverlay"></div>
     <iframe src="https://open.spotify.com/embed/track/4QNSMIeCknaH5m0EM2yNTI"></iframe>
   </div>
@@ -330,7 +298,6 @@ Get married 💍
 
 <script>
 
-/* LOCK */
 function unlock(){
   if(document.getElementById("password").value==="2209"){
     document.getElementById("lockScreen").style.display="none";
@@ -339,21 +306,28 @@ function unlock(){
   }
 }
 
+/* ENTER KEY FIX */
+document.getElementById("password").addEventListener("keypress", function(e){
+  if(e.key==="Enter") unlock();
+});
+
 /* VIEWER */
 function openViewer(img){
   document.getElementById("viewer").style.display="flex";
   document.getElementById("viewerImg").src=img.src;
 }
 
-/* HEARTS */
+/* HEARTS (optimized) */
 setInterval(()=>{
+  if(document.hidden) return;
+
   const h=document.createElement("div");
   h.className="heart";
   h.innerHTML="💖";
   h.style.left=Math.random()*100+"%";
   document.body.appendChild(h);
   setTimeout(()=>h.remove(),4000);
-},1000);
+},1200);
 
 /* TIME */
 const start=new Date("2020-05-09");
@@ -362,7 +336,7 @@ setInterval(()=>{
   document.getElementById("time").innerText=d+" days 💖";
 },1000);
 
-/* LETTER */
+/* LETTER FIX */
 const message = `hie pandu dhanaa,
 
 I don’t really know how to express myself perfectly, but I want you to understand what I feel.
@@ -377,6 +351,7 @@ let letterIndex = 0;
 let started = false;
 
 function startLetter(){
+  letterIndex = 0;
   if(started) return;
   started = true;
 
@@ -393,6 +368,12 @@ function startLetter(){
 
   type();
 }
+
+/* TIME FIX */
+setInterval(()=>{
+  const d=Math.floor((new Date()-start)/(1000*60*60*24));
+  document.getElementById("time").innerText=d+" days 💖";
+},1000);
 
 </script>
 
