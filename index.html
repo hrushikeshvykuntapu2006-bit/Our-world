@@ -15,11 +15,10 @@ body{
   overflow-x:hidden;
 }
 
-/* 🔓 LOCK SCREEN */
+/* LOCK */
 #lockScreen{
   position:fixed;
-  top:0; left:0;
-  width:100%; height:100%;
+  inset:0;
   background: linear-gradient(135deg,#ff9a9e,#fad0c4);
   display:flex;
   justify-content:center;
@@ -32,7 +31,6 @@ body{
   backdrop-filter:blur(15px);
   padding:30px;
   border-radius:20px;
-  text-align:center;
   box-shadow:0 10px 30px rgba(0,0,0,0.2);
 }
 
@@ -57,12 +55,6 @@ body{
 /* sections */
 section{
   padding:40px 20px;
-  animation:fadeIn 1s ease;
-}
-
-@keyframes fadeIn{
-  from{opacity:0; transform:translateY(20px);}
-  to{opacity:1; transform:translateY(0);}
 }
 
 .gallery,.movies{
@@ -79,13 +71,7 @@ section{
   cursor:pointer;
 }
 
-.music{
-  display:flex;
-  flex-direction:column;
-  gap:20px;
-  align-items:center;
-}
-
+/* card */
 .card{
   background:rgba(255,255,255,0.3);
   backdrop-filter:blur(10px);
@@ -98,8 +84,7 @@ section{
 /* viewer */
 #viewer{
   position:fixed;
-  top:0; left:0;
-  width:100%; height:100%;
+  inset:0;
   background:black;
   display:none;
   justify-content:center;
@@ -122,7 +107,7 @@ section{
   100%{transform:translateY(-600px);opacity:0;}
 }
 
-/* 💌 LETTER ADDITION ONLY */
+/* typing cursor */
 .cursor::after{
   content:"|";
   animation:blink 1s infinite;
@@ -136,10 +121,10 @@ section{
 
 <body>
 
-<!-- 🔓 LOCK SCREEN -->
+<!-- LOCK SCREEN -->
 <div id="lockScreen">
   <div class="lockBox">
-    <div id="typing"></div>
+    <h2>💖 Enter Password</h2>
     <input type="password" id="password" placeholder="2209">
     <br>
     <button onclick="unlock()">Unlock</button>
@@ -151,69 +136,51 @@ section{
 </section>
 
 <section>
-<h2> fav clicks</h2>
+<h2>📸 fav clicks</h2>
 <div class="gallery">
 <img src="photo01.jpg" onclick="openViewer(this)">
 <img src="photo02.jpg" onclick="openViewer(this)">
 <img src="photo03.jpg" onclick="openViewer(this)">
 <img src="photo04.jpg" onclick="openViewer(this)">
 <img src="photo05.jpg" onclick="openViewer(this)">
-<img src="photo06.jpg" onclick="openViewer(this)">
-<img src="photo07.jpg" onclick="openViewer(this)">
-<img src="photo08.jpg" onclick="openViewer(this)">
-<img src="photo09.jpg" onclick="openViewer(this)">
 </div>
 </section>
 
 <section>
-<h2>comfort Movies</h2>
+<h2>🎬 comfort Movies</h2>
 <div class="movies">
 <img src="movie01.jpg" onclick="openViewer(this)">
 <img src="movie02.jpg" onclick="openViewer(this)">
 <img src="movie03.jpg" onclick="openViewer(this)">
 <img src="movie04.jpg" onclick="openViewer(this)">
-<img src="movie05.jpg" onclick="openViewer(this)">
-<img src="movie06.jpg" onclick="openViewer(this)">
-<img src="movie07.jpg" onclick="openViewer(this)">
-<img src="movie08.jpg" onclick="openViewer(this)">
-<img src="movie09.jpg" onclick="openViewer(this)">
 </div>
 </section>
 
 <section>
-<h2>Songs that we love to listen</h2>
-<div class="music">
-
-<iframe src="https://open.spotify.com/embed/track/3hB9lDLyAClYVZivMMl20N" width="300" height="80"></iframe>
-
-<iframe src="https://open.spotify.com/embed/track/7FwYs4qSJCJi2Hd6ZV8Q3M" width="300" height="80"></iframe>
-
-<iframe src="https://open.spotify.com/embed/track/1nH2PkJL1XoUq8oE6tBZoU" width="300" height="80"></iframe>
-
-<iframe src="https://open.spotify.com/embed/track/2VxeLyX666F8uXCJ0dZF8B" width="300" height="80"></iframe>
-
+<h2>🎵 Songs</h2>
+<div class="card">
+<iframe src="https://open.spotify.com/embed/track/3hB9lDLyAClYVZivMMl20N" width="100%" height="80"></iframe>
+<iframe src="https://open.spotify.com/embed/track/7FwYs4qSJCJi2Hd6ZV8Q3M" width="100%" height="80"></iframe>
 </div>
 </section>
 
 <section>
-<h2> Future Plans</h2>
+<h2>📅 Future Plans</h2>
 <div class="card">
 Travel together ✈️<br>
-Late night drives <br>
-Watch one piece together 🎬<br>
-Grow together forever<br>
-Get married 💕
+Late night drives 🌙<br>
+Watch anime together 🎬<br>
+Grow together forever 💖<br>
+Get married 💍
 </div>
 </section>
 
-<!-- 💌 LETTER ADDED HERE -->
+<!-- LETTER -->
 <section>
 <h2>💌 A Letter for Pavani</h2>
-
 <div class="card" onclick="startLetter()">
-  <div id="text"></div><span class="cursor"></span>
+<div id="text"></div><span class="cursor"></span>
 </div>
-
 </section>
 
 <section>
@@ -221,40 +188,29 @@ Get married 💕
 <div class="card" id="time"></div>
 </section>
 
+<!-- VIEWER -->
 <div id="viewer" onclick="this.style.display='none'">
 <img id="viewerImg">
 </div>
 
 <script>
 
-/* unlock */
+/* PASSWORD */
 function unlock(){
-  if(document.getElementById("password").value==="pvniirishii"){
+  if(document.getElementById("password").value==="2209"){
     document.getElementById("lockScreen").style.display="none";
   }else{
     alert("Wrong password 💔");
   }
 }
 
-/* typing intro */
-const text="Hehehe hie pavanii😗";
-let i=0;
-function type(){
-  if(i<text.length){
-    document.getElementById("typing").innerHTML+=text.charAt(i);
-    i++;
-    setTimeout(type,80);
-  }
-}
-type();
-
-/* viewer */
+/* VIEWER */
 function openViewer(img){
   document.getElementById("viewer").style.display="flex";
   document.getElementById("viewerImg").src=img.src;
 }
 
-/* hearts */
+/* HEARTS */
 setInterval(()=>{
   const h=document.createElement("div");
   h.className="heart";
@@ -264,27 +220,23 @@ setInterval(()=>{
   setTimeout(()=>h.remove(),4000);
 },1000);
 
-/* time */
-const start=new Date("2020-05-05");
+/* TIME */
+const start=new Date("2020-05-09");
 setInterval(()=>{
   const d=Math.floor((new Date()-start)/(1000*60*60*24));
   document.getElementById("time").innerText=d+" days 💖";
 },1000);
 
-/* 💌 LETTER (ADDED SAFE - NO CONFLICTS) */
+/* LETTER TYPEWRITER */
 const message = `hie pandu dhanaa,
 
-uhmm listen i don’t really know how to express myself perfectly, but I want you to understand what I feel.
+I don’t really know how to express myself perfectly, but I want you to understand what I feel.
 
-We’ve been together for so many years, and even after all this time, we’re still here—holding on to each other,
+We’ve been together for so long, and still we’re here holding each other 💖
 
-enduku ippudu idhi antha anty overthink chesi health padu cheskuntunv anpinchindhi inka manchiga anni cheppi
+Don’t overthink too much, take care of your health 🫂
 
-chaala days indhi andke srle padkooo
-
-love uh soo much 🫂😗
-
-Always your redd cheema
+I love you always ❤️`;
 
 let letterIndex = 0;
 let started = false;
@@ -296,15 +248,15 @@ function startLetter(){
   const el = document.getElementById("text");
   el.innerHTML = "";
 
-  function typeLetter(){
+  function type(){
     if(letterIndex < message.length){
       el.innerHTML += message.charAt(letterIndex) === "\n" ? "<br>" : message.charAt(letterIndex);
       letterIndex++;
-      setTimeout(typeLetter, 30);
+      setTimeout(type, 30);
     }
   }
 
-  typeLetter();
+  type();
 }
 
 </script>
