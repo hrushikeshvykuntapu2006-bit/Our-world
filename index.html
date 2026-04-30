@@ -13,138 +13,115 @@ body{
   text-align:center;
   color:#333;
   overflow-x:hidden;
-  -webkit-overflow-scrolling: touch;
 }
 
 html{scroll-behavior:smooth;}
 
-/* 🌸 LOCKSCREEN PASTEL */
+/* 🌸 LOCKSCREEN */
 #lockScreen{
   position:fixed;
   inset:0;
   display:flex;
   justify-content:center;
   align-items:center;
-  z-index:9999;
   background: linear-gradient(135deg,#ffd6e0,#e0c3fc,#c2f0ff);
+  z-index:9999;
 }
 
 .lockBox{
-  padding:38px;
-  border-radius:28px;
+  padding:35px;
+  border-radius:25px;
   background: rgba(255,255,255,0.25);
-  backdrop-filter: blur(55px);
-  -webkit-backdrop-filter: blur(55px);
+  backdrop-filter: blur(50px);
   border:1px solid rgba(255,255,255,0.35);
-  box-shadow:0 25px 60px rgba(0,0,0,0.18);
   text-align:center;
-}
-
-.lockIcon{
-  font-size:42px;
-  margin-bottom:10px;
 }
 
 .lockBox input{
-  width:220px;
-  padding:12px;
+  padding:10px;
+  width:200px;
+  border-radius:12px;
   border:none;
-  border-radius:14px;
-  margin-top:10px;
   text-align:center;
-  background:rgba(255,255,255,0.4);
 }
 
 .lockBox button{
-  margin-top:15px;
-  padding:10px 25px;
+  margin-top:12px;
+  padding:10px 20px;
   border:none;
-  border-radius:16px;
-  background: linear-gradient(135deg,#ff9a9e,#fad0c4);
+  border-radius:12px;
+  background:#ff6b81;
   color:white;
-  cursor:pointer;
 }
 
 /* SECTIONS */
-section{padding:40px 20px;}
+section{
+  padding:35px 15px;
+}
 
-/* GALLERY */
+/* SCROLL GALLERIES */
 .gallery,.movies{
   display:flex;
   overflow-x:auto;
-  gap:20px;
-  scroll-snap-type:x mandatory;
+  gap:15px;
   padding:10px;
 }
 
 .gallery img,.movies img{
-  width:160px;
-  height:260px;
+  width:150px;
+  height:230px;
   object-fit:cover;
-  border-radius:20px;
+  border-radius:16px;
 }
 
 /* CARD */
 .card{
-  padding:20px;
-  border-radius:22px;
-  max-width:400px;
+  padding:18px;
+  border-radius:20px;
+  max-width:420px;
   margin:auto;
-  backdrop-filter: blur(35px);
   background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(30px);
   border:1px solid rgba(255,255,255,0.3);
 }
 
-/* 🎵 MUSIC */
+/* 🎵 MUSIC ROW UI */
 .musicGrid{
   display:flex;
   flex-direction:column;
-  gap:24px;
+  gap:14px;
   align-items:center;
-  padding:20px 10px;
 }
 
 .musicCard{
-  width:90%;
-  max-width:380px;   /* 🔥 reduced size */
-  border-radius:28px;
-  overflow:hidden;
-  background: rgba(255,255,255,0.16);
+  width:92%;
+  max-width:420px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px;
+  border-radius:18px;
+  background: rgba(255,255,255,0.18);
   backdrop-filter: blur(50px);
   border:1px solid rgba(255,255,255,0.3);
-  box-shadow:0 20px 50px rgba(0,0,0,0.2);
-}
-
-.albumWrap{
-  height:240px;  /* 🔥 reduced album size */
 }
 
 .album{
-  width:100%;
-  height:100%;
+  width:65px;
+  height:65px;
+  border-radius:14px;
   object-fit:cover;
+}
+
+.musicInfo{
+  flex:1;
 }
 
 .musicCard iframe{
   width:100%;
-  height:85px;
+  height:75px;
   border:none;
-}
-
-/* VIEWER */
-#viewer{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.85);
-  display:none;
-  justify-content:center;
-  align-items:center;
-}
-
-#viewer img{
-  max-width:90%;
-  max-height:90%;
-  border-radius:20px;
+  border-radius:12px;
 }
 
 /* HEARTS */
@@ -152,22 +129,20 @@ section{padding:40px 20px;}
   position:fixed;
   animation:float 4s linear infinite;
 }
-
 @keyframes float{
   0%{transform:translateY(0);opacity:1;}
   100%{transform:translateY(-600px);opacity:0;}
 }
+
 </style>
 </head>
 
 <body>
 
-<!-- 🌸 LOCK -->
+<!-- LOCK -->
 <div id="lockScreen">
   <div class="lockBox">
-    <div class="lockIcon">🔐</div>
-    <h2>Our World</h2>
-    <p>Enter password</p>
+    <h2>💖 Our World</h2>
     <input type="password" id="password">
     <button onclick="unlock()">Unlock</button>
   </div>
@@ -175,7 +150,7 @@ section{padding:40px 20px;}
 
 <section><h1>💖 Our World 💖</h1></section>
 
-<!-- 📸 PHOTOS (9) -->
+<!-- 📸 PHOTOS -->
 <section>
 <h2>📸 fav clicks</h2>
 <div class="gallery">
@@ -185,7 +160,7 @@ section{padding:40px 20px;}
 </div>
 </section>
 
-<!-- 🎬 MOVIES (9) -->
+<!-- 🎬 MOVIES -->
 <section>
 <h2>🎬 comfort Movies</h2>
 <div class="movies">
@@ -195,18 +170,32 @@ section{padding:40px 20px;}
 </div>
 </section>
 
-<!-- 🎵 MUSIC (Spotify API) -->
+<!-- 🎵 MUSIC -->
 <section>
 <h2>🎵 Our Music</h2>
 <div class="musicGrid" id="musicGrid"></div>
 </section>
 
-<!-- 💌 OLD LETTER -->
+<!-- 💖 DAYS -->
+<section>
+<h2>⏳ Our Days</h2>
+<div class="card" id="time"></div>
+</section>
+
+<!-- 💌 LETTER -->
 <section>
 <h2>💌 A Letter</h2>
 <div class="card" onclick="startLetter()">
 <div id="gift">🎁 Tap to Open</div>
 <div id="text"></div>
+</div>
+</section>
+
+<!-- 💞 DISTANCE -->
+<section>
+<h2>📍 Distance Between Us</h2>
+<div class="card">
+<p id="distanceText">Calculating...</p>
 </div>
 </section>
 
@@ -219,15 +208,16 @@ function unlock(){
   }else alert("Wrong 💔");
 }
 
+/* DAYS */
+const start=new Date("2020-05-09");
+setInterval(()=>{
+  let d=Math.floor((new Date()-start)/(1000*60*60*24));
+  document.getElementById("time").innerText=d+" days 💖";
+},1000);
+
 /* LETTER */
 let i=0, started=false;
 const msg=`hie pandu dhanaa,
-
-I don’t really know how to express myself perfectly, but I want you to understand what I feel.
-
-We’ve been together for so long 💖
-
-Take care always 🫂
 
 I love you ❤️`;
 
@@ -247,7 +237,7 @@ function startLetter(){
   type();
 }
 
-/* 🎵 SPOTIFY API (oEmbed) */
+/* SPOTIFY ROW UI */
 const tracks=[
 "3vCzLB6kS2lGcIpm1OOUsy",
 "6lanRgr6wXibZr8KgzXxBl",
@@ -267,16 +257,21 @@ async function loadMusic(){
     div.className="musicCard";
 
     div.innerHTML=`
-      <div class="albumWrap">
-        <img class="album" src="${data.thumbnail_url}">
+      <img class="album" src="${data.thumbnail_url}">
+      <div class="musicInfo">
+        <strong>${data.title}</strong>
+        <iframe src="https://open.spotify.com/embed/track/${id}"></iframe>
       </div>
-      <iframe src="https://open.spotify.com/embed/track/${id}"></iframe>
     `;
 
     grid.appendChild(div);
   }
 }
 loadMusic();
+
+/* DISTANCE (example static logic) */
+document.getElementById("distanceText").innerText =
+"Distance is just a number, hearts are always close 💖";
 
 </script>
 
