@@ -1,300 +1,209 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Our World 💖</title>
 
 <style>
 body{
   margin:0;
-  font-family:system-ui;
-  color:#444;
-  background:linear-gradient(135deg,#ffe6f0,#e6f7ff,#fff7e6);
-  overflow:hidden;
-}
-
-#bg{
-  position:fixed;
-  inset:0;
-  background:linear-gradient(120deg,#ffd6e0,#d6f0ff,#fff0d6);
-  filter:blur(35px);
-  transform:scale(1.2);
-  z-index:-2;
-}
-
-/* 💞 hearts */
-.heart{
-  position:fixed;
-  bottom:-10px;
-  font-size:16px;
-  animation:rise linear forwards;
-  opacity:0.7;
-  z-index:1;
-}
-@keyframes rise{
-  to{
-    transform:translateY(-110vh);
-    opacity:0;
-  }
-}
-
-/* LOCK */
-#lock{
-  position:fixed;
-  inset:0;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  backdrop-filter:blur(10px);
-  background:rgba(0,0,0,0.25);
-  z-index:10;
-}
-
-.card{
-  width:85%;
-  max-width:320px;
-  background:rgba(255,255,255,0.65);
-  border-radius:25px;
-  padding:25px;
-  text-align:center;
-  box-shadow:0 20px 50px rgba(0,0,0,0.1);
-}
-
-.card input{
-  width:100%;
-  padding:10px;
-  border:none;
-  border-radius:12px;
-  margin-top:10px;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg,#ffd6e0,#e0c3fc);
+  color:#333;
   text-align:center;
 }
 
-.card button{
-  margin-top:10px;
-  padding:10px;
-  border:none;
-  border-radius:12px;
-  background:#ff4fa3;
-  color:white;
-}
-
-/* APP */
-#app{
-  display:none;
-  height:100vh;
-  overflow-y:auto;
-  scroll-behavior:smooth;
-}
-
-.block{
+/* Sections */
+section{
   padding:40px 20px;
-  text-align:center;
+  margin:20px 10px;
 }
 
-.glass{
-  background:rgba(255,255,255,0.55);
-  backdrop-filter:blur(12px);
-  border-radius:20px;
-  padding:15px;
-  margin:15px auto;
-  max-width:320px;
+/* Headings */
+h1,h2{
+  margin-bottom:20px;
 }
 
-/* gallery */
-.gallery{
+/* Gallery */
+.gallery, .movies{
   display:flex;
-  overflow-x:auto;
-  gap:10px;
+  flex-wrap:wrap;
   justify-content:center;
-}
-.gallery img{
-  width:140px;
-  border-radius:15px;
+  gap:15px;
 }
 
-/* TIMER */
-.timer{
-  font-size:18px;
-  font-weight:500;
-}
-
-/* SPOTIFY */
-.subtitle{opacity:0.7;font-size:13px;}
-
-.nowPlaying{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:12px;
-  margin-top:10px;
-  border-radius:15px;
-  background:rgba(255,255,255,0.5);
-  backdrop-filter:blur(12px);
-}
-
-.pulse{
-  width:12px;height:12px;border-radius:50%;
-  background:#1db954;
-  position:relative;
-}
-.pulse::after{
-  content:"";
-  position:absolute;
-  width:100%;height:100%;
-  border-radius:50%;
-  background:#1db954;
-  animation:pulse 1.5s infinite;
-}
-@keyframes pulse{
-  0%{transform:scale(1);opacity:0.8;}
-  100%{transform:scale(3);opacity:0;}
-}
-
-/* 🎬 MOVIES (FIXED SECTION) */
-.movieGrid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
-  margin-top:10px;
-}
-
-.movieCard{
-  background:rgba(255,255,255,0.4);
-  backdrop-filter:blur(12px);
-  border-radius:15px;
-  padding:10px;
-  text-align:center;
-  transition:0.3s;
-}
-
-.movieCard:hover{
-  transform:scale(1.05);
-}
-
-.movieCard img{
-  width:100%;
-  border-radius:12px;
+.gallery img, .movies img{
+  width:150px;
+  height:150px;
   object-fit:cover;
-  aspect-ratio:2/3;
+  border-radius:20px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.2);
 }
 
-.movieCard p{
-  margin:8px 0 0;
-  font-size:13px;
-  opacity:0.8;
+/* Music */
+.music{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+  align-items:center;
+}
+
+iframe{
+  border-radius:12px;
+}
+
+/* Glass card */
+.card{
+  background:rgba(255,255,255,0.3);
+  backdrop-filter:blur(10px);
+  padding:20px;
+  border-radius:20px;
+  width:90%;
+  max-width:400px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.2);
+}
+
+/* Button */
+button{
+  padding:10px 20px;
+  border:none;
+  border-radius:20px;
+  background:#ff4d6d;
+  color:white;
+  font-size:16px;
 }
 </style>
 </head>
 
 <body>
 
-<div id="bg"></div>
+<!-- Title -->
+<section>
+  <h1>💖 Our World 💖</h1>
+  <p>Everything about us in one place ✨</p>
+</section>
 
-<!-- LOCK -->
-<div id="lock">
-  <div class="card">
-    <h2>💖 Enter Password</h2>
-    <input id="pass" placeholder="Enter secret 💕">
-    <button onclick="unlock()">Unlock</button>
-  </div>
-</div>
-
-<!-- APP -->
-<div id="app">
-
-<h1 class="block">💖 Our World</h1>
-
-<div class="block glass">
-  <h3>📅 Our Time Together</h3>
-  <div class="timer" id="timer"></div>
-</div>
-
-<div class="block glass">
-  <h3>📸 Memories</h3>
+<!-- Memories -->
+<section>
+  <h2>📸 Memories</h2>
   <div class="gallery">
-    <img src="photo1.jpg">
-    <img src="photo2.jpg">
-    <img src="photo3.jpg">
+    <img src="photo01.jpg">
+    <img src="photo02.jpg">
+    <img src="photo03.jpg">
   </div>
-</div>
+</section>
 
-<div class="block glass">
-  <h3>🎵 Playlist</h3>
-
-  <div class="nowPlaying">
-    <div class="pulse"></div>
-    <div>
-      <p><b>Now Playing</b></p>
-      <p style="font-size:12px;opacity:0.7;">Our Main Song</p>
-    </div>
+<!-- Movies -->
+<section>
+  <h2>🎬 Our Favourite Movies</h2>
+  <div class="movies">
+    <img src="movie01.jpg">
+    <img src="movie02.jpg">
+    <img src="movie03.jpg">
+    <img src="movie04.jpg">
   </div>
+</section>
 
-  <iframe style="border-radius:12px"
-  src="https://open.spotify.com/embed/track/3vCzLB6kS2lGcIpm1OOUsy"
-  width="100%" height="152"></iframe>
+<!-- Music -->
+<section>
+  <h2>🎵 Our Songs</h2>
+  <div class="music">
 
-  <iframe style="border-radius:12px"
-  src="https://open.spotify.com/embed/track/3hB9lDLyAClYVZivMMl20N"
-  width="100%" height="152"></iframe>
-
-</div>
-
-<!-- 🎬 MOVIES (FIXED PROPERLY INSIDE APP) -->
-<div class="block glass">
-
-  <h3>🎬 Our Favourite Movies</h3>
-  <p class="subtitle">Scenes that feel like us 💖</p>
-
-  <div class="movieGrid">
-
-    <div class="movieCard">
-      <img src="movie1.jpg">
-      <p>Movie 1</p>
+    <div class="card">
+      <iframe src="https://open.spotify.com/embed/track/3hB9lDLyAClYVZivMMl20N"
+      width="100%" height="80"></iframe>
     </div>
 
-    <div class="movieCard">
-      <img src="movie2.jpg">
-      <p>Movie 2</p>
+    <div class="card">
+      <iframe src="https://open.spotify.com/embed/track/7FwYs4qSJCJi2Hd6ZV8Q3M"
+      width="100%" height="80"></iframe>
     </div>
 
-    <div class="movieCard">
-      <img src="movie3.jpg">
-      <p>Movie 3</p>
-    </div>
-
-    <div class="movieCard">
-      <img src="movie4.jpg">
-      <p>Movie 4</p>
+    <div class="card">
+      <iframe src="https://open.spotify.com/embed/track/1nH2PkJL1XoUq8oE6tBZoU"
+      width="100%" height="80"></iframe>
     </div>
 
   </div>
+</section>
 
-</div>
+<!-- Love Letter -->
+<section>
+  <h2>💌 For You</h2>
+  <div class="card">
+    <p>
+      Hey my love 💖<br><br>
+      Every moment with you feels like magic ✨  
+      This little website is just a piece of how much you mean to me ❤️
+    </p>
+  </div>
+</section>
 
-<div class="block glass">
-  <h3>💌 Love Notes</h3>
-  <p>💖 You are my calm in chaos</p>
-  <p>💖 Everything feels better with you</p>
-  <p>💖 I choose you every day</p>
-</div>
+<!-- Time Together -->
+<section>
+  <h2>⏳ Our Time</h2>
+  <div class="card">
+    <p id="time"></p>
+  </div>
+</section>
 
-</div>
+<!-- Surprise -->
+<section>
+  <h2>🎁 Surprise</h2>
+  <div class="card">
+    <button onclick="openGift()">Tap to Open 🎀</button>
+  </div>
+</section>
 
+<!-- Reasons -->
+<section>
+  <h2>💭 Why I Love You</h2>
+  <div class="card">
+    <ul style="text-align:left;">
+      <li>Your smile 😊</li>
+      <li>Your voice 🎶</li>
+      <li>Your kindness ❤️</li>
+      <li>Everything about you 💖</li>
+    </ul>
+  </div>
+</section>
+
+<!-- Future -->
+<section>
+  <h2>🌌 Our Future</h2>
+  <div class="card">
+    <p>
+      Trips together ✈️<br>
+      Late night talks 🌙<br>
+      Endless memories 💕<br>
+      Forever with you 💖
+    </p>
+  </div>
+</section>
+
+<!-- SCRIPT -->
 <script>
-function unlock(){
-  if(document.getElementById("pass").value==="1234"){
-    document.getElementById("lock").style.display="none";
-    document.getElementById("app").style.display="block";
-  } else {
-    alert("Wrong password 💔");
-  }
+
+// Time counter
+const startDate = new Date("2023-01-01"); // CHANGE THIS
+
+function updateTime(){
+  const now = new Date();
+  const diff = now - startDate;
+
+  const days = Math.floor(diff / (1000*60*60*24));
+  document.getElementById("time").innerText =
+    days + " days together 💖";
 }
 
-let startDate=new Date("2024-01-01");
-setInterval(()=>{
-  let days=Math.floor((new Date()-startDate)/(1000*60*60*24));
-  document.getElementById("timer").innerText=days+" days together 💖";
-},1000);
+setInterval(updateTime,1000);
+
+// Surprise
+function openGift(){
+  alert("I love you sooo much 💖✨");
+}
+
 </script>
 
 </body>
