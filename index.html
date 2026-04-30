@@ -15,47 +15,76 @@ body{
   overflow-x:hidden;
 }
 
-/* Sections */
-section{
-  padding:40px 20px;
-  animation: fadeIn 1s ease;
+/* 🔓 LOCK SCREEN */
+#lockScreen{
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background: linear-gradient(135deg,#ff9a9e,#fad0c4);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
 }
 
-/* Fade animation */
+.lockBox{
+  background:rgba(255,255,255,0.3);
+  backdrop-filter:blur(15px);
+  padding:30px;
+  border-radius:20px;
+  text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+.lockBox input{
+  padding:10px;
+  border:none;
+  border-radius:10px;
+  margin-top:10px;
+  width:200px;
+}
+
+.lockBox button{
+  margin-top:15px;
+  padding:10px 20px;
+  border:none;
+  border-radius:15px;
+  background:#ff6b81;
+  color:white;
+  cursor:pointer;
+}
+
+/* typing text */
+#typing{
+  font-size:18px;
+  margin-bottom:10px;
+}
+
+/* sections */
+section{
+  padding:40px 20px;
+  animation:fadeIn 1s ease;
+}
+
 @keyframes fadeIn{
   from{opacity:0; transform:translateY(20px);}
   to{opacity:1; transform:translateY(0);}
 }
 
-/* Headings */
-h1,h2{
-  margin-bottom:20px;
-}
-
-/* Scroll Gallery */
-.gallery, .movies{
+.gallery,.movies{
   display:flex;
   overflow-x:auto;
   gap:15px;
-  padding:10px;
 }
 
-/* Portrait Images */
-.gallery img, .movies img{
+.gallery img,.movies img{
   width:160px;
   height:260px;
   object-fit:cover;
   border-radius:20px;
-  box-shadow:0 6px 15px rgba(0,0,0,0.2);
-  transition:0.3s;
   cursor:pointer;
 }
 
-.gallery img:hover, .movies img:hover{
-  transform:scale(1.05);
-}
-
-/* Music */
 .music{
   display:flex;
   flex-direction:column;
@@ -63,7 +92,6 @@ h1,h2{
   align-items:center;
 }
 
-/* Card */
 .card{
   background:rgba(255,255,255,0.3);
   backdrop-filter:blur(10px);
@@ -71,62 +99,51 @@ h1,h2{
   border-radius:20px;
   max-width:400px;
   margin:auto;
-  box-shadow:0 8px 20px rgba(0,0,0,0.2);
 }
 
-iframe{
-  border-radius:12px;
-}
-
-/* Fullscreen Image */
+/* viewer */
 #viewer{
   position:fixed;
   top:0; left:0;
   width:100%; height:100%;
-  background:rgba(0,0,0,0.9);
+  background:black;
   display:none;
   justify-content:center;
   align-items:center;
-  z-index:999;
 }
 
 #viewer img{
   max-width:90%;
   max-height:90%;
-  border-radius:20px;
 }
 
-/* Floating hearts */
+/* hearts */
 .heart{
   position:fixed;
-  color:red;
   animation:float 4s linear infinite;
 }
 
 @keyframes float{
-  0%{transform:translateY(0); opacity:1;}
-  100%{transform:translateY(-600px); opacity:0;}
+  0%{transform:translateY(0);opacity:1;}
+  100%{transform:translateY(-600px);opacity:0;}
 }
-
-/* Gift button */
-button{
-  padding:12px 20px;
-  border:none;
-  border-radius:20px;
-  background:#ff6b81;
-  color:white;
-  font-size:16px;
-  cursor:pointer;
-}
-
 </style>
 </head>
 
 <body>
 
+<!-- 🔓 LOCK SCREEN -->
+<div id="lockScreen">
+  <div class="lockBox">
+    <div id="typing"></div>
+    <input type="password" id="password" placeholder="Password ❤️">
+    <br>
+    <button onclick="unlock()">Unlock</button>
+  </div>
+</div>
+
 <section>
 <h1>💖 Our World 💖</h1>
-<p>Everything about us ✨</p>
 </section>
 
 <section>
@@ -135,96 +152,109 @@ button{
 <img src="photo01.jpg" onclick="openViewer(this)">
 <img src="photo02.jpg" onclick="openViewer(this)">
 <img src="photo03.jpg" onclick="openViewer(this)">
+<img src="photo04.jpg" onclick="openViewer(this)">
+<img src="photo05.jpg" onclick="openViewer(this)">
+<img src="photo06.jpg" onclick="openViewer(this)">
+<img src="photo07.jpg" onclick="openViewer(this)">
+<img src="photo08.jpg" onclick="openViewer(this)">
+<img src="photo09.jpg" onclick="openViewer(this)">
 </div>
 </section>
 
 <section>
-<h2>🎬 Our Favourite Movies</h2>
+<h2>🎬 Movies</h2>
 <div class="movies">
 <img src="movie01.jpg" onclick="openViewer(this)">
 <img src="movie02.jpg" onclick="openViewer(this)">
 <img src="movie03.jpg" onclick="openViewer(this)">
 <img src="movie04.jpg" onclick="openViewer(this)">
+<img src="movie05.jpg" onclick="openViewer(this)">
+<img src="movie06.jpg" onclick="openViewer(this)">
+<img src="movie07.jpg" onclick="openViewer(this)">
+<img src="movie08.jpg" onclick="openViewer(this)">
+<img src="movie09.jpg" onclick="openViewer(this)">
 </div>
 </section>
 
 <section>
-<h2>🎵 Our Songs</h2>
+<h2>🎵 Songs</h2>
 <div class="music">
 
-<div class="card">
-<iframe src="https://open.spotify.com/embed/track/3hB9lDLyAClYVZivMMl20N" width="100%" height="100"></iframe>
-</div>
+<iframe src="https://open.spotify.com/embed/track/3hB9lDLyAClYVZivMMl20N" width="300" height="80"></iframe>
 
-<div class="card">
-<iframe src="https://open.spotify.com/embed/track/7FwYs4qSJCJi2Hd6ZV8Q3M" width="100%" height="100"></iframe>
-</div>
+<iframe src="https://open.spotify.com/embed/track/7FwYs4qSJCJi2Hd6ZV8Q3M" width="300" height="80"></iframe>
 
-<div class="card">
-<iframe src="https://open.spotify.com/embed/track/1nH2PkJL1XoUq8oE6tBZoU" width="100%" height="100"></iframe>
-</div>
+<iframe src="https://open.spotify.com/embed/track/1nH2PkJL1XoUq8oE6tBZoU" width="300" height="80"></iframe>
+
+<iframe src="https://open.spotify.com/embed/track/2VxeLyX666F8uXCJ0dZF8B" width="300" height="80"></iframe>
 
 </div>
 </section>
 
 <section>
-<h2>💌 For You</h2>
+<h2>📝 Future Plans</h2>
 <div class="card">
-Hey my love 💖<br><br>
-Every moment with you feels special ✨  
-This is just a small piece of how much you mean to me ❤️
-<br><br>
-<button onclick="showGift()">Open 🎁</button>
+Travel together ✈️<br>
+Late night drives <br>
+Watch one piece together 🎬<br>
+Grow together forever<br>
+Get married and more and more 💕
 </div>
 </section>
 
 <section>
-<h2>⏳ Our Time</h2>
+<h2>⏳ Time</h2>
 <div class="card" id="time"></div>
 </section>
 
-<!-- Fullscreen Viewer -->
-<div id="viewer" onclick="closeViewer()">
+<div id="viewer" onclick="this.style.display='none'">
 <img id="viewerImg">
 </div>
 
 <script>
-/* Time Counter */
-const startDate=new Date("2020-05-13");
+/* unlock */
+function unlock(){
+  if(document.getElementById("password").value==="love123"){
+    document.getElementById("lockScreen").style.display="none";
+  }else{
+    alert("Wrong password 💔");
+  }
+}
 
-setInterval(()=>{
-  const now=new Date();
-  const diff=now-startDate;
-  const days=Math.floor(diff/(1000*60*60*24));
-  document.getElementById("time").innerText=days+" days together 💖";
-},1000);
+/* typing */
+const text="Hehehe hiee pavaniii 😗";
+let i=0;
+function type(){
+  if(i<text.length){
+    document.getElementById("typing").innerHTML+=text.charAt(i);
+    i++;
+    setTimeout(type,80);
+  }
+}
+type();
 
-/* Image Viewer */
+/* viewer */
 function openViewer(img){
   document.getElementById("viewer").style.display="flex";
   document.getElementById("viewerImg").src=img.src;
 }
 
-function closeViewer(){
-  document.getElementById("viewer").style.display="none";
-}
-
-/* Floating Hearts */
+/* hearts */
 setInterval(()=>{
-  const heart=document.createElement("div");
-  heart.className="heart";
-  heart.innerHTML="💖";
-  heart.style.left=Math.random()*100+"%";
-  heart.style.fontSize=(Math.random()*20+15)+"px";
-  document.body.appendChild(heart);
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="💖";
+  h.style.left=Math.random()*100+"%";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),4000);
+},1000);
 
-  setTimeout(()=>heart.remove(),4000);
-},800);
-
-/* Gift */
-function showGift(){
-  alert("You are my favorite person 💖✨");
-}
+/* time */
+const start=new Date("2023-01-01");
+setInterval(()=>{
+  const d=Math.floor((new Date()-start)/(1000*60*60*24));
+  document.getElementById("time").innerText=d+" days 💖";
+},1000);
 </script>
 
 </body>
