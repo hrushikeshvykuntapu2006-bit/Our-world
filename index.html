@@ -183,12 +183,40 @@ section{
 </section>
 
 <!-- 💌 LETTER -->
+<sectionlet i = 0;
+let started = false;
+
+const msg = `hie pandu dhanaa,
+
+I don’t really know how to express myself perfectly, but I want you to understand what I feel.
+
+We’ve been together for so long 💖
+
+Take care always 🫂
+
+I love you ❤️`;
+
+function startLetter(){
+  if(started) return;
+  started = true;
+
+  document.getElementById("gift").style.display = "none";
+
+  const el = document.getElementById("text");
+  el.innerHTML = "";
+
+  function type(){
+    if(i < msg.length){
+      el.innerHTML += msg[i] === "\n" ? "<br>" : msg[i];
+      i++;
+      setTimeout(type, 35);
+    }
+  }
+
+  type();
+}
 <section>
-<h2>💌 A Letter</h2>
-<div class="card" onclick="startLetter()">
-<div id="gift">🎁 Tap to Open</div>
-<div id="text"></div>
-</div>
+  
 </section>
 
 <!-- 💞 DISTANCE -->
@@ -271,7 +299,7 @@ loadMusic();
 
 /* DISTANCE (example static logic) */
 document.getElementById("distanceText").innerText =
-"Distance is just a number, hearts are always close 💖";
+"Distance is just a number, hearts are always close but still its actually 612kms 💖";
 
 </script>
 
