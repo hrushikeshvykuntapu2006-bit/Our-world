@@ -116,6 +116,45 @@ section{
 @keyframes blink{
   50%{opacity:0;}
 }
+.musicGrid{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+  align-items:center;
+  padding:10px;
+}
+
+.musicCard{
+  position:relative;
+  width:90%;
+  max-width:400px;
+  border-radius:20px;
+  overflow:hidden;
+  background:rgba(255,255,255,0.2);
+  backdrop-filter:blur(20px);
+  box-shadow:0 10px 30px rgba(0,0,0,0.15);
+  transition:0.3s;
+}
+
+.musicCard:hover{
+  transform:scale(1.03);
+}
+
+/* glass shine effect */
+.glassOverlay{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.3),rgba(255,255,255,0.05));
+  pointer-events:none;
+}
+
+.musicCard iframe{
+  width:100%;
+  height:80px;
+  border:none;
+  position:relative;
+  z-index:2;
+}
 </style>
 </head>
 
@@ -166,11 +205,37 @@ section{
 </section>
 
 <section>
-<h2>🎵 Songs</h2>
-<div class="card">
-<iframe src="https://open.spotify.com/embed/track/3hB9lDLyAClYVZivMMl20N" width="100%" height="80"></iframe>
-<iframe src="https://open.spotify.com/embed/track/7FwYs4qSJCJi2Hd6ZV8Q3M" width="100%" height="80"></iframe>
+<h2>🎵 Our fav songs</h2>
+
+<div class="musicGrid">
+
+  <div class="musicCard">
+    <div class="glassOverlay"></div>
+    <iframe src="https://open.spotify.com/embed/track/3vCzLB6kS2lGcIpm1OOUsy"></iframe>
+  </div>
+
+  <div class="musicCard">
+    <div class="glassOverlay"></div>
+    <iframe src="https://open.spotify.com/embed/track/6lanRgr6wXibZr8KgzXxBl"></iframe>
+  </div>
+
+  <div class="musicCard">
+    <div class="glassOverlay"></div>
+    <iframe src="https://open.spotify.com/embed/track/3hB9lDLyAClYVZivMMl20N"></iframe>
+  </div>
+
+  <div class="musicCard">
+    <div class="glassOverlay"></div>
+    <iframe src="https://open.spotify.com/embed/track/7FwYs4qSJCJi2Hd6ZV8Q3M"></iframe>
+  </div>
+
+  <div class="musicCard">
+    <div class="glassOverlay"></div>
+    <iframe src="https://open.spotify.com/embed/track/4QNSMIeCknaH5m0EM2yNTI"></iframe>
+  </div>
+
 </div>
+</section>
 </section>
 
 <section>
