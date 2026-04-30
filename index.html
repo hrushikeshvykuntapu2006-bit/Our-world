@@ -54,12 +54,6 @@ body{
   cursor:pointer;
 }
 
-/* typing text */
-#typing{
-  font-size:18px;
-  margin-bottom:10px;
-}
-
 /* sections */
 section{
   padding:40px 20px;
@@ -127,6 +121,16 @@ section{
   0%{transform:translateY(0);opacity:1;}
   100%{transform:translateY(-600px);opacity:0;}
 }
+
+/* 💌 LETTER ADDITION ONLY */
+.cursor::after{
+  content:"|";
+  animation:blink 1s infinite;
+}
+
+@keyframes blink{
+  50%{opacity:0;}
+}
 </style>
 </head>
 
@@ -136,7 +140,7 @@ section{
 <div id="lockScreen">
   <div class="lockBox">
     <div id="typing"></div>
-    <input type="password" id="password" placeholder="Password ❤️">
+    <input type="password" id="password" placeholder="2209">
     <br>
     <button onclick="unlock()">Unlock</button>
   </div>
@@ -147,7 +151,7 @@ section{
 </section>
 
 <section>
-<h2>📸 Memories</h2>
+<h2> fav clicks</h2>
 <div class="gallery">
 <img src="photo01.jpg" onclick="openViewer(this)">
 <img src="photo02.jpg" onclick="openViewer(this)">
@@ -162,7 +166,7 @@ section{
 </section>
 
 <section>
-<h2>🎬 Movies</h2>
+<h2>comfort Movies</h2>
 <div class="movies">
 <img src="movie01.jpg" onclick="openViewer(this)">
 <img src="movie02.jpg" onclick="openViewer(this)">
@@ -177,7 +181,7 @@ section{
 </section>
 
 <section>
-<h2>🎵 Songs</h2>
+<h2>Songs that we love to listen</h2>
 <div class="music">
 
 <iframe src="https://open.spotify.com/embed/track/3hB9lDLyAClYVZivMMl20N" width="300" height="80"></iframe>
@@ -192,14 +196,24 @@ section{
 </section>
 
 <section>
-<h2>📝 Future Plans</h2>
+<h2> Future Plans</h2>
 <div class="card">
 Travel together ✈️<br>
 Late night drives <br>
 Watch one piece together 🎬<br>
 Grow together forever<br>
-Get married and more and more 💕
+Get married 💕
 </div>
+</section>
+
+<!-- 💌 LETTER ADDED HERE -->
+<section>
+<h2>💌 A Letter for Pavani</h2>
+
+<div class="card" onclick="startLetter()">
+  <div id="text"></div><span class="cursor"></span>
+</div>
+
 </section>
 
 <section>
@@ -212,6 +226,7 @@ Get married and more and more 💕
 </div>
 
 <script>
+
 /* unlock */
 function unlock(){
   if(document.getElementById("password").value==="pvniirishii"){
@@ -221,7 +236,7 @@ function unlock(){
   }
 }
 
-/* typing */
+/* typing intro */
 const text="Hehehe hie pavanii😗";
 let i=0;
 function type(){
@@ -250,11 +265,48 @@ setInterval(()=>{
 },1000);
 
 /* time */
-const start=new Date("2023-01-01");
+const start=new Date("2020-05-05");
 setInterval(()=>{
   const d=Math.floor((new Date()-start)/(1000*60*60*24));
   document.getElementById("time").innerText=d+" days 💖";
 },1000);
+
+/* 💌 LETTER (ADDED SAFE - NO CONFLICTS) */
+const message = `hie pandu dhanaa,
+
+uhmm listen i don’t really know how to express myself perfectly, but I want you to understand what I feel.
+
+We’ve been together for so many years, and even after all this time, we’re still here—holding on to each other,
+
+enduku ippudu idhi antha anty overthink chesi health padu cheskuntunv anpinchindhi inka manchiga anni cheppi
+
+chaala days indhi andke srle padkooo
+
+love uh soo much 🫂😗
+
+Always your redd cheema
+
+let letterIndex = 0;
+let started = false;
+
+function startLetter(){
+  if(started) return;
+  started = true;
+
+  const el = document.getElementById("text");
+  el.innerHTML = "";
+
+  function typeLetter(){
+    if(letterIndex < message.length){
+      el.innerHTML += message.charAt(letterIndex) === "\n" ? "<br>" : message.charAt(letterIndex);
+      letterIndex++;
+      setTimeout(typeLetter, 30);
+    }
+  }
+
+  typeLetter();
+}
+
 </script>
 
 </body>
