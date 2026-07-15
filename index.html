@@ -65,7 +65,7 @@ html { scroll-behavior: smooth; }
   box-shadow: var(--shadow);
 }
 
-/* 🌸 LOCKSCREEN WITH CUSTOM BACKDROP */
+/* 🌸 LOCKSCREEN */
 #lockScreen {
   position: fixed;
   inset: 0;
@@ -77,8 +77,6 @@ html { scroll-behavior: smooth; }
   z-index: 99999;
   padding: 20px;
 }
-
-/* Fallback background layer to protect text contrast */
 #lockScreen::before {
   content: '';
   position: absolute;
@@ -98,7 +96,7 @@ html { scroll-behavior: smooth; }
   border: 1px solid rgba(255, 255, 255, 0.25);
   text-align: center;
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
-  max-width: 360px;
+  max-width: 340px;
   width: 100%;
 }
 
@@ -135,7 +133,6 @@ html { scroll-behavior: smooth; }
   font-weight: 700;
   font-size: 16px;
   cursor: pointer;
-  box-shadow: 0 6px 20px rgba(255, 107, 129, 0.3);
 }
 
 /* 📖 FLIPBOOK INTRO SCREEN */
@@ -194,7 +191,7 @@ html { scroll-behavior: smooth; }
 .book-shell.open .cover-front { transform: rotateY(-145deg); }
 .book-shell.open .page-internal { transform: rotateY(-135deg); }
 
-/* 📱 HORIZONTAL SLIDER INTERFACE */
+/* 📱 MOBILE VIEWPORT CONSTRAINTS */
 #mainContent {
   display: none;
   height: 100vh;
@@ -230,7 +227,7 @@ header h1 {
 }
 
 h2 {
-  font-size: 19px;
+  font-size: 18px;
   font-weight: 700;
   text-align: left;
   margin: 25px 0 14px 5px;
@@ -273,8 +270,25 @@ h2 {
 .nav-item.active { color: var(--primary); }
 .nav-item.active span.icon { transform: scale(1.15); }
 
-/* HORIZONTAL GALLERIES */
-.gallery, .movies {
+/* 📸 5-PER-ROW GRID LAYOUT SYSTEM */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  padding: 10px 2px;
+}
+
+.gallery img {
+  width: 100%;
+  aspect-ratio: 1 / 1.4;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+}
+
+/* HORIZONTAL SCROLL CAROUSEL (For Movies Only) */
+.movies {
   display: flex;
   overflow-x: auto;
   gap: 14px;
@@ -282,16 +296,14 @@ h2 {
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
 }
-.gallery::-webkit-scrollbar, .movies::-webkit-scrollbar { display: none; }
-
-.gallery img, .movies img {
+.movies::-webkit-scrollbar { display: none; }
+.movies img {
   width: 145px;
   height: 215px;
   object-fit: cover;
   border-radius: 22px;
   flex: 0 0 auto;
   scroll-snap-align: start;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
 }
 
 /* MEDIA ATTACHMENTS */
@@ -303,29 +315,85 @@ h2 {
   display: flex; justify-content: center; align-items: center; gap: 8px;
   border: 1px solid var(--card-border);
 }
-/* CARTOON INTERACTIVE MAP */
+
+/* CARTOON INTERACTIVE MAP WITHOUT EMOJIS */
 .cartoon-map-container {
   width: 100%; height: 180px; border-radius: 24px;
-  background: linear-gradient(to bottom, #a8ff78, #78ffd6);
+  background: linear-gradient(to bottom, #b4ec51, #42e695);
   position: relative; overflow: hidden; border: 2px solid white;
 }
-body.night-mode .cartoon-map-container { background: linear-gradient(to bottom, #134e5e, #71b280); }
+body.night-mode .cartoon-map-container { background: linear-gradient(to bottom, #114357, #f29492); }
 .map-grid { position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,0.4) 1px, transparent 1px); background-size: 20px 20px; }
-.avatar-node { position: absolute; font-size: 38px; animation: mapBounce 2s ease-in-out infinite alternate; }
-.avatar-node p { font-size: 11px; font-weight: 800; background: white; color: #333; padding: 2px 6px; border-radius: 10px; margin-top: -5px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-@keyframes mapBounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
-.map-line { position: absolute; top: 55%; left: 25%; right: 25%; height: 4px; background: dashed #ff4d6d; border-top: 2px dashed white; z-index: 1; }
 
-/* COMPLIMENT JAR */
-.jar-container { text-align: center; padding: 10px 0; }
-.love-jar { font-size: 65px; cursor: pointer; display: inline-block; user-select: none; transition: transform 0.2s; }
-.love-jar.shake { animation: jarShake 0.5s ease-in-out; }
-@keyframes jarShake {
-  0%, 100% { transform: scale(1); }
-  20%, 60% { transform: scale(1.1) rotate(-12deg); }
-  40%, 80% { transform: scale(1.1) rotate(12deg); }
+.map-pin {
+  position: absolute;
+  width: 16px; height: 16px;
+  background: #ff4d6d;
+  border: 3px solid white;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(255,77,109,0.6);
 }
-.jar-bubble { margin-top: 15px; padding: 18px; border-radius: 20px; display: none; animation: fadeIn 0.4s ease forwards; font-weight: 600; line-height: 1.5; }
+.map-pin::after {
+  content: attr(data-name);
+  position: absolute;
+  top: -24px; left: 50%;
+  transform: translateX(-50%);
+  background: white; color: #333;
+  font-size: 10px; font-weight: 800;
+  padding: 2px 6px; border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.map-line { position: absolute; top: 50%; left: 20%; right: 20%; height: 2px; border-top: 3px dashed white; z-index: 1; }
+
+/* 🫙 PREMIUM ANIMATED COMPLIMENT JAR */
+.jar-container { text-align: center; padding: 10px 0; position: relative; }
+.jar-wrapper {
+  position: relative;
+  width: 100px; height: 120px;
+  margin: 0 auto;
+  cursor: pointer;
+}
+.jar-lid {
+  position: absolute;
+  top: 0; left: 15px; width: 70px; height: 18px;
+  background: linear-gradient(to right, #e0e0e0, #ffffff, #b5b4b5);
+  border-radius: 8px 8px 4px 4px;
+  z-index: 3;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.jar-body {
+  position: absolute;
+  bottom: 0; left: 0; width: 100%; height: 105px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-radius: 10px 10px 25px 24px;
+  z-index: 2;
+  display: flex; justify-content: center; align-items: center;
+  font-size: 30px;
+}
+.jar-wrapper.animate .jar-lid {
+  transform: translateY(-35px) scale(1.05);
+}
+.jar-wrapper.animate .jar-body {
+  animation: bodyPulse 0.3s ease-in-out;
+}
+@keyframes bodyPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(0.95); }
+}
+
+.jar-bubble { margin-top: 25px; padding: 18px; border-radius: 20px; display: none; animation: fadeIn 0.4s ease forwards; font-weight: 600; line-height: 1.5; text-align: center; }
+
+/* CONFETTI BLAST BURST EFFECT */
+.confetti-particle {
+  position: absolute; width: 8px; height: 8px;
+  border-radius: 50%; z-index: 5; pointer-events: none;
+  animation: explosionBlast 0.6s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+}
+@keyframes explosionBlast {
+  0% { transform: translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
+}
 
 /* CAM WORKSPACE */
 .cam-wrapper { display: flex; flex-direction: column; align-items: center; gap: 12px; }
@@ -362,6 +430,23 @@ body.night-mode .cartoon-map-container { background: linear-gradient(to bottom, 
 .note-card.pavani { border-left-color: #b76eff; }
 .note-header { display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; }
 .note-body { font-size: 14px; font-weight: 500; text-align: left; }
+
+/* 📝 WISHLIST NOTEPAD INTERFACE CSS */
+.wishlist-textarea {
+  width: 100%; height: 90px; padding: 12px;
+  border-radius: 14px; border: 1px solid var(--card-border);
+  background: rgba(255, 255, 255, 0.2); font-family: inherit;
+  font-size: 14px; resize: none; outline: none; color: var(--text-main);
+}
+.wishlist-item {
+  padding: 10px 14px; border-radius: 12px;
+  background: rgba(255,255,255,0.4); margin-top: 8px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 14px; font-weight: 500;
+}
+.wishlist-item button {
+  background: none; border: none; color: var(--primary); font-weight: 700; cursor: pointer;
+}
 
 /* TIMELINE CAPSULE */
 .timeline { display: flex; flex-direction: column; gap: 20px; position: relative; padding-left: 20px; }
@@ -454,7 +539,6 @@ body.night-mode .cartoon-map-container { background: linear-gradient(to bottom, 
           <button type="button" class="cam-btn" id="toggleCamBtn" onclick="toggleCameraDeviceStream()">Open Cam 🎥</button>
           <button type="button" class="cam-btn snap" id="snapBtn" onclick="takeInstantFlipbookSnapshot()" style="display:none;">Take Snap 📸</button>
         </div>
-        <p style="font-size: 12px; color: var(--text-muted); font-weight: 600; text-align: center; margin-top: 5px;">Snaps are automatically added directly into your gallery scroll above! Swipe to see them.</p>
       </div>
     </div>
 
@@ -485,20 +569,29 @@ body.night-mode .cartoon-map-container { background: linear-gradient(to bottom, 
     <div class="app-screen">
       <header><h1>Feelings Space</h1></header>
       
-      <h2>🎭 Rishi & Pavani's Feelings Selector</h2>
+      <h2>🎭 When We Miss Each Other</h2>
       <div class="card ios-blur">
+        <p style="font-size: 13px; font-weight:600; margin-bottom:12px; color: var(--text-muted); text-align:center;">Click whenever you're thinking of each other:</p>
         <div class="mood-select-row">
-          <button class="mood-btn active" onclick="registerFeelingTap('standard', this)">💖 Loving</button>
-          <button class="mood-btn" onclick="registerFeelingTap('miss', this)">🥺 Missing You</button>
-          <button class="mood-btn" onclick="registerFeelingTap('cozy', this)">✨ Cozy</button>
-          <button class="mood-btn" onclick="registerFeelingTap('cute', this)">💋 Kissing You</button>
+          <button class="mood-btn" onclick="incrementMissedCounter()">Log: I Miss You 🥺</button>
         </div>
+        <div id="missedCounterDisplay" style="text-align:center; font-size:16px; font-weight:700; color:var(--primary); margin-top:12px;">0 Missed Moments Shared</div>
       </div>
 
       <h2>🎁 The Love Jar</h2>
       <div class="card ios-blur jar-container">
-        <div class="love-jar" id="interactiveJar" onclick="drawComplimentJarMessage()">🫙</div>
+        <div class="jar-wrapper" id="loveJarContainer" onclick="drawComplimentJarMessage()">
+          <div class="jar-lid"></div>
+          <div class="jar-body">✨</div>
+        </div>
         <div class="jar-bubble ios-blur" id="jarBubble"></div>
+      </div>
+
+      <h2>📝 Pavani's Wishlist Notepad</h2>
+      <div class="card ios-blur">
+        <textarea id="wishlistInput" class="wishlist-textarea" placeholder="Write down things you want or dream of doing together..."></textarea>
+        <button class="send-note-btn" style="width:100%; margin-top:8px;" onclick="addWishlistItem()">Save to Wishlist ✨</button>
+        <div id="wishlistItemsBox" style="margin-top:12px;"></div>
       </div>
 
       <h2>💭 Leave a Message Board</h2>
@@ -519,13 +612,21 @@ body.night-mode .cartoon-map-container { background: linear-gradient(to bottom, 
       <header><h1>Current Status</h1></header>
       
       <h2>⏳ Time Together</h2>
-      <div class="card ios-blur" id="time" style="font-size: 22px; font-weight: 700; color: var(--primary); text-align: center; letter-spacing: -0.2px; line-height: 1.4;"></div>
+      <div class="card ios-blur" id="time" style="font-size: 20px; font-weight: 700; color: var(--primary); text-align: center; letter-spacing: -0.2px; line-height: 1.4;"></div>
 
-      <h2>💋 Kiss Bank Vault</h2>
+      <h2>💋 Interactive Action Vaults</h2>
       <div class="card ios-blur" style="text-align: center;">
-        <span style="font-size: 38px;">💋</span>
-        <h3 id="kissCountDisplay" style="font-size: 24px; color: var(--primary); margin-top: 5px;">0 Accumulated Kisses</h3>
-        <p style="font-size: 12px; color: var(--text-muted); font-weight: 600; margin-top: 4px;">Rishi will pay these back next time you meet! 😉</p>
+        <div style="display:flex; justify-content:space-around; margin-bottom:15px;">
+          <div>
+            <span style="font-size:32px; cursor:pointer;" onclick="triggerVaultAction('kiss')">💋</span>
+            <h4 id="kissCountDisplay" style="color:var(--primary); font-size:16px; margin-top:5px;">0 Kisses</h4>
+          </div>
+          <div>
+            <span style="font-size:32px; cursor:pointer;" onclick="triggerVaultAction('hug')">🫂</span>
+            <h4 id="hugCountDisplay" style="color:#b76eff; font-size:16px; margin-top:5px;">0 Hugs</h4>
+          </div>
+        </div>
+        <p style="font-size: 11px; color: var(--text-muted); font-weight: 600;">Tap the vault icons anytime you want a virtual embrace!</p>
       </div>
 
       <h2>📍 Distance Map Tracker</h2>
@@ -533,8 +634,8 @@ body.night-mode .cartoon-map-container { background: linear-gradient(to bottom, 
         <div class="cartoon-map-container">
           <div class="map-grid"></div>
           <div class="map-line"></div>
-          <div class="avatar-node" style="top: 40%; left: 15%;">👨<p>Rishi</p></div>
-          <div class="avatar-node" style="top: 35%; right: 15%;">👩‍🦰<p>Pavani</p></div>
+          <div class="map-pin" data-name="Rishi" style="top: 45%; left: 20%;"></div>
+          <div class="map-pin" data-name="Pavani" style="top: 40%; right: 20%; background:#b76eff;"></div>
         </div>
         <div style="display:flex; justify-content: space-between; font-weight:700; margin-top:12px; font-size:15px; padding:0 5px;">
           <span id="liveDistance">612.0 kms 💖</span>
@@ -564,7 +665,7 @@ body.night-mode .cartoon-map-container { background: linear-gradient(to bottom, 
           <div class="timeline-node"><div class="timeline-marker"></div><div class="timeline-title">May 9, 2020 💕</div><div class="timeline-desc">The magic day our official journey began.</div></div>
           <div class="timeline-node"><div class="timeline-marker"></div><div class="timeline-title">Growing Stronger ❤️</div><div class="timeline-desc">Fell completely into permanent comfort together.</div></div>
           <div class="timeline-node"><div class="timeline-marker"></div><div class="timeline-title">Long Distance Victory ✈️</div><div class="timeline-desc">Proving that space means absolutely nothing next to true love.</div></div>
-          <div class="timeline-node"><div class="timeline-marker"></div><div class="timeline-title">Our Forever Blueprint 💍</div><div class="timeline-desc">Growing, planning future road trips, and building our dream home.</div></div>
+          <div class="timeline-node"><div class="timeline-marker"></div><div class="timeline-title">Our Forever Blueprint 💍</div><div class="timeline-desc">Growing, fixing what we can, and choosing us every day.</div></div>
         </div>
       </div>
     </div>
@@ -603,15 +704,23 @@ let currentAuthor = "Rishi";
 let currentParticleType = "standard";
 let localStream = null;
 
-/* Fixed direct safe array mapping variables */
-const customTracksArray = ["3vCzLB6kS2lGcIpm1OOUsy", "6lanRgr6wXibZr8KgzXxBl", "3hB9lDLyAClYVZivMMl20N", "7FwYs4qSJCJi2Hd6ZV8Q3M", "4QNSMIeCknaH5m0EM2yNTI"];
+const jarNotes = [
+  "Rishi is always proud of you. Always. 💖",
+  "Rishi loves you more than you can possibly compute! ❤️",
+  "Reminder: You have the prettiest smile in the entire universe. 🥰",
+  "No matter how many kilometers separate us, you're always right here in my heart. 📍",
+  "Sending you a giant, tight virtual hug right now! 🫂",
+  "Thank you for being my absolute peace and favorite person. 💖",
+  "I'm probably thinking about you right this exact second. 💭",
+  "You're my forever and always, Pavani! 👑"
+];
 
-/* 🔓 UNLOCK INTERFACE */
+/* 🔓 UNLOCK SYSTEM */
+// Formats greeting text cleanly with no extra character suffixes
 function unlockAppToFlipbook() {
   const inputPass = document.getElementById("password").value;
   if(inputPass === "22010503") {
     document.getElementById("lockScreen").style.display = "none";
-    
     const introShell = document.getElementById("flipbookIntroContainer");
     const loveBook = document.getElementById("loveBook");
     introShell.style.display = "flex";
@@ -631,7 +740,9 @@ function unlockAppToFlipbook() {
         calculateRealDistance();
         renderNotes();
         loadSavedSnapshots(); 
-        updateKissCountDisplay();
+        updateActionVaultDisplays();
+        renderWishlist();
+        updateMissedDisplay();
       }, 500);
     }, 2200);
   } else {
@@ -643,7 +754,7 @@ document.getElementById("password").addEventListener("keydown", (e) => {
   if (e.key === "Enter") unlockAppToFlipbook();
 });
 
-/* 🗂️ DECK TRACK ROUTER */
+/* 🗂️ TAB SLIDER MATRIX ENGINE */
 function slideToIndexScreen(pageIndex, navElement) {
   const track = document.getElementById("appSliderTrack");
   track.style.transform = `translateX(-${pageIndex * 100}vw)`;
@@ -656,7 +767,7 @@ function slideToIndexScreen(pageIndex, navElement) {
   }
 }
 
-/* 🌅 ADAPTIVE GRADIETS STATES */
+/* 🌅 ADAPTIVE THEME STATES */
 function evaluateAdaptiveTimeSky() {
   const localHour = new Date().getHours();
   if (localHour >= 18 || localHour < 6) {
@@ -665,24 +776,77 @@ function evaluateAdaptiveTimeSky() {
     document.body.classList.remove("night-mode");
   }
 }
-/* 🎭 FEELINGS COUNTER ENGINE */
-function registerFeelingTap(vibeType, btnElement) {
-  currentParticleType = vibeType;
-  document.querySelectorAll(".mood-btn").forEach(btn => btn.classList.remove("active"));
-  btnElement.classList.add("active");
 
-  let bank = parseInt(localStorage.getItem("kiss_vault_bank") || "0");
-  bank += 1;
-  localStorage.setItem("kiss_vault_bank", bank);
-  updateKissCountDisplay();
+/* 💋 HUG & KISS ACTIONS CORE CONTAINER */
+function triggerVaultAction(type) {
+  let count = parseInt(localStorage.getItem(`vault_${type}_bank`) || "0");
+  count += 1;
+  localStorage.setItem(`vault_${type}_bank`, count);
+  updateActionVaultDisplays();
+  
+  currentParticleType = (type === 'kiss') ? 'cute' : 'cozy';
+  triggerConfettiBlastEffect();
 }
 
-function updateKissCountDisplay() {
-  const count = localStorage.getItem("kiss_vault_bank") || "0";
-  document.getElementById("kissCountDisplay").innerText = `${count} Accumulated Kisses`;
+function updateActionVaultDisplays() {
+  const kisses = localStorage.getItem("vault_kiss_bank") || "0";
+  const hugs = localStorage.getItem("vault_hug_bank") || "0";
+  document.getElementById("kissCountDisplay").innerText = `${kisses} Accumulated Kisses`;
+  document.getElementById("hugCountDisplay").innerText = `${hugs} Accumulated Hugs`;
 }
 
-/* 📸 ATTACH GALLERY FILES */
+/* 🥺 MISSED CONTEXT COMPONENT */
+function incrementMissedCounter() {
+  let count = parseInt(localStorage.getItem("mutual_missed_moments") || "0");
+  count += 1;
+  localStorage.setItem("mutual_missed_moments", count);
+  currentParticleType = 'miss';
+  updateMissedDisplay();
+}
+
+// Rewrites missing moments tracking label strings cleanly
+function updateMissedDisplay() {
+  const count = localStorage.getItem("mutual_missed_moments") || "0";
+  document.getElementById("missedCounterDisplay").innerText = `${count} Missed Moments Shared`;
+}
+
+/* 📝 WISHLIST CORE CONTAINER NOTEPAD ENGINE */
+function addWishlistItem() {
+  const textarea = document.getElementById("wishlistInput");
+  const text = textarea.value.trim();
+  if(!text) return;
+
+  let items = JSON.parse(localStorage.getItem("pavani_wishlist_data") || "[]");
+  items.push({ id: Date.now(), text: text });
+  localStorage.setItem("pavani_wishlist_data", JSON.stringify(items));
+  textarea.value = "";
+  renderWishlist();
+}
+
+// Purges active selection tracking node keys out of state lists
+function deleteWishlistItem(id) {
+  let items = JSON.parse(localStorage.getItem("pavani_wishlist_data") || "[]");
+  items = items.filter(item => item.id !== id);
+  localStorage.setItem("pavani_wishlist_data", JSON.stringify(items));
+  renderWishlist();
+}
+
+function renderWishlist() {
+  const target = document.getElementById("wishlistItemsBox");
+  let items = JSON.parse(localStorage.getItem("pavani_wishlist_data") || "[]");
+  if(items.length === 0) {
+    target.innerHTML = `<p style="font-size:12px; font-style:italic; color:var(--text-muted); text-align:center;">Your wishlist is empty. Add your dreams above! ✨</p>`;
+    return;
+  }
+  target.innerHTML = items.map(item => `
+    <div class="wishlist-item">
+      <span>✨ ${item.text}</span>
+      <button onclick="deleteWishlistItem(${item.id})">✕</button>
+    </div>
+  `).join('');
+}
+
+/* 📸 LOCAL MEDIA ATTACHMENTS SYSTEM */
 function triggerNativePhotoUpload() {
   document.getElementById("nativePhotoPicker").click();
 }
@@ -691,9 +855,8 @@ function handleNativePhotoUpload(inputNode) {
   if(inputNode.files && inputNode.files[0]) {
     const reader = new FileReader();
     reader.onload = function(e) {
-      const base64Data = e.target.result;
       let librarySnapshots = JSON.parse(localStorage.getItem("our_uploaded_photos") || "[]");
-      librarySnapshots.unshift(base64Data);
+      librarySnapshots.unshift(e.target.result);
       localStorage.setItem("our_uploaded_photos", JSON.stringify(librarySnapshots));
       renderUploadedPhotos();
     }
@@ -780,17 +943,40 @@ function loadSavedSnapshots() {
 
 /* 🍪 COMPLIMENT JAR SHAKE ANIMATION ENGINE */
 function drawComplimentJarMessage() {
-  const jar = document.getElementById("interactiveJar");
+  const wrapper = document.getElementById("loveJarContainer");
   const bubble = document.getElementById("jarBubble");
   
-  jar.classList.add("shake");
+  wrapper.classList.add("animate");
   bubble.style.display = "none";
-  
+  triggerConfettiBlastEffect();
+
   setTimeout(() => {
-    jar.classList.remove("shake");
+    wrapper.classList.remove("animate");
     bubble.innerText = jarNotes[Math.floor(Math.random() * jarNotes.length)];
     bubble.style.display = "block";
-  }, 500);
+  }, 450);
+}
+
+function triggerConfettiBlastEffect() {
+  const jar = document.getElementById("loveJarContainer");
+  const rect = jar.getBoundingClientRect();
+  const particleCount = 20;
+
+  for(let i=0; i<particleCount; i++) {
+    const particle = document.createElement("div");
+    particle.className = "confetti-particle";
+    particle.style.background = `hsl(${Math.random() * 360}, 100%, 70%)`;
+    particle.style.left = (rect.left + rect.width / 2) + "px";
+    particle.style.top = (rect.top + rect.height / 3) + "px";
+
+    const angle = Math.random() * Math.PI * 2;
+    const velocity = Math.random() * 90 + 40;
+    particle.style.setProperty('--x', Math.cos(angle) * velocity + "px");
+    particle.style.setProperty('--y', Math.sin(angle) * velocity + "px");
+
+    document.body.appendChild(particle);
+    setTimeout(() => particle.remove(), 600);
+  }
 }
 
 /* 🎵 TRACKS GENERATOR COMPONENT */
@@ -812,7 +998,14 @@ function loadMusicWidgets(){
   const grid = document.getElementById("musicGrid");
   grid.innerHTML = ""; 
   let storedTracks = JSON.parse(localStorage.getItem("our_saved_track_ids") || "[]");
-  let integratedList = [...customTracksArray, ...storedTracks];
+  let integratedList = [
+    "3vCzLB6kS2lGcIpm1OOUsy", 
+    "6lanRgr6wXibZr8KgzXxBl", 
+    "3hB9lDLyAClYVZivMMl20N", 
+    "7FwYs4qSJCJi2Hd6ZV8Q3M", 
+    "4QNSMIeCknaH5m0EM2yNTI",
+    ...storedTracks
+  ];
 
   integratedList.forEach(id => {
     let card = document.createElement("div");
@@ -913,7 +1106,7 @@ function runLiveCounter() {
 /* 💌 TYPEWRITER TEXT ENGINE */
 let charIndex = 0;
 let letterStarted = false;
-const msg = `hie Pavani,\n\nI don’t really know how to express myself perfectly, but I want you to understand what I feel.\n\nWe’ve been together for so long 💖\n\nTake care always 🫂\n\nI love you ❤️`;
+const msg = `Pavani,\n\nidk how to say all this properly but I just wanted to tell you… you still mean a lot to me. Like really a lot.\n\nWe’ve been through some tough things… misunderstandings, pain, and those moments where it felt like everything was falling apart. But even after all that, my feelings didn’t change. It actually made me realize how much you matter to me.\n\nI still think abt you, still miss you, and honestly it doesn’t feel right without you. Sometimes I randomly remember those small moments… like when we used to talk for hours and laugh at the most random things. Those moments meant everything to me.\n\nI’m not saying everything will be perfect, but I’m ready to try… for us. I wanna understand you better, fix what we can, and not repeat the same mistakes.\n\nI don’t wanna lose you. I want us again… but stronger this time, after everything we’ve faced.\n\nJust wanted you to know how I truly feel ❤️\nI love you so much 🫂`.trim();
 
 function startTypewriterLetterStream(){
   if (letterStarted) return;
