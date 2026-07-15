@@ -13,6 +13,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 :root {
   --primary: #ff4d6d;
@@ -45,7 +47,6 @@ body {
 
 html { scroll-behavior: smooth; }
 
-/* Authentic iOS Frosted Glass UI Styling */
 .ios-blur {
   backdrop-filter: blur(40px) saturate(220%);
   -webkit-backdrop-filter: blur(40px) saturate(220%);
@@ -132,7 +133,7 @@ html { scroll-behavior: smooth; }
   background: #ff4d6d;
 }
 
-/* 📱 HORIZONTAL APP LAYOUT */
+/* 📱 APP FRAMEWORK */
 #mainContent {
   display: none;
   height: 100vh;
@@ -183,11 +184,11 @@ h2 {
   margin-bottom: 20px;
 }
 
-/* 📖 FLUID INTEGRATED BOOK ELEMENT */
+/* 📖 BOOK COMPONENT */
 .smooth-book {
   width: 100%;
   max-width: 340px;
-  height: 420px;
+  height: 440px;
   margin: 0 auto;
   position: relative;
   perspective: 1500px;
@@ -222,6 +223,7 @@ h2 {
   padding: 24px;
   text-align: center;
   z-index: 1;
+  overflow-y: auto;
 }
 
 .smooth-book.opened .book-cover-side {
@@ -294,7 +296,7 @@ h2 {
   scroll-snap-align: start;
 }
 
-/* UPLOADER ACTION BUTTONS */
+/* ACTION BUTTONS */
 .upload-btn-wrapper { margin-top: 10px; width: 100%; }
 .ios-action-btn {
   width: 100%; padding: 14px; border: none; border-radius: 18px;
@@ -304,7 +306,7 @@ h2 {
   border: 1px solid var(--card-border);
 }
 
-/* CARTOON MINIMALIST POSITION MAP */
+/* MAP COMPONENT */
 .cartoon-map-container {
   width: 100%; height: 180px; border-radius: 24px;
   background: linear-gradient(to bottom, #d4fc79, #96e6a1);
@@ -378,7 +380,7 @@ h2 {
 .cursor.active::after { content: "|"; font-weight: 700; color: var(--primary); animation: blink 1s steps(2, start) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 
-/* BULLETIN MESSAGE CHANNELS */
+/* BULLETIN MESSAGES */
 .board-input-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
 .author-select, .mood-select-row { display: flex; gap: 10px; flex-wrap: wrap; }
 .author-btn, .mood-btn { flex: 1; padding: 12px; border: 1px solid var(--card-border); background: rgba(255, 255, 255, 0.3); border-radius: 14px; font-weight: 700; cursor: pointer; color: var(--text-main); font-size: 13px; min-width: 100px; }
@@ -391,7 +393,7 @@ h2 {
 .note-header { display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; }
 .note-body { font-size: 14px; font-weight: 500; text-align: left; }
 
-/* WISHLIST SHEET CONFIG */
+/* WISHLIST CONFIG */
 .wishlist-textarea {
   width: 100%; height: 90px; padding: 12px;
   border-radius: 14px; border: 1px solid var(--card-border);
@@ -456,11 +458,15 @@ h2 {
         
         <div class="book-inner-side card ios-blur">
           <span style="font-size: 40px;">✨</span>
-          <h2 style="text-align: center; margin: 12px 0; color: var(--primary); font-size: 22px; width: 100%;">Hey Pavani...</h2>
-          <p style="line-height: 1.7; font-weight: 500; font-size: 15px; color: var(--text-muted);">
-            Welcome to our safe space. This app holds our times, our songs, our miles, and our promises.
+          <h2 style="text-align: center; margin: 12px 0; color: var(--primary); font-size: 22px; width: 100%;">Hiee Pavani…</h2>
+          <p style="line-height: 1.6; font-weight: 500; font-size: 14px; color: var(--text-muted); text-align: center;">
+            I made this little space for us… so even when we’re far apart, we can still feel close — like we’re right there with each other.
             <br><br>
-            Slide across the bottom tabs to explore our world! ❤️
+            This is our little home, filled with our memories, our smiles, our moments, and everything that makes us… us.
+            <br><br>
+            Through the good days and the tough ones, this place will always remind us of what we share. ❤️
+            <br><br>
+            Take your time, explore it all… and whenever you miss me, just come here. Because no matter the distance, we’ll always have our space. 🫶
           </p>
         </div>
       </div>
@@ -471,11 +477,10 @@ h2 {
       
       <h2>📸 Fav Clicks</h2>
       <div class="gallery" id="photoGallery">
-        <!-- Placeholder structures fallback or stored library snapshots populate here -->
-      </div>
+        </div>
 
       <div class="upload-btn-wrapper">
-        <button class="ios-action-btn ios-blur" onclick="triggerNativePhotoUpload()">➕ Upload Photo to Gallery</button>
+        <button class="ios-action-btn ios-blur" onclick="triggerNativePhotoUpload()">➕ Upload Photo to Shared Gallery</button>
         <input type="file" id="nativePhotoPicker" accept="image/*" style="display:none;" onchange="handleNativePhotoUpload(this)">
       </div>
 
@@ -493,9 +498,14 @@ h2 {
       <header><h1>Entertainment</h1></header>
       
       <h2>🎬 Comfort Movies</h2>
-      <div class="movies">
-        <!-- Add links to movie images here once hosted, e.g. <img src="movie1.jpg" /> -->
-        <p style="font-size: 12px; font-style: italic; color: var(--text-muted); padding: 10px;">No movies loaded. Tap the button to link media!</p>
+      <div class="movies" id="movieCarousel">
+        </div>
+
+      <div class="card ios-blur" style="margin-top: 10px;">
+        <p style="font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--text-muted);">Add a Comfort Movie together:</p>
+        <input type="text" id="movieTitleInput" class="message-input" placeholder="Movie Title..." style="margin-bottom: 8px; background: rgba(255,255,255,0.5);">
+        <input type="text" id="moviePosterInput" class="message-input" placeholder="Paste Poster Image URL..." style="margin-bottom: 8px; background: rgba(255,255,255,0.5);">
+        <button class="send-note-btn" style="width: 100%;" onclick="addNewSharedMovie()">Add to Watchlist 🍿</button>
       </div>
 
       <h2>🎵 Songs We Love</h2>
@@ -637,6 +647,12 @@ h2 {
 </div>
 
 <script>
+// ⚠️ REPLACE WITH YOUR ACTUAL SUPABASE KEYS ⚠️
+const SUPABASE_URL = "https://YOUR_PROJECT_ID.supabase.co";
+const SUPABASE_KEY = "YOUR_ANON_PUBLIC_KEY";
+
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
 let currentAuthor = "Rishi";
 let currentParticleType = "standard";
 let localStream = null;
@@ -656,35 +672,30 @@ const jarNotes = [
 /* 🔓 UNLOCK SYSTEM WITH SMOOTH IN-PLACE PAGE FLIP */
 function unlockAppWithFluidTransition() {
   const inputPass = document.getElementById("password").value;
-  // Using the original password hardcoded in your app sequence
   if(inputPass === "22010503") {
-    // Phase 1: Smoothly fade lockscreen away
     const lock = document.getElementById("lockScreen");
     lock.style.opacity = "0";
     
     setTimeout(() => {
       lock.style.display = "none";
-      
-      // Phase 2: Fade in the app frame
       const mainContent = document.getElementById("mainContent");
       mainContent.style.display = "block";
       
       setTimeout(() => {
         mainContent.style.opacity = "1";
         
-        // Phase 3: Execute the elegant in-page cover swing
         setTimeout(() => {
           document.getElementById("fluidBookElement").classList.add("opened");
         }, 400);
 
-        // Core background engine processes
         evaluateAdaptiveTimeSky();
         runLiveCounter();
         loadMusicWidgets();
         startHeartRain();
         calculateRealDistance();
         renderNotes();
-        loadSavedSnapshots(); 
+        fetchSharedPhotos(); 
+        fetchSharedMovies(); 
         updateActionVaultDisplays();
         renderWishlist();
         updateMissedDisplay();
@@ -708,7 +719,6 @@ function slideToIndexScreen(pageIndex, navElement) {
   }
 }
 
-/* 🌅 TIMELINE ADAPTIVE OVERRIDES REMOVED: PERMANENT PASTEL MODE FORCED */
 function evaluateAdaptiveTimeSky() {
   document.body.classList.remove("night-mode");
 }
@@ -780,38 +790,55 @@ function renderWishlist() {
   `).join('');
 }
 
-/* 📸 FILE UPLOADER ENGINE */
+/* 📸 SUPABASE SHARED PHOTO ENGINE */
 function triggerNativePhotoUpload() {
   document.getElementById("nativePhotoPicker").click();
 }
 
-function handleNativePhotoUpload(inputNode) {
+async function handleNativePhotoUpload(inputNode) {
   if(inputNode.files && inputNode.files[0]) {
     const reader = new FileReader();
-    reader.onload = function(e) {
-      let librarySnapshots = JSON.parse(localStorage.getItem("our_uploaded_photos") || "[]");
-      librarySnapshots.unshift(e.target.result);
-      localStorage.setItem("our_uploaded_photos", JSON.stringify(librarySnapshots));
-      renderUploadedPhotos();
+    reader.onload = async function(e) {
+      const base64Image = e.target.result;
+      
+      const { error } = await supabase
+        .from('photos')
+        .insert([{ url: base64Image }]);
+        
+      if (!error) {
+        fetchSharedPhotos();
+      } else {
+        alert("Upload failed 💔 Make sure Supabase keys are configured!");
+      }
     }
     reader.readAsDataURL(inputNode.files[0]);
   }
 }
 
-function renderUploadedPhotos() {
+async function fetchSharedPhotos() {
   const gallery = document.getElementById("photoGallery");
-  let list = JSON.parse(localStorage.getItem("our_uploaded_photos") || "[]");
-  document.querySelectorAll(".user-attached-photo").forEach(el => el.remove());
-  list.forEach(src => {
-    let img = document.createElement("img");
-    img.src = src;
-    img.className = "user-attached-photo";
-    img.onclick = function() { openLightbox(this); };
-    gallery.insertBefore(img, gallery.firstChild);
-  });
+  
+  const { data, error } = await supabase
+    .from('photos')
+    .select('url')
+    .order('id', { ascending: false });
+
+  if (!error && data) {
+    gallery.innerHTML = ""; 
+    if (data.length === 0) {
+      gallery.innerHTML = `<p style="font-size:12px; grid-column: span 5; font-style:italic; color:var(--text-muted); text-align:center; padding: 20px 0;">No shared photos. Tap upload to add your first click! 📸</p>`;
+      return;
+    }
+    data.forEach(item => {
+      let img = document.createElement("img");
+      img.src = item.url;
+      img.onclick = function() { openLightbox(this); };
+      gallery.appendChild(img);
+    });
+  }
 }
 
-/* 📸 CAMERA CORE PROCESSORS */
+/* 📸 CAMERA MODULES */
 async function toggleCameraDeviceStream() {
   const video = document.getElementById("camFeed");
   const toggleBtn = document.getElementById("toggleCamBtn");
@@ -822,7 +849,7 @@ async function toggleCameraDeviceStream() {
     localStream = null;
     video.style.display = "none";
     snapBtn.style.display = "none";
-    toggleBtn.innerText = "Open Cam 🎀";
+    toggleBtn.innerText = "Open Cam 🎥";
   } else {
     try {
       localStream = await navigator.mediaDevices.getUserMedia({
@@ -834,12 +861,12 @@ async function toggleCameraDeviceStream() {
       snapBtn.style.display = "block";
       toggleBtn.innerText = "Close Cam ❌";
     } catch (err) {
-      alert("Camera access denied or unsupported on this protocol. 💔");
+      alert("Camera access denied or unsupported on this device. 💔");
     }
   }
 }
 
-function takeInstantFlipbookSnapshot() {
+async function takeInstantFlipbookSnapshot() {
   const video = document.getElementById("camFeed");
   if (!localStream) return;
 
@@ -853,26 +880,62 @@ function takeInstantFlipbookSnapshot() {
   ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
   const base64Image = canvas.toDataURL("image/jpeg");
-  let snapshots = JSON.parse(localStorage.getItem("our_world_snapshots") || "[]");
-  snapshots.unshift(base64Image);
-  localStorage.setItem("our_world_snapshots", JSON.stringify(snapshots));
 
-  loadSavedSnapshots();
-  toggleCameraDeviceStream(); 
+  const { error } = await supabase
+    .from('photos')
+    .insert([{ url: base64Image }]);
+
+  if (!error) {
+    fetchSharedPhotos();
+    toggleCameraDeviceStream();
+  } else {
+    alert("Snapshot failed to sync 💔");
+  }
 }
 
-function loadSavedSnapshots() {
-  const gallery = document.getElementById("photoGallery");
-  let snapshots = JSON.parse(localStorage.getItem("our_world_snapshots") || "[]");
-  document.querySelectorAll(".live-snapshot").forEach(el => el.remove());
-  snapshots.forEach(imgData => {
-    let img = document.createElement("img");
-    img.src = imgData;
-    img.className = "live-snapshot";
-    img.onclick = function() { openLightbox(this); };
-    gallery.insertBefore(img, gallery.firstChild);
-  });
-  renderUploadedPhotos(); 
+/* 🍿 SUPABASE SHARED MOVIES ENGINE */
+async function addNewSharedMovie() {
+  const titleInput = document.getElementById("movieTitleInput");
+  const posterInput = document.getElementById("moviePosterInput");
+  
+  const title = titleInput.value.trim();
+  const posterUrl = posterInput.value.trim();
+  
+  if (!title || !posterUrl) {
+    alert("Please fill out both the title and poster URL! 🎬");
+    return;
+  }
+
+  const { error } = await supabase
+    .from('movies')
+    .insert([{ title: title, poster_url: posterUrl }]);
+
+  if (!error) {
+    titleInput.value = "";
+    posterInput.value = "";
+    fetchSharedMovies(); 
+  } else {
+    alert("Failed to add movie 💔");
+  }
+}
+
+async function fetchSharedMovies() {
+  const carousel = document.getElementById("movieCarousel");
+  
+  const { data, error } = await supabase
+    .from('movies')
+    .select('title, poster_url')
+    .order('id', { ascending: false });
+
+  if (!error && data) {
+    if (data.length === 0) {
+      carousel.innerHTML = `<p style="font-size: 12px; font-style: italic; color: var(--text-muted); padding: 10px;">Your movie list is empty. Add your favorites below! 🍿</p>`;
+      return;
+    }
+    carousel.innerHTML = data.map(movie => `
+      <img src="${movie.poster_url}" alt="${movie.title}" title="${movie.title}" onclick="openLightbox(this)">
+    `).join('');
+  }
 }
 
 /* 🫙 TRADITIONAL RANDOM COMPLIMENT JAR */
@@ -920,7 +983,7 @@ function triggerConfettiBlastEffect() {
   }
 }
 
-/* 🎵 MUSIC ROUTERS FIXED DIRECT EMBEDS */
+/* 🎵 SPOTIFY CONTROLLERS */
 const customTracksArray = ["3vCzLB6kS2lGcIpm1OOUsy", "6lanRgr6wXibZr8KgzXxBl", "3hB9lDLyAClYVZivMMl20N", "7FwYs4qSJCJi2Hd6ZV8Q3M", "4QNSMIeCknaH5m0EM2yNTI"];
 
 function promptCustomSpotifyTrackId() {
@@ -996,7 +1059,7 @@ function renderNotes() {
   `).join('');
 }
 
-/* 📍 REAL HA VERSINE GPS COORDINATES TRAILER */
+/* 📍 VERSINE GPS METRICS TRACER */
 const MY_LATITUDE = 17.3850;  
 const MY_LONGITUDE = 78.4867; 
 
@@ -1022,7 +1085,7 @@ function calculateRealDistance() {
 
 function deg2rad(deg) { return deg * (Math.PI/180); }
 
-/* ⏳ REAL TIME INCREMENTAL DURATIONS */
+/* ⏳ TIME METRIC PIPELINES */
 function runLiveCounter() {
   const start = new Date("2020-05-09T00:00:00");
   const timeContainer = document.getElementById("time");
@@ -1039,7 +1102,7 @@ function runLiveCounter() {
   setInterval(updateCounter, 1000); 
 }
 
-/* 💌 TYPEWRITER DECK CONFIGURATIONS */
+/* 💌 TYPEWRITER COMPONENT */
 let charIndex = 0;
 let letterStarted = false;
 const msg = `Pavaniii,\n\nidk how to say all this properly but I just wanted to tell you… you mean a lot to me. Like really a lot.\n\nWe’ve been through some tough things… misunderstandings, pain, and those moments where it felt heavy for both of us. But even then, my feelings for you never changed. If anything, it made me realize how much you matter in my life.\n\nI still think abt you all the time, still miss you even when we’re not talking, and honestly my day just feels better when it’s you.\n\nSometimes I remember those small moments… like when we used to talk for hours and laugh at the most random things. Those moments weren’t just time pass for me… they meant everything.\n\nI know we’re not perfect, but I’m willing to try more, understand you better, and handle things in a way that doesn’t hurt us again.\n\nI just want you to know I’m here… for you, for us, and for everything we’re building together ❤️\nI love you soo much 🫂`.trim();
@@ -1065,7 +1128,6 @@ function startTypewriterLetterStream(){
   setTimeout(type, 650); 
 }
 
-// Service worker loader
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     const swBlob = new Blob([`
@@ -1076,7 +1138,7 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-/* 💖 ENVIRONMENT PARTICLE RAIN EXECUTORS */
+/* 💖 HEART ATMOSPHERE PIPELINES */
 function startHeartRain() {
   setInterval(() => {
     const heart = document.createElement("div");
