@@ -62,7 +62,8 @@ html { scroll-behavior: smooth; }
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #ffcad4 0%, #ffe5ec 100%);
+  /* Updated with permanent aesthetic pastel pink wallpaper link */
+  background: url('https://w0.peakpx.com/wallpaper/725/587/HD-wallpaper-pink-aesthetic-2-glitch-lock-screen-macaroon-pink-aesthetic.jpg') no-repeat center center;
   background-size: cover;
   z-index: 99999;
   padding: 20px;
@@ -188,7 +189,7 @@ h2 {
 .smooth-book {
   width: 100%;
   max-width: 340px;
-  height: 440px;
+  height: 450px;
   margin: 0 auto;
   position: relative;
   perspective: 1500px;
@@ -260,7 +261,7 @@ h2 {
 .nav-item.active { color: var(--primary); }
 .nav-item.active span.icon { transform: scale(1.15); }
 
-/* 📸 5-PER-ROW GRID GALLERY */
+/* 📸 GALLERY GRID */
 .gallery {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -647,7 +648,7 @@ h2 {
 </div>
 
 <script>
-// ⚠️ REPLACE WITH YOUR ACTUAL SUPABASE KEYS ⚠️
+// ⚠️ CONFIGURE YOUR PROJECT DATABASE ACCESS KEYS BELOW ⚠️
 const SUPABASE_URL = "https://YOUR_PROJECT_ID.supabase.co";
 const SUPABASE_KEY = "YOUR_ANON_PUBLIC_KEY";
 
@@ -669,7 +670,7 @@ const jarNotes = [
   "You're my forever and always, Pavani! 👑"
 ];
 
-/* 🔓 UNLOCK SYSTEM WITH SMOOTH IN-PLACE PAGE FLIP */
+/* 🔓 UNLOCK SYSTEM WITH SMOOTH LAYER DECK ROUTER */
 function unlockAppWithFluidTransition() {
   const inputPass = document.getElementById("password").value;
   if(inputPass === "22010503") {
@@ -706,7 +707,7 @@ function unlockAppWithFluidTransition() {
   }
 }
 
-/* 🗂️ TAB SLIDER DECK CONTROLLERS */
+/* 🗂️ DECK SLIDER DEPLOYERS */
 function slideToIndexScreen(pageIndex, navElement) {
   const track = document.getElementById("appSliderTrack");
   track.style.transform = `translateX(-${pageIndex * 100}vw)`;
@@ -723,7 +724,7 @@ function evaluateAdaptiveTimeSky() {
   document.body.classList.remove("night-mode");
 }
 
-/* 🫂 ACTION VAULT LOGS */
+/* 🫂 VAULT ACTIONS ENGINE */
 function triggerVaultAction(type) {
   let count = parseInt(localStorage.getItem(`vault_${type}_bank`) || "0");
   count += 1;
@@ -741,7 +742,7 @@ function updateActionVaultDisplays() {
   document.getElementById("hugCountDisplay").innerText = `${hugs} Hugs`;
 }
 
-/* 🥺 MUTUAL MISSED COUNTER */
+/* 🥺 MISSED COUNTER INTERFACES */
 function incrementMissedCounter() {
   let count = parseInt(localStorage.getItem("mutual_missed_moments") || "0");
   count += 1;
@@ -755,7 +756,7 @@ function updateMissedDisplay() {
   document.getElementById("missedCounterDisplay").innerText = `${count} Missed Moments Shared`;
 }
 
-/* 📝 NOTEPAD INTERFACES */
+/* 📝 NOTEPAD CONTROLLERS */
 function addWishlistItem() {
   const textarea = document.getElementById("wishlistInput");
   const text = textarea.value.trim();
@@ -790,7 +791,7 @@ function renderWishlist() {
   `).join('');
 }
 
-/* 📸 SUPABASE SHARED PHOTO ENGINE */
+/* 📸 SUPABASE SHARED VAULT ENGINE */
 function triggerNativePhotoUpload() {
   document.getElementById("nativePhotoPicker").click();
 }
@@ -808,7 +809,7 @@ async function handleNativePhotoUpload(inputNode) {
       if (!error) {
         fetchSharedPhotos();
       } else {
-        alert("Upload failed 💔 Make sure Supabase keys are configured!");
+        alert("Upload failed 💔 Config your Supabase Keys!");
       }
     }
     reader.readAsDataURL(inputNode.files[0]);
@@ -838,7 +839,7 @@ async function fetchSharedPhotos() {
   }
 }
 
-/* 📸 CAMERA MODULES */
+/* 🎞️ HARDWARE MEDIA ACCESS STREAMERS */
 async function toggleCameraDeviceStream() {
   const video = document.getElementById("camFeed");
   const toggleBtn = document.getElementById("toggleCamBtn");
@@ -893,7 +894,7 @@ async function takeInstantFlipbookSnapshot() {
   }
 }
 
-/* 🍿 SUPABASE SHARED MOVIES ENGINE */
+/* 🍿 SUPABASE SHARED MOVIES CONTROLLERS */
 async function addNewSharedMovie() {
   const titleInput = document.getElementById("movieTitleInput");
   const posterInput = document.getElementById("moviePosterInput");
@@ -938,7 +939,7 @@ async function fetchSharedMovies() {
   }
 }
 
-/* 🫙 TRADITIONAL RANDOM COMPLIMENT JAR */
+/* 🫙 COMPLIMENT JAR PIPELINES */
 function drawComplimentJarMessage() {
   const jar = document.getElementById("interactiveJar");
   const bubble = document.getElementById("jarBubble");
@@ -983,7 +984,7 @@ function triggerConfettiBlastEffect() {
   }
 }
 
-/* 🎵 SPOTIFY CONTROLLERS */
+/* 🎵 SPOTIFY UTILS */
 const customTracksArray = ["3vCzLB6kS2lGcIpm1OOUsy", "6lanRgr6wXibZr8KgzXxBl", "3hB9lDLyAClYVZivMMl20N", "7FwYs4qSJCJi2Hd6ZV8Q3M", "4QNSMIeCknaH5m0EM2yNTI"];
 
 function promptCustomSpotifyTrackId() {
@@ -1014,7 +1015,7 @@ function loadMusicWidgets(){
   });
 }
 
-/* 📝 SHARED BULLETIN MESSAGES */
+/* 📝 SHARED BULLETIN MODULES */
 function switchNoteAuthor(author) {
   currentAuthor = author;
   document.getElementById("btnHru").classList.toggle("active", author === "Rishi");
@@ -1022,6 +1023,7 @@ function switchNoteAuthor(author) {
   document.getElementById("noteInput").placeholder = `Leaving a note as ${author}...`;
 }
 
+// Local system placeholder backup fallback engine engine context
 function commitNoteToBoard() {
   const input = document.getElementById("noteInput");
   const text = input.value.trim();
@@ -1059,7 +1061,7 @@ function renderNotes() {
   `).join('');
 }
 
-/* 📍 VERSINE GPS METRICS TRACER */
+/* 📍 HA VERSINE MAP DISTANCE PIPELINE */
 const MY_LATITUDE = 17.3850;  
 const MY_LONGITUDE = 78.4867; 
 
@@ -1085,7 +1087,7 @@ function calculateRealDistance() {
 
 function deg2rad(deg) { return deg * (Math.PI/180); }
 
-/* ⏳ TIME METRIC PIPELINES */
+/* ⏳ DURATION CLOCK INCREMENTOR */
 function runLiveCounter() {
   const start = new Date("2020-05-09T00:00:00");
   const timeContainer = document.getElementById("time");
@@ -1102,7 +1104,7 @@ function runLiveCounter() {
   setInterval(updateCounter, 1000); 
 }
 
-/* 💌 TYPEWRITER COMPONENT */
+/* 💌 ACCORDION TYPEWRITER STREAMER */
 let charIndex = 0;
 let letterStarted = false;
 const msg = `Pavaniii,\n\nidk how to say all this properly but I just wanted to tell you… you mean a lot to me. Like really a lot.\n\nWe’ve been through some tough things… misunderstandings, pain, and those moments where it felt heavy for both of us. But even then, my feelings for you never changed. If anything, it made me realize how much you matter in my life.\n\nI still think abt you all the time, still miss you even when we’re not talking, and honestly my day just feels better when it’s you.\n\nSometimes I remember those small moments… like when we used to talk for hours and laugh at the most random things. Those moments weren’t just time pass for me… they meant everything.\n\nI know we’re not perfect, but I’m willing to try more, understand you better, and handle things in a way that doesn’t hurt us again.\n\nI just want you to know I’m here… for you, for us, and for everything we’re building together ❤️\nI love you soo much 🫂`.trim();
@@ -1138,7 +1140,7 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-/* 💖 HEART ATMOSPHERE PIPELINES */
+/* 💖 HEART PARTICLE FLOATER */
 function startHeartRain() {
   setInterval(() => {
     const heart = document.createElement("div");
