@@ -57,7 +57,6 @@ body {
 
 html { scroll-behavior: smooth; }
 
-/* 📱 AUTHENTIC iOS BLUR GLASSMorphic SYSTEM */
 .ios-blur {
   backdrop-filter: blur(30px) saturate(190%);
   -webkit-backdrop-filter: blur(30px) saturate(190%);
@@ -123,10 +122,9 @@ html { scroll-behavior: smooth; }
   font-weight: 700;
   font-size: 16px;
   cursor: pointer;
-  box-shadow: 0 6px 20px rgba(255, 107, 129, 0.3);
 }
 
-/* 📖 FLIPBOOK OPENING INTRO SCREEN */
+/* 📖 FLIPBOOK INTRO SCREEN */
 #flipbookIntroContainer {
   position: fixed;
   inset: 0;
@@ -182,7 +180,7 @@ html { scroll-behavior: smooth; }
 .book-shell.open .cover-front { transform: rotateY(-145deg); }
 .book-shell.open .page-internal { transform: rotateY(-135deg); }
 
-/* 📱 HORIZONTAL APP LAYOUT */
+/* 📱 HORIZONTAL SLIDER INTERFACE */
 #mainContent {
   display: none;
   height: 100vh;
@@ -194,7 +192,7 @@ html { scroll-behavior: smooth; }
 .app-slider-track {
   display: flex;
   height: 100%;
-  width: 500vw;
+  width: 600vw; /* Updated to 6 screens total side-by-side */
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -231,14 +229,13 @@ h2 {
   margin-bottom: 20px;
 }
 
-/* 🗂️ APP BOTTOM DOCK NAVIGATION Bar */
+/* 🗂️ APP BOTTOM DOCK NAVIGATION */
 .app-nav-bar {
   position: fixed;
   bottom: 0; left: 0; right: 0;
   height: 85px;
   z-index: 1000;
   border-radius: 30px 30px 0 0;
-  border-bottom: none;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -253,12 +250,12 @@ h2 {
   color: var(--text-muted);
   font-family: inherit;
   font-weight: 600;
-  font-size: 11px;
+  font-size: 10px;
   gap: 4px;
   cursor: pointer;
 }
 
-.nav-item span.icon { font-size: 24px; transition: transform 0.2s; }
+.nav-item span.icon { font-size: 22px; transition: transform 0.2s; }
 .nav-item.active { color: var(--primary); }
 .nav-item.active span.icon { transform: scale(1.15); }
 
@@ -280,88 +277,36 @@ h2 {
   border-radius: 22px;
   flex: 0 0 auto;
   scroll-snap-align: start;
-  box-shrink: 0;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
 }
 
-/* MEDIA UPLOAD BUTTONS */
-.upload-btn-wrapper {
-  margin-top: 10px;
-  width: 100%;
-}
+/* MEDIA ATTACHMENTS */
+.upload-btn-wrapper { margin-top: 10px; width: 100%; }
 .ios-action-btn {
-  width: 100%;
-  padding: 14px;
-  border: none;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.4);
-  color: var(--primary);
-  font-weight: 700;
-  font-size: 15px;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
+  width: 100%; padding: 14px; border: none; border-radius: 18px;
+  background: rgba(255, 255, 255, 0.4); color: var(--primary);
+  font-weight: 700; font-size: 15px; cursor: pointer;
+  display: flex; justify-content: center; align-items: center; gap: 8px;
   border: 1px solid var(--card-border);
 }
 
 /* CARTOON INTERACTIVE MAP */
 .cartoon-map-container {
-  width: 100%;
-  height: 180px;
-  border-radius: 24px;
+  width: 100%; height: 180px; border-radius: 24px;
   background: linear-gradient(to bottom, #a8ff78, #78ffd6);
-  position: relative;
-  overflow: hidden;
-  border: 2px solid white;
+  position: relative; overflow: hidden; border: 2px solid white;
 }
-body.night-mode .cartoon-map-container {
-  background: linear-gradient(to bottom, #134e5e, #71b280);
-}
-.map-grid {
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(circle, rgba(255,255,255,0.4) 1px, transparent 1px);
-  background-size: 20px 20px;
-}
-.avatar-node {
-  position: absolute;
-  font-size: 38px;
-  animation: mapBounce 2s ease-in-out infinite alternate;
-}
-.avatar-node p {
-  font-size: 11px;
-  font-weight: 800;
-  background: white;
-  color: #333;
-  padding: 2px 6px;
-  border-radius: 10px;
-  margin-top: -5px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
+body.night-mode .cartoon-map-container { background: linear-gradient(to bottom, #134e5e, #71b280); }
+.map-grid { position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,0.4) 1px, transparent 1px); background-size: 20px 20px; }
+.avatar-node { position: absolute; font-size: 38px; animation: mapBounce 2s ease-in-out infinite alternate; }
+.avatar-node p { font-size: 11px; font-weight: 800; background: white; color: #333; padding: 2px 6px; border-radius: 10px; margin-top: -5px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
 @keyframes mapBounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
+.map-line { position: absolute; top: 55%; left: 25%; right: 25%; height: 4px; background: dashed #ff4d6d; border-top: 2px dashed white; z-index: 1; }
 
-.map-line {
-  position: absolute;
-  top: 55%; left: 25%; right: 25%;
-  height: 4px;
-  background: dashed #ff4d6d;
-  border-top: 2px dashed white;
-  z-index: 1;
-}
-
-/* COMPLIMENT JAR SHAKE */
+/* COMPLIMENT JAR */
 .jar-container { text-align: center; padding: 10px 0; }
-.love-jar {
-  font-size: 65px;
-  cursor: pointer;
-  display: inline-block;
-  user-select: none;
-}
-.love-jar.shake {
-  animation: jarShake 0.5s ease-in-out;
-}
+.love-jar { font-size: 65px; cursor: pointer; display: inline-block; user-select: none; transition: transform 0.2s; }
+.love-jar.shake { animation: jarShake 0.5s ease-in-out; }
 @keyframes jarShake {
   0%, 100% { transform: scale(1); }
   20%, 60% { transform: scale(1.1) rotate(-12deg); }
@@ -371,9 +316,7 @@ body.night-mode .cartoon-map-container {
 
 /* CAM WORKSPACE */
 .cam-wrapper { display: flex; flex-direction: column; align-items: center; gap: 12px; }
-#camFeed, #flipbookCanvas { width: 100%; max-width: 400px; height: 260px; border-radius: 22px; background: #000; }
-#camFeed { display: none; transform: scaleX(-1); object-fit: cover; }
-#flipbookCanvas { display: block; object-fit: contain; }
+#camFeed { width: 100%; max-width: 400px; height: 260px; border-radius: 22px; background: #000; display: none; transform: scaleX(-1); object-fit: cover; }
 
 /* MUSIC STACK */
 .musicGrid { display: grid; grid-template-columns: 1fr; gap: 14px; width: 100%; }
@@ -394,7 +337,7 @@ body.night-mode .cartoon-map-container {
 .cursor.active::after { content: "|"; font-weight: 700; color: var(--primary); animation: blink 1s steps(2, start) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 
-/* MISS BOARD CONFIG */
+/* CONNECT CONFIG */
 .board-input-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
 .author-select, .mood-select-row { display: flex; gap: 10px; flex-wrap: wrap; }
 .author-btn, .mood-btn { flex: 1; padding: 12px; border: 1px solid var(--card-border); background: rgba(255, 255, 255, 0.2); border-radius: 14px; font-weight: 700; cursor: pointer; color: var(--text-main); font-size: 13px; min-width: 100px; }
@@ -407,7 +350,7 @@ body.night-mode .cartoon-map-container {
 .note-header { display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; }
 .note-body { font-size: 14px; font-weight: 500; text-align: left; }
 
-/* TIMELINE ROADMAP CAPSULE */
+/* TIMELINE CAPSULE */
 .timeline { display: flex; flex-direction: column; gap: 20px; position: relative; padding-left: 20px; }
 .timeline::before { content: ''; position: absolute; left: 5px; top: 5px; bottom: 5px; width: 2px; background: var(--card-border); }
 .timeline-node { position: relative; }
@@ -458,36 +401,15 @@ body.night-mode .cartoon-map-container {
   <div class="app-slider-track" id="appSliderTrack">
 
     <div class="app-screen">
-      <header><h1>Feelings Space</h1></header>
-      
-      <h2>🎭 ऋषि & पावनी's Vibe Indicators</h2>
-      <div class="card ios-blur">
-        <p style="font-size: 13px; font-weight: 600; margin-bottom: 12px; color: var(--text-muted);">Tap a feeling to log state & load dynamic particle streams:</p>
-        <div class="mood-select-row">
-          <button class="mood-btn active" onclick="registerFeelingTap('standard', this)">💖 Loving</button>
-          <button class="mood-btn" onclick="registerFeelingTap('miss', this)">🥺 Missing You</button>
-          <button class="mood-btn" onclick="registerFeelingTap('cozy', this)">✨ Cozy</button>
-          <button class="mood-btn" onclick="registerFeelingTap('cute', this)">💋 Kissing You</button>
-        </div>
-      </div>
-
-      <h2>🎁 The Love Jar</h2>
-      <div class="card ios-blur jar-container">
-        <div class="love-jar" id="interactiveJar" onclick="drawComplimentJarMessage()">🫙</div>
-        <div class="jar-bubble ios-blur" id="jarBubble"></div>
-      </div>
-
-      <h2>💭 When We Miss Each Other</h2>
-      <div class="card ios-blur">
-        <div class="board-input-group">
-          <div class="author-select">
-            <button type="button" class="author-btn active" id="btnHru" onclick="switchNoteAuthor('Rishi')">Rishi</button>
-            <button type="button" class="author-btn" id="btnPav" onclick="switchNoteAuthor('Pavani')">Pavani</button>
-          </div>
-          <textarea id="noteInput" class="message-input" rows="2" placeholder="Leave a little note when you miss them..."></textarea>
-          <button type="button" class="send-note-btn" onclick="commitNoteToBoard()">Leave Note 💖</button>
-        </div>
-        <div class="notes-container" id="notesBoard"></div>
+      <header><h1>Welcome Home</h1></header>
+      <div class="card ios-blur" style="text-align: center; padding: 40px 20px;">
+        <span style="font-size: 50px;">✨</span>
+        <h2 style="text-align: center; margin: 15px 0; color: var(--primary); font-size: 24px;">Hey Pavani...</h2>
+        <p style="line-height: 1.8; font-weight: 500; font-size: 16px;">
+          Welcome to our very own safe space. This app holds our times, our songs, our miles, and our promises. 
+          <br><br>
+          Slide across the bottom tabs to explore our world! ❤️
+        </p>
       </div>
     </div>
 
@@ -508,10 +430,24 @@ body.night-mode .cartoon-map-container {
       </div>
 
       <div class="upload-btn-wrapper">
-        <button class="ios-action-btn" onclick="triggerNativePhotoUpload()">➕ Append Local Photo Asset</button>
+        <button class="ios-action-btn" onclick="triggerNativePhotoUpload()">➕ Upload Photo to Gallery</button>
         <input type="file" id="nativePhotoPicker" accept="image/*" style="display:none;" onchange="handleNativePhotoUpload(this)">
       </div>
 
+      <h2>🎞️ Instant Camera</h2>
+      <div class="card ios-blur cam-wrapper">
+        <video id="camFeed" autoplay playsinline></video>
+        <div class="cam-controls">
+          <button type="button" class="cam-btn" id="toggleCamBtn" onclick="toggleCameraDeviceStream()">Open Cam 🎥</button>
+          <button type="button" class="cam-btn snap" id="snapBtn" onclick="takeInstantFlipbookSnapshot()" style="display:none;">Take Snap 📸</button>
+        </div>
+        <p style="font-size: 12px; color: var(--text-muted); font-weight: 600; text-align: center; margin-top: 5px;">Snaps are automatically added directly into your gallery scroll above! Swipe to see them.</p>
+      </div>
+    </div>
+
+    <div class="app-screen">
+      <header><h1>Entertainment</h1></header>
+      
       <h2>🎬 Comfort Movies</h2>
       <div class="movies">
         <img src="movie01.jpg" alt="Movie 1" onclick="openLightbox(this)">
@@ -525,35 +461,79 @@ body.night-mode .cartoon-map-container {
         <img src="movie09.jpg" alt="Movie 9" onclick="openLightbox(this)">
       </div>
 
-      <h2>🎞️ Instant Snapshot Loop</h2>
-      <div class="card ios-blur cam-wrapper">
-        <video id="camFeed" autoplay playsinline></video>
-        <div class="cam-controls">
-          <button type="button" class="cam-btn" id="toggleCamBtn" onclick="toggleCameraDeviceStream()">Open Cam 🎥</button>
-          <button type="button" class="cam-btn snap" id="snapBtn" onclick="takeInstantFlipbookSnapshot()" style="display:none;">Capture Loop Snap 📸</button>
-        </div>
-      </div>
-      <div class="card ios-blur flipbook-wrapper" style="margin-top: 15px;">
-        <img id="flipbookCanvas" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'><rect width='100%' height='100%' fill='%23fafafa'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='13' fill='%23999'>Snap 2+ live photos above to compile flipbook</text></svg>" alt="Flipbook Player">
-        <div class="flipbook-controls" style="margin-top: 10px; width:100%;">
-          <button type="button" class="cam-btn" id="playPauseFlipbookBtn" onclick="toggleFlipbookPlaybackState()">Pause ⏸️</button>
-        </div>
+      <h2>🎵 Songs We Love</h2>
+      <div class="musicGrid" id="musicGrid"></div>
+      
+      <div class="upload-btn-wrapper" style="margin-top:20px;">
+        <button class="ios-action-btn" onclick="promptCustomSpotifyTrackId()">🎵 Link a Spotify Track Link</button>
       </div>
     </div>
 
     <div class="app-screen">
-      <header><h1>Our Soundtrack</h1></header>
-      <div class="musicGrid" id="musicGrid"></div>
+      <header><h1>Feelings Space</h1></header>
       
-      <div class="upload-btn-wrapper" style="margin-top:20px;">
-        <button class="ios-action-btn" onclick="promptCustomSpotifyTrackId()">🎵 Link a Spotify Track URL</button>
+      <h2>🎭 Rishi & Pavani's Feelings Selector</h2>
+      <div class="card ios-blur">
+        <div class="mood-select-row">
+          <button class="mood-btn active" onclick="registerFeelingTap('standard', this)">💖 Loving</button>
+          <button class="mood-btn" onclick="registerFeelingTap('miss', this)">🥺 Missing You</button>
+          <button class="mood-btn" onclick="registerFeelingTap('cozy', this)">✨ Cozy</button>
+          <button class="mood-btn" onclick="registerFeelingTap('cute', this)">💋 Kissing You</button>
+        </div>
+      </div>
+
+      <h2>🎁 The Love Jar</h2>
+      <div class="card ios-blur jar-container">
+        <div class="love-jar" id="interactiveJar" onclick="drawComplimentJarMessage()">🫙</div>
+        <div class="jar-bubble ios-blur" id="jarBubble"></div>
+      </div>
+
+      <h2>💭 Leave a Message Board</h2>
+      <div class="card ios-blur">
+        <div class="board-input-group">
+          <div class="author-select">
+            <button type="button" class="author-btn active" id="btnHru" onclick="switchNoteAuthor('Rishi')">Rishi</button>
+            <button type="button" class="author-btn" id="btnPav" onclick="switchNoteAuthor('Pavani')">Pavani</button>
+          </div>
+          <textarea id="noteInput" class="message-input" rows="2" placeholder="Type a message when you miss them..."></textarea>
+          <button type="button" class="send-note-btn" onclick="commitNoteToBoard()">Leave Note 💖</button>
+        </div>
+        <div class="notes-container" id="notesBoard"></div>
+      </div>
+    </div>
+
+    <div class="app-screen">
+      <header><h1>Current Status</h1></header>
+      
+      <h2>⏳ Time Together</h2>
+      <div class="card ios-blur" id="time" style="font-size: 22px; font-weight: 700; color: var(--primary); text-align: center; letter-spacing: -0.2px; line-height: 1.4;"></div>
+
+      <h2>💋 Kiss Bank Vault</h2>
+      <div class="card ios-blur" style="text-align: center;">
+        <span style="font-size: 38px;">💋</span>
+        <h3 id="kissCountDisplay" style="font-size: 24px; color: var(--primary); margin-top: 5px;">0 Accumulated Kisses</h3>
+        <p style="font-size: 12px; color: var(--text-muted); font-weight: 600; margin-top: 4px;">Rishi will pay these back next time you meet! 😉</p>
+      </div>
+
+      <h2>📍 Distance Map Tracker</h2>
+      <div class="card ios-blur" style="padding: 16px;">
+        <div class="cartoon-map-container">
+          <div class="map-grid"></div>
+          <div class="map-line"></div>
+          <div class="avatar-node" style="top: 40%; left: 15%;">👨<p>Rishi</p></div>
+          <div class="avatar-node" style="top: 35%; right: 15%;">👩‍🦰<p>Pavani</p></div>
+        </div>
+        <div style="display:flex; justify-content: space-between; font-weight:700; margin-top:12px; font-size:15px; padding:0 5px;">
+          <span id="liveDistance">612.0 kms 💖</span>
+          <span style="color: var(--primary);">Hearts Close</span>
+        </div>
       </div>
     </div>
 
     <div class="app-screen">
       <header><h1>Our Story</h1></header>
       
-      <h2>💌 Sealed Message</h2>
+      <h2>💌 Letter for Pavani</h2>
       <div class="card ios-blur letter-box-container" onclick="startTypewriterLetterStream()">
         <div class="envelope" id="envelope">
           <div class="flap"></div>
@@ -576,51 +556,26 @@ body.night-mode .cartoon-map-container {
       </div>
     </div>
 
-    <div class="app-screen">
-      <header><h1>Analytics Core</h1></header>
-      
-      <h2>⏳ Live Elapsed Duration</h2>
-      <div class="card ios-blur" id="time" style="font-size: 22px; font-weight: 700; color: var(--primary); text-align: center; letter-spacing: -0.2px; line-height: 1.4;"></div>
-
-      <h2>💋 Dynamic Kiss Bank Vault</h2>
-      <div class="card ios-blur" style="text-align: center;">
-        <span style="font-size: 38px;">💋</span>
-        <h3 id="kissCountDisplay" style="font-size: 24px; color: var(--primary); margin-top: 5px;">0 Accumulated Kisses</h3>
-        <p style="font-size: 12px; color: var(--text-muted); font-weight: 600; margin-top: 4px;">Rishi will pay these back next time you meet! 😉</p>
-      </div>
-
-      <h2>📍 Real-Time Proximity Mapping</h2>
-      <div class="card ios-blur" style="padding: 16px;">
-        <div class="cartoon-map-container">
-          <div class="map-grid"></div>
-          <div class="map-line"></div>
-          <div class="avatar-node" style="top: 40%; left: 15%;">👨<p>Rishi</p></div>
-          <div class="avatar-node" style="top: 35%; right: 15%;">👩‍🦰<p>Pavani</p></div>
-        </div>
-        <div style="display:flex; justify-content: space-between; font-weight:700; margin-top:12px; font-size:15px; padding:0 5px;">
-          <span id="liveDistance">612.0 kms 💖</span>
-          <span style="color: var(--primary);">Hearts Locked Close</span>
-        </div>
-      </div>
-    </div>
-
   </div>
 
   <nav class="app-nav-bar ios-blur">
     <button class="nav-item active" onclick="slideToIndexScreen(0, this)">
-      <span class="icon">💭</span><span>Feelings</span>
+      <span class="icon">🏠</span><span>Welcome</span>
     </button>
     <button class="nav-item" onclick="slideToIndexScreen(1, this)">
       <span class="icon">📸</span><span>Vault</span>
     </button>
     <button class="nav-item" onclick="slideToIndexScreen(2, this)">
-      <span class="icon">🎵</span><span>Tracks</span>
+      <span class="icon">🎬</span><span>Media</span>
     </button>
     <button class="nav-item" onclick="slideToIndexScreen(3, this)">
-      <span class="icon">💌</span><span>Story</span>
+      <span class="icon">💭</span><span>Feelings</span>
     </button>
     <button class="nav-item" onclick="slideToIndexScreen(4, this)">
-      <span class="icon">🏠</span><span>Status</span>
+      <span class="icon">📊</span><span>Status</span>
+    </button>
+    <button class="nav-item" onclick="slideToIndexScreen(5, this)">
+      <span class="icon">💌</span><span>Story</span>
     </button>
   </nav>
 
@@ -635,12 +590,6 @@ let currentAuthor = "Rishi";
 let currentParticleType = "standard";
 let localStream = null;
 
-// Flipbook settings
-let flipbookInterval = null;
-let flipbookIndex = 0;
-let flipbookDelay = 300; 
-let isFlipbookPlaying = true;
-
 const jarNotes = [
   "You make the world a whole lot brighter just by being in it! ✨",
   "Rishi loves you more than you can possibly compute! ❤️",
@@ -652,7 +601,7 @@ const jarNotes = [
   "You're my forever and always, Pavani! 👑"
 ];
 
-/* 🔓 UNLOCK INTERFACE AND INTRO BOOK SCREEN LOADER */
+/* 🔓 UNLOCK INTERFACE */
 function unlockAppToFlipbook() {
   const inputPass = document.getElementById("password").value;
   if(inputPass === "22010503") {
@@ -677,7 +626,6 @@ function unlockAppToFlipbook() {
         calculateRealDistance();
         renderNotes();
         loadSavedSnapshots(); 
-        startFlipbookLoop();
         updateKissCountDisplay();
       }, 500);
     }, 2200);
@@ -690,7 +638,7 @@ document.getElementById("password").addEventListener("keydown", (e) => {
   if (e.key === "Enter") unlockAppToFlipbook();
 });
 
-/* 🗂️ DECK TRACK ROUTER */
+/* 🗂️ TRACK SLIDER TRACK ROUTER */
 function slideToIndexScreen(pageIndex, navElement) {
   const track = document.getElementById("appSliderTrack");
   track.style.transform = `translateX(-${pageIndex * 100}vw)`;
@@ -703,7 +651,7 @@ function slideToIndexScreen(pageIndex, navElement) {
   }
 }
 
-/* 🌅 ADAPTIVE DAY/NIGHT STATES */
+/* 🌅 ADAPTIVE GRADIETS STATES */
 function evaluateAdaptiveTimeSky() {
   const localHour = new Date().getHours();
   if (localHour >= 18 || localHour < 6) {
@@ -713,15 +661,14 @@ function evaluateAdaptiveTimeSky() {
   }
 }
 
-/* 🎭 FEELINGS TRACKING COUNTER ENGINE */
+/* 🎭 FEELINGS COUNTER ENGINE */
 function registerFeelingTap(vibeType, btnElement) {
   currentParticleType = vibeType;
   document.querySelectorAll(".mood-btn").forEach(btn => btn.classList.remove("active"));
   btnElement.classList.add("active");
 
-  // Multiplier kiss tracking algorithm logic
   let bank = parseInt(localStorage.getItem("kiss_vault_bank") || "0");
-  bank += 1; // Increment count on every tap interactions
+  bank += 1;
   localStorage.setItem("kiss_vault_bank", bank);
   updateKissCountDisplay();
 }
@@ -731,7 +678,7 @@ function updateKissCountDisplay() {
   document.getElementById("kissCountDisplay").innerText = `${count} Accumulated Kisses`;
 }
 
-/* 📸 ATTACH LIVE GALLERY FILE ASSETS */
+/* 📸 ATTACH GALLERY FILES */
 function triggerNativePhotoUpload() {
   document.getElementById("nativePhotoPicker").click();
 }
@@ -763,7 +710,7 @@ function renderUploadedPhotos() {
   });
 }
 
-/* 📸 LOCAL STREAM ENGINE INTERFACES */
+/* 📸 CAMERA DEVICE HARDWARE CONTROLLERS */
 async function toggleCameraDeviceStream() {
   const video = document.getElementById("camFeed");
   const toggleBtn = document.getElementById("toggleCamBtn");
@@ -811,7 +758,6 @@ function takeInstantFlipbookSnapshot() {
 
   loadSavedSnapshots();
   toggleCameraDeviceStream(); 
-  if (isFlipbookPlaying) startFlipbookLoop();
 }
 
 function loadSavedSnapshots() {
@@ -825,41 +771,14 @@ function loadSavedSnapshots() {
     img.onclick = function() { openLightbox(this); };
     gallery.insertBefore(img, gallery.firstChild);
   });
-  renderUploadedPhotos(); // Build custom photos alongside camera loop arrays
+  renderUploadedPhotos(); 
 }
 
-/* 🎞️ LOOPING FLIPBOOK ENGINE */
-function startFlipbookLoop() {
-  clearInterval(flipbookInterval);
-  const viewerNode = document.getElementById("flipbookCanvas");
-  let snapshots = JSON.parse(localStorage.getItem("our_world_snapshots") || "[]");
-  if (snapshots.length < 2) return;
-  flipbookInterval = setInterval(() => {
-    if (flipbookIndex >= snapshots.length) flipbookIndex = 0;
-    viewerNode.src = snapshots[flipbookIndex];
-    flipbookIndex++;
-  }, flipbookDelay);
-}
-
-function toggleFlipbookPlaybackState() {
-  const btn = document.getElementById("playPauseFlipbookBtn");
-  if (isFlipbookPlaying) {
-    clearInterval(flipbookInterval);
-    isFlipbookPlaying = false;
-    btn.innerText = "Play ▶️";
-  } else {
-    isFlipbookPlaying = true;
-    btn.innerText = "Pause ⏸️";
-    startFlipbookLoop();
-  }
-}
-
-/* 🍪 ANIMATED LOVE JAR COMPLIMENTS Jar */
+/* 🍪 COMPLIMENT JAR SHAKE ANIMATION ENGINE */
 function drawComplimentJarMessage() {
   const jar = document.getElementById("interactiveJar");
   const bubble = document.getElementById("jarBubble");
   
-  // Fire animation sequence
   jar.classList.add("shake");
   bubble.style.display = "none";
   
@@ -870,7 +789,7 @@ function drawComplimentJarMessage() {
   }, 500);
 }
 
-/* 🎵 SYSTEM DYNAMIC TRACK WIDGET LOADER */
+/* 🎵 TRACKS GENERATOR COMPONENT */
 let customTracksArray = ["3vCzLB6kS2lGcIpm1OOUsy", "6lanRgr6wXibZr8KgzXxBl", "3hB9lDLyAClYVZivMMl20N", "7FwYs4qSJCJi2Hd6ZV8Q3M", "4QNSMIeCknaH5m0EM2yNTI"];
 
 function promptCustomSpotifyTrackId() {
@@ -889,14 +808,14 @@ function promptCustomSpotifyTrackId() {
 
 function loadMusicWidgets(){
   const grid = document.getElementById("musicGrid");
-  grid.innerHTML = ""; // Clear view mapping fields
+  grid.innerHTML = ""; 
   let storedTracks = JSON.parse(localStorage.getItem("our_saved_track_ids") || "[]");
   let integratedList = [...customTracksArray, ...storedTracks];
 
   integratedList.forEach(id => {
     let card = document.createElement("div");
     card.className = "musicCard";
-    card.innerHTML = `<iframe src="https://open.spotify.com/embed/track/$${id}?utm_source=generator&theme=0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+    card.innerHTML = `<iframe src="https://open.spotify.com/embed/track/7FwYs4qSJCJi2Hd6ZV8Q3M1${id}?utm_source=generator&theme=0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
     grid.appendChild(card);
   });
 }
@@ -946,7 +865,7 @@ function renderNotes() {
   `).join('');
 }
 
-/* 📍 REAL HA VERSINE GPS OVERLAY COORDINATES ENGINE */
+/* 📍 REAL HA VERSINE GPS COORDINATES ENGINE */
 const MY_LATITUDE = 17.3850;  
 const MY_LONGITUDE = 78.4867; 
 
@@ -972,7 +891,7 @@ function calculateRealDistance() {
 
 function deg2rad(deg) { return deg * (Math.PI/180); }
 
-/* ⏳ TIME METRIC COUNTER ENGINE */
+/* ⏳ TIME COUNTER ENGINE */
 function runLiveCounter() {
   const start = new Date("2020-05-09T00:00:00");
   const timeContainer = document.getElementById("time");
@@ -989,7 +908,7 @@ function runLiveCounter() {
   setInterval(updateCounter, 1000); 
 }
 
-/* 💌 TYPEWRITER TEXT EMITTOR STRINGS */
+/* 💌 TYPEWRITER TEXT ENGINE */
 let charIndex = 0;
 let letterStarted = false;
 const msg = `hie Pavani,\n\nI don’t really know how to express myself perfectly, but I want you to understand what I feel.\n\nWe’ve been together for so long 💖\n\nTake care always 🫂\n\nI love you ❤️`;
@@ -1015,7 +934,7 @@ function startTypewriterLetterStream(){
   setTimeout(type, 650); 
 }
 
-// PWA Service Worker handler injector
+// Service worker setup block
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     const swBlob = new Blob([`
