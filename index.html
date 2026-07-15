@@ -13,6 +13,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+
 <style>
 :root {
   --primary: #ff4d6d;
@@ -275,38 +278,19 @@ h2 {
   cursor: pointer;
 }
 
-.upload-btn-wrapper {
-  margin: 10px 0 20px 0;
-}
-
+.upload-btn-wrapper { margin: 10px 0 20px 0; }
 .ios-action-btn {
-  width: 100%;
-  padding: 14px;
-  border: 1px solid var(--card-border);
-  border-radius: 16px;
-  font-weight: 700;
-  color: var(--text-main);
-  cursor: pointer;
-  text-align: center;
-  background: rgba(255, 255, 255, 0.4);
+  width: 100%; padding: 14px; border: 1px solid var(--card-border); border-radius: 16px;
+  font-weight: 700; color: var(--text-main); cursor: pointer; text-align: center; background: rgba(255, 255, 255, 0.4);
 }
 
 .movies {
-  display: flex;
-  overflow-x: auto;
-  gap: 14px;
-  padding: 5px 2px 15px;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
+  display: flex; overflow-x: auto; gap: 14px; padding: 5px 2px 15px;
+  scroll-snap-type: x mandatory; scrollbar-width: none;
 }
 .movies::-webkit-scrollbar { display: none; }
 .movies img {
-  width: 145px;
-  height: 215px;
-  object-fit: cover;
-  border-radius: 22px;
-  flex: 0 0 auto;
-  scroll-snap-align: start;
+  width: 145px; height: 215px; object-fit: cover; border-radius: 22px; flex: 0 0 auto; scroll-snap-align: start;
 }
 
 .cartoon-map-container {
@@ -317,23 +301,13 @@ h2 {
 .map-grid { position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,0.4) 1px, transparent 1px); background-size: 20px 20px; }
 
 .map-pin {
-  position: absolute;
-  width: 16px; height: 16px;
-  background: #ff4d6d;
-  border: 3px solid white;
-  border-radius: 50%;
+  position: absolute; width: 16px; height: 16px; background: #ff4d6d; border: 3px solid white; border-radius: 50%;
   box-shadow: 0 0 10px rgba(255,77,109,0.6);
 }
 .map-pin::after {
-  content: attr(data-name);
-  position: absolute;
-  top: -24px; left: 50%;
-  transform: translateX(-50%);
-  background: rgba(255, 255, 255, 0.9); color: #1c1c1e;
-  font-size: 10px; font-weight: 800;
-  padding: 2px 6px; border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  backdrop-filter: blur(5px);
+  content: attr(data-name); position: absolute; top: -24px; left: 50%; transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.9); color: #1c1c1e; font-size: 10px; font-weight: 800;
+  padding: 2px 6px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); backdrop-filter: blur(5px);
 }
 .map-line { position: absolute; top: 50%; left: 20%; right: 20%; height: 2px; border-top: 3px dashed white; z-index: 1; }
 
@@ -348,8 +322,7 @@ h2 {
 .jar-bubble { margin-top: 15px; padding: 18px; border-radius: 20px; display: none; animation: fadeIn 0.4s ease forwards; font-weight: 600; line-height: 1.5; text-align: center; }
 
 .confetti-particle {
-  position: absolute; width: 8px; height: 8px;
-  border-radius: 50%; z-index: 5; pointer-events: none;
+  position: absolute; width: 8px; height: 8px; border-radius: 50%; z-index: 5; pointer-events: none;
   animation: explosionBlast 0.6s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
 }
 @keyframes explosionBlast {
@@ -390,17 +363,12 @@ h2 {
 .note-body { font-size: 14px; font-weight: 500; text-align: left; }
 
 .wishlist-textarea {
-  width: 100%; height: 90px; padding: 12px;
-  border-radius: 14px; border: 1px solid var(--card-border);
-  background: rgba(255, 255, 255, 0.3); font-family: inherit;
-  font-size: 14px; resize: none; outline: none; color: var(--text-main);
+  width: 100%; height: 90px; padding: 12px; border-radius: 14px; border: 1px solid var(--card-border);
+  background: rgba(255, 255, 255, 0.3); font-family: inherit; font-size: 14px; resize: none; outline: none; color: var(--text-main);
 }
 .wishlist-item {
-  padding: 10px 14px; border-radius: 12px;
-  background: rgba(255, 255, 255, 0.45); margin-top: 8px;
-  display: flex; justify-content: space-between; align-items: center;
-  font-size: 14px; font-weight: 500;
-  border: 1px solid var(--card-border);
+  padding: 10px 14px; border-radius: 12px; background: rgba(255, 255, 255, 0.45); margin-top: 8px;
+  display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: 500; border: 1px solid var(--card-border);
 }
 .wishlist-item button { background: none; border: none; color: var(--primary); font-weight: 700; cursor: pointer; }
 
@@ -473,7 +441,7 @@ h2 {
 
       <div class="upload-btn-wrapper">
         <button class="ios-action-btn ios-blur" onclick="triggerNativePhotoUpload()">➕ Upload Photo to Shared Gallery</button>
-        <input type="file" id="nativePhotoPicker" accept="image/*" style="display:none;" onchange="handleNativePhotoUpload(this)">
+        <input type="file" id="nativePhotoPicker" accept="image/*" style="display:none;" onchange="handleLivePhotoUpload(this)">
       </div>
 
       <h2>🎞️ Instant Camera</h2>
@@ -482,8 +450,7 @@ h2 {
         <div class="cam-controls" style="width: 100%;">
           <button type="button" class="ios-action-btn ios-blur" id="toggleCamBtn" onclick="toggleCameraDeviceStream()">Open Cam 🎥</button>
           <button type="button" class="ios-action-btn ios-blur" id="snapBtn" onclick="takeInstantFlipbookSnapshot()" style="display:none; margin-top:10px; background:var(--primary); color:white; border:none;">Take Snap 📸</button>
-          
-          <input type="file" id="cameraFallbackPicker" accept="image/*" style="display:none;" onchange="handleFallbackPhotoUpload(this)">
+          <input type="file" id="cameraFallbackPicker" accept="image/*" style="display:none;" onchange="handleLivePhotoUpload(this)">
         </div>
       </div>
     </div>
@@ -640,6 +607,28 @@ h2 {
 </div>
 
 <script>
+// Loaded Configuration values directly from your custom layout screenshots
+const firebaseConfig = {
+  apiKey: "AIzaSyA-2lM2HDqTW4By-mvEM1-pI6YNfCMO",
+  authDomain: "ur-world-9ccd7.firebaseapp.com",
+  databaseURL: "https://ur-world-9ccd7-default-rtdb.firebaseio.com",
+  projectId: "ur-world-9ccd7",
+  storageBucket: "ur-world-9ccd7.firebasestorage.app",
+  messagingSenderId: "579982572210",
+  appId: "1:579982572210:web:3fb7a90550203e5b96",
+  measurementId: "G-3HFHG1YS4K"
+};
+
+let db = null;
+try {
+  if (firebaseConfig.apiKey && !firebaseConfig.apiKey.includes("YOUR_")) {
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.database();
+  }
+} catch(e) {
+  console.log("Running in offline layout template view mode.");
+}
+
 let currentAuthor = "Rishi";
 let currentParticleType = "standard";
 let localStream = null;
@@ -656,7 +645,6 @@ const jarNotes = [
   "You're my forever and always, Pavani! 👑"
 ];
 
-/* 🔓 UNLOCK INTERFACES */
 function unlockAppWithFluidTransition() {
   const inputPass = document.getElementById("password").value;
   if(inputPass === "22010503") {
@@ -670,22 +658,12 @@ function unlockAppWithFluidTransition() {
       
       setTimeout(() => {
         mainContent.style.opacity = "1";
-        
-        setTimeout(() => {
-          document.getElementById("fluidBookElement").classList.add("opened");
-        }, 400);
-
-        evaluateAdaptiveTimeSky();
+        setTimeout(() => { document.getElementById("fluidBookElement").classList.add("opened"); }, 400);
         runLiveCounter();
         loadMusicWidgets();
         startHeartRain();
         calculateRealDistance();
-        renderNotes();
-        fetchSharedPhotos(); 
-        fetchSharedMovies(); 
-        updateActionVaultDisplays();
-        renderWishlist();
-        updateMissedDisplay();
+        initLiveSyncListeners();
       }, 50);
     }, 500);
   } else {
@@ -693,440 +671,302 @@ function unlockAppWithFluidTransition() {
   }
 }
 
-/* 🗂️ DECK ROUTERS */
-function slideToIndexScreen(pageIndex, navElement) {
-  const track = document.getElementById("appSliderTrack");
-  track.style.transform = `translateX(-${pageIndex * 100}vw)`;
-  
-  document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-  navElement.classList.add('active');
-
-  if (pageIndex !== 1 && localStream) {
-    toggleCameraDeviceStream();
-  }
-}
-
-function evaluateAdaptiveTimeSky() {
-  document.body.classList.remove("night-mode");
-}
-
-/* 🫂 VAULT ACTIONS */
-function triggerVaultAction(type) {
-  let count = parseInt(localStorage.getItem(`vault_${type}_bank`) || "0");
-  count += 1;
-  localStorage.setItem(`vault_${type}_bank`, count);
-  updateActionVaultDisplays();
-  
-  currentParticleType = (type === 'kiss') ? 'cute' : 'cozy';
-  triggerConfettiBlastEffect();
-
-  setTimeout(() => {
-    currentParticleType = 'standard';
-  }, 4000);
-}
-
-function updateActionVaultDisplays() {
-  const kisses = localStorage.getItem("vault_kiss_bank") || "0";
-  const hugs = localStorage.getItem("vault_hug_bank") || "0";
-  document.getElementById("kissCountDisplay").innerText = `${kisses} Kisses`;
-  document.getElementById("hugCountDisplay").innerText = `${hugs} Hugs`;
-}
-
-/* 🥺 MISSED COUNTER INTERFACES */
-function incrementMissedCounter() {
-  let count = parseInt(localStorage.getItem("mutual_missed_moments") || "0");
-  count += 1;
-  localStorage.setItem("mutual_missed_moments", count);
-  currentParticleType = 'miss';
-  updateMissedDisplay();
-
-  setTimeout(() => {
-    currentParticleType = 'standard';
-  }, 4000);
-}
-
-function updateMissedDisplay() {
-  const count = localStorage.getItem("mutual_missed_moments") || "0";
-  document.getElementById("missedCounterDisplay").innerText = `${count} Missed Moments Shared`;
-}
-
-/* 📝 NOTEPAD INTERFACES */
-function addWishlistItem() {
-  const textarea = document.getElementById("wishlistInput");
-  const text = textarea.value.trim();
-  if(!text) return;
-
-  let items = JSON.parse(localStorage.getItem("pavani_wishlist_data") || "[]");
-  items.push({ id: Date.now(), text: text });
-  localStorage.setItem("pavani_wishlist_data", JSON.stringify(items));
-  textarea.value = "";
-  renderWishlist();
-}
-
-function deleteWishlistItem(id) {
-  let items = JSON.parse(localStorage.getItem("pavani_wishlist_data") || "[]");
-  items = items.filter(item => item.id !== id);
-  localStorage.setItem("pavani_wishlist_data", JSON.stringify(items));
-  renderWishlist();
-}
-
-function renderWishlist() {
-  const target = document.getElementById("wishlistItemsBox");
-  let items = JSON.parse(localStorage.getItem("pavani_wishlist_data") || "[]");
-  if(items.length === 0) {
-    target.innerHTML = `<p style="font-size:12px; font-style:italic; color:var(--text-muted); text-align:center;">Your wishlist is empty. Add your dreams above! ✨</p>`;
+function initLiveSyncListeners() {
+  if (!db) {
+    renderNotes(); fetchSharedPhotos(); fetchSharedMovies(); updateActionVaultDisplays(); renderWishlist(); updateMissedDisplay();
     return;
   }
-  target.innerHTML = items.map(item => `
-    <div class="wishlist-item">
-      <span>✨ ${item.text}</span>
-      <button onclick="deleteWishlistItem(${item.id})">✕</button>
-    </div>
-  `).join('');
-}
-
-/* 📸 OFFLINE LOCAL STORAGE PHOTO ENGINES */
-function triggerNativePhotoUpload() {
-  document.getElementById("nativePhotoPicker").click();
-}
-
-async function handleNativePhotoUpload(inputNode) {
-  if(inputNode.files && inputNode.files[0]) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      const base64Image = e.target.result;
-      let localPhotos = JSON.parse(localStorage.getItem("our_local_photos") || "[]");
-      localPhotos.unshift({ url: base64Image });
-      localStorage.setItem("our_local_photos", JSON.stringify(localPhotos));
-      fetchSharedPhotos();
+  
+  db.ref('photos').on('value', snapshot => {
+    const gallery = document.getElementById("photoGallery"); gallery.innerHTML = "";
+    const data = snapshot.val();
+    if (data) {
+      Object.values(data).reverse().forEach(item => {
+        let img = document.createElement("img"); img.src = item.url; img.onclick = function() { openLightbox(this); }; gallery.appendChild(img);
+      });
+    } else {
+      gallery.innerHTML = `<p style="font-size:12px; grid-column:span 3; text-align:center; color:var(--text-muted); padding:20px 0;">No pictures shared yet! 📸</p>`;
     }
-    reader.readAsDataURL(inputNode.files[0]);
-  }
-}
+  });
 
-async function fetchSharedPhotos() {
-  const gallery = document.getElementById("photoGallery");
-  gallery.innerHTML = ""; 
-  let localPhotos = JSON.parse(localStorage.getItem("our_local_photos") || "[]");
-  
-  if (localPhotos.length === 0) {
-    gallery.innerHTML = `<p style="font-size:12px; grid-column: span 3; font-style:italic; color:var(--text-muted); text-align:center; padding: 20px 0;">No shared photos yet. Tap upload to add your first click! 📸</p>`;
-    return;
-  }
-  
-  localPhotos.forEach(item => {
-    let img = document.createElement("img");
-    img.src = item.url;
-    img.onclick = function() { openLightbox(this); };
-    gallery.appendChild(img);
+  db.ref('movies').on('value', snapshot => {
+    const carousel = document.getElementById("movieCarousel"); carousel.innerHTML = "";
+    const data = snapshot.val();
+    if (data) {
+      Object.values(data).reverse().forEach(m => {
+        let img = document.createElement("img"); img.src = m.poster_url; img.title = m.title; img.onclick = function() { openLightbox(this); }; carousel.appendChild(img);
+      });
+    } else { carousel.innerHTML = `<p style="font-size:12px; color:var(--text-muted);">Watchlist empty.</p>`; }
+  });
+
+  db.ref('notes').on('value', snapshot => {
+    const board = document.getElementById("notesBoard"); board.innerHTML = "";
+    const data = snapshot.val();
+    if (data) {
+      Object.values(data).reverse().forEach(note => {
+        board.innerHTML += `<div class="note-card ${note.author === 'Pavani' ? 'pavani' : ''}"><div class="note-header"><span>${note.author === 'Pavani' ? '👩‍🦰 Pavani' : '👨 Rishi'}</span><span>${note.time}</span></div><div class="note-body">"${note.content}"</div></div>`;
+      });
+    } else { board.innerHTML = `<p style="color:var(--text-muted); font-size:14px; text-align:center; font-style:italic;">No notes left yet. 💭</p>`; }
+  });
+
+  db.ref('metrics').on('value', snapshot => {
+    const data = snapshot.val() || {};
+    document.getElementById("kissCountDisplay").innerText = `${data.kisses || 0} Kisses`;
+    document.getElementById("hugCountDisplay").innerText = `${data.hugs || 0} Hugs`;
+    document.getElementById("missedCounterDisplay").innerText = `${data.missed || 0} Missed Moments Shared`;
+  });
+
+  db.ref('wishlist').on('value', snapshot => {
+    const target = document.getElementById("wishlistItemsBox"); target.innerHTML = "";
+    const data = snapshot.val();
+    if (!data) { target.innerHTML = `<p style="font-size:12px; font-style:italic; color:var(--text-muted); text-align:center;">Your wishlist is empty. Add your dreams above! ✨</p>`; return; }
+    Object.keys(data).forEach(key => {
+      target.innerHTML += `<div class="wishlist-item"><span>✨ ${data[key].text}</span><button onclick="deleteWishlistItem('${key}')">✕</button></div>`;
+    });
   });
 }
 
-/* 🎞️ INTERFACES ACCESS SYSTEM + SECURE WEBVIEW FALLBACK ROUTING */
-async function toggleCameraDeviceStream() {
-  const video = document.getElementById("camFeed");
-  const toggleBtn = document.getElementById("toggleCamBtn");
-  const snapBtn = document.getElementById("snapBtn");
+function slideToIndexScreen(pageIndex, navElement) {
+  const track = document.getElementById("appSliderTrack");
+  track.style.transform = `translateX(-${pageIndex * 100}vw)`;
+  document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+  navElement.classList.add('active');
+  if (pageIndex !== 1 && localStream) { toggleCameraDeviceStream(); }
+}
 
-  if (localStream) {
-    localStream.getTracks().forEach(track => track.stop());
-    localStream = null;
-    video.style.display = "none";
-    snapBtn.style.display = "none";
-    toggleBtn.innerText = "Open Cam 🎥";
+function triggerVaultAction(type) {
+  if (db) {
+    db.ref(`metrics/${type}s`).transaction(current => (current || 0) + 1);
   } else {
-    try {
-      localStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false });
-      video.srcObject = localStream;
-      video.style.display = "block";
-      snapBtn.style.display = "block";
-      toggleBtn.innerText = "Close Cam ❌";
-    } catch (err) {
-      // If browser sandboxing blocks live camera API stream, redirect gracefully to local capture picker
-      document.getElementById("cameraFallbackPicker").click();
-    }
+    let count = parseInt(localStorage.getItem(`vault_${type}_bank`) || "0");
+    localStorage.setItem(`vault_${type}_bank`, count + 1); updateActionVaultDisplays();
+  }
+  currentParticleType = (type === 'kiss') ? 'cute' : 'cozy'; triggerConfettiBlastEffect();
+  setTimeout(() => { currentParticleType = 'standard'; }, 4000);
+}
+
+function updateActionVaultDisplays() {
+  document.getElementById("kissCountDisplay").innerText = `${localStorage.getItem("vault_kiss_bank") || "0"} Kisses`;
+  document.getElementById("hugCountDisplay").innerText = `${localStorage.getItem("vault_hug_bank") || "0"} Hugs`;
+}
+
+function incrementMissedCounter() {
+  if (db) {
+    db.ref('metrics/missed').transaction(current => (current || 0) + 1);
+  } else {
+    let count = parseInt(localStorage.getItem("mutual_missed_moments") || "0");
+    localStorage.setItem("mutual_missed_moments", count + 1); updateMissedDisplay();
+  }
+  currentParticleType = 'miss'; setTimeout(() => { currentParticleType = 'standard'; }, 4000);
+}
+
+function updateMissedDisplay() {
+  document.getElementById("missedCounterDisplay").innerText = `${localStorage.getItem("mutual_missed_moments") || "0"} Missed Moments Shared`;
+}
+
+function addWishlistItem() {
+  const textarea = document.getElementById("wishlistInput"); const text = textarea.value.trim(); if(!text) return;
+  if (db) { db.ref('wishlist').push({ text: text }); } 
+  else {
+    let items = JSON.parse(localStorage.getItem("pavani_wishlist_data") || "[]"); items.push({ id: Date.now(), text: text });
+    localStorage.setItem("pavani_wishlist_data", JSON.stringify(items)); renderWishlist();
+  }
+  textarea.value = "";
+}
+
+function deleteWishlistItem(key) {
+  if (db) { db.ref(`wishlist/${key}`).remove(); } 
+  else {
+    let items = JSON.parse(localStorage.getItem("pavani_wishlist_data") || "[]");
+    localStorage.setItem("pavani_wishlist_data", JSON.stringify(items.filter(item => item.id !== parseInt(key)))); renderWishlist();
   }
 }
 
-function handleFallbackPhotoUpload(inputNode) {
+function renderWishlist() {
+  const target = document.getElementById("wishlistItemsBox"); let items = JSON.parse(localStorage.getItem("pavani_wishlist_data") || "[]");
+  if(items.length === 0) { target.innerHTML = `<p style="font-size:12px; font-style:italic; color:var(--text-muted); text-align:center;">Your wishlist is empty.</p>`; return; }
+  target.innerHTML = items.map(item => `<div class="wishlist-item"><span>✨ ${item.text}</span><button onclick="deleteWishlistItem('${item.id}')">✕</button></div>`).join('');
+}
+
+function triggerNativePhotoUpload() { document.getElementById("nativePhotoPicker").click(); }
+
+function handleLivePhotoUpload(inputNode) {
   if(inputNode.files && inputNode.files[0]) {
     const reader = new FileReader();
     reader.onload = function(e) {
       const base64Image = e.target.result;
-      let localPhotos = JSON.parse(localStorage.getItem("our_local_photos") || "[]");
-      localPhotos.unshift({ url: base64Image });
-      localStorage.setItem("our_local_photos", JSON.stringify(localPhotos));
-      fetchSharedPhotos();
+      if (db) { db.ref('photos').push({ url: base64Image }); } 
+      else {
+        let offline = JSON.parse(localStorage.getItem("our_local_photos") || "[]"); offline.unshift({ url: base64Image });
+        localStorage.setItem("our_local_photos", JSON.stringify(offline.slice(0, 6))); fetchSharedPhotos();
+      }
     }
     reader.readAsDataURL(inputNode.files[0]);
+  }
+}
+
+function fetchSharedPhotos() {
+  const gallery = document.getElementById("photoGallery"); gallery.innerHTML = "";
+  let offline = JSON.parse(localStorage.getItem("our_local_photos") || "[]");
+  if(offline.length === 0) { gallery.innerHTML = `<p style="font-size:11px; grid-column:span 3; font-style:italic; color:var(--text-muted); text-align:center; padding:15px 0;">Offline preview mode. Connect Firebase to share live updates! 📸</p>`; return; }
+  offline.forEach(item => { let img = document.createElement("img"); img.src = item.url; img.onclick = function() { openLightbox(this); }; gallery.appendChild(img); });
+}
+
+async function toggleCameraDeviceStream() {
+  const video = document.getElementById("camFeed"); const toggleBtn = document.getElementById("toggleCamBtn"); const snapBtn = document.getElementById("snapBtn");
+  if (localStream) {
+    localStream.getTracks().forEach(track => track.stop()); localStream = null; video.style.display = "none"; snapBtn.style.display = "none"; toggleBtn.innerText = "Open Cam 🎥";
+  } else {
+    try {
+      localStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false });
+      video.srcObject = localStream; video.style.display = "block"; snapBtn.style.display = "block"; toggleBtn.innerText = "Close Cam ❌";
+    } catch (err) { document.getElementById("cameraFallbackPicker").click(); }
   }
 }
 
 async function takeInstantFlipbookSnapshot() {
-  const video = document.getElementById("camFeed");
-  if (!localStream) return;
-
-  const canvas = document.createElement("canvas");
-  canvas.width = video.videoWidth || 640;
-  canvas.height = video.videoHeight || 480;
-  const ctx = canvas.getContext("2d");
-  ctx.translate(canvas.width, 0);
-  ctx.scale(-1, 1);
-  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
+  const video = document.getElementById("camFeed"); if (!localStream) return;
+  const canvas = document.createElement("canvas"); canvas.width = video.videoWidth || 640; canvas.height = video.videoHeight || 480;
+  const ctx = canvas.getContext("2d"); ctx.translate(canvas.width, 0); ctx.scale(-1, 1); ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
   const base64Image = canvas.toDataURL("image/jpeg");
-  let localPhotos = JSON.parse(localStorage.getItem("our_local_photos") || "[]");
-  localPhotos.unshift({ url: base64Image });
-  localStorage.setItem("our_local_photos", JSON.stringify(localPhotos));
-  
-  fetchSharedPhotos();
+  if (db) { db.ref('photos').push({ url: base64Image }); } 
+  else {
+    let offline = JSON.parse(localStorage.getItem("our_local_photos") || "[]"); offline.unshift({ url: base64Image });
+    localStorage.setItem("our_local_photos", JSON.stringify(offline.slice(0, 6))); fetchSharedPhotos();
+  }
   toggleCameraDeviceStream();
 }
 
-/* 🍿 WATCHLIST PIPELINES */
-async function addNewSharedMovie() {
-  const titleInput = document.getElementById("movieTitleInput");
-  const posterInput = document.getElementById("moviePosterInput");
-  const title = titleInput.value.trim();
-  const posterUrl = posterInput.value.trim();
-  
-  if (!title || !posterUrl) {
-    alert("Please fill out both fields! 🎬");
-    return;
+function addNewSharedMovie() {
+  const t = document.getElementById("movieTitleInput"); const p = document.getElementById("moviePosterInput");
+  if (!t.value.trim() || !p.value.trim()) return;
+  if (db) { db.ref('movies').push({ title: t.value.trim(), poster_url: p.value.trim() }); } 
+  else {
+    let m = JSON.parse(localStorage.getItem("our_local_movies") || "[]"); m.unshift({ title: t.value.trim(), poster_url: p.value.trim() });
+    localStorage.setItem("our_local_movies", JSON.stringify(m)); fetchSharedMovies();
   }
-
-  let localMovies = JSON.parse(localStorage.getItem("our_local_movies") || "[]");
-  localMovies.unshift({ title: title, poster_url: posterUrl });
-  localStorage.setItem("our_local_movies", JSON.stringify(localMovies));
-
-  titleInput.value = ""; 
-  posterInput.value = "";
-  fetchSharedMovies(); 
+  t.value = ""; p.value = "";
 }
 
-async function fetchSharedMovies() {
+function fetchSharedMovies() {
   const carousel = document.getElementById("movieCarousel");
-  let localMovies = JSON.parse(localStorage.getItem("our_local_movies") || "[]");
-  
-  if (localMovies.length === 0) {
-    carousel.innerHTML = `<p style="font-size: 12px; font-style: italic; color: var(--text-muted); padding: 10px;">Watchlist is currently empty. Add your comfort tracks down below!</p>`;
-    return;
-  }
-  carousel.innerHTML = localMovies.map(movie => `<img src="${movie.poster_url}" alt="${movie.title}" title="${movie.title}" onclick="openLightbox(this)">`).join('');
+  let m = JSON.parse(localStorage.getItem("our_local_movies") || "[]");
+  if(m.length === 0){ carousel.innerHTML = `<p style="font-size:12px; color:var(--text-muted);">Watchlist empty.</p>`; return; }
+  carousel.innerHTML = m.map(movie => `<img src="${movie.poster_url}" onclick="openLightbox(this)">`).join('');
 }
 
-/* 🫙 COMPLIMENT JAR PIPELINES */
 function drawComplimentJarMessage() {
-  const jar = document.getElementById("interactiveJar");
-  const bubble = document.getElementById("jarBubble");
-  
-  jar.classList.add("shake");
-  bubble.style.display = "none";
-  triggerConfettiBlastEffect();
-
+  const jar = document.getElementById("interactiveJar"); const bubble = document.getElementById("jarBubble");
+  jar.classList.add("shake"); bubble.style.display = "none"; triggerConfettiBlastEffect();
   setTimeout(() => {
     jar.classList.remove("shake");
-    let randomIndex;
-    do {
-      randomIndex = Math.floor(Math.random() * jarNotes.length);
-    } while (randomIndex === lastJarIndex && jarNotes.length > 1);
-    
-    lastJarIndex = randomIndex;
-    bubble.innerText = jarNotes[randomIndex];
-    bubble.style.display = "block";
+    let idx; do { idx = Math.floor(Math.random() * jarNotes.length); } while (idx === lastJarIndex);
+    lastJarIndex = idx; bubble.innerText = jarNotes[idx]; bubble.style.display = "block";
   }, 400);
 }
 
 function triggerConfettiBlastEffect() {
-  const jar = document.getElementById("interactiveJar");
-  const rect = jar.getBoundingClientRect();
-  const particleCount = 20;
-
-  for(let i=0; i<particleCount; i++) {
-    const particle = document.createElement("div");
-    particle.className = "confetti-particle";
-    particle.style.background = `hsl(${Math.random() * 360}, 100%, 70%)`;
-    particle.style.left = (rect.left + rect.width / 2) + "px";
-    particle.style.top = (rect.top + rect.height / 2) + "px";
-
-    const angle = Math.random() * Math.PI * 2;
-    const velocity = Math.random() * 90 + 40;
-    particle.style.setProperty('--x', Math.cos(angle) * velocity + "px");
-    particle.style.setProperty('--y', Math.sin(angle) * velocity + "px");
-
-    document.body.appendChild(particle);
-    setTimeout(() => particle.remove(), 600);
+  const jar = document.getElementById("interactiveJar"); const rect = jar.getBoundingClientRect();
+  for(let i=0; i<20; i++) {
+    const p = document.createElement("div"); p.className = "confetti-particle"; p.style.background = `hsl(${Math.random() * 360}, 100%, 70%)`;
+    p.style.left = (rect.left + rect.width / 2) + "px"; p.style.top = (rect.top + rect.height / 2) + "px";
+    const a = Math.random() * Math.PI * 2; const v = Math.random() * 90 + 40;
+    p.style.setProperty('--x', Math.cos(a) * v + "px"); p.style.setProperty('--y', Math.sin(a) * v + "px");
+    document.body.appendChild(p); setTimeout(() => p.remove(), 600);
   }
 }
 
-/* 🎵 MEDIA ROUTERS */
 const customTracksArray = ["3vCzLB6kS2lGcIpm1OOUsy", "6lanRgr6wXibZr8KgzXxBl", "3hB9lDLyAClYVZivMMl20N", "7FwYs4qSJCJi2Hd6ZV8Q3M", "4QNSMIeCknaH5m0EM2yNTI"];
-
 function promptCustomSpotifyTrackId() {
-  const inputUrl = prompt("Paste your favorite Spotify Track Link or Track ID here:");
-  if(inputUrl) {
-    let trackId = inputUrl;
-    if(inputUrl.includes("track/")) {
-      trackId = inputUrl.split("track/")[1].split("?")[0];
-    }
-    let storedTracks = JSON.parse(localStorage.getItem("our_saved_track_ids") || "[]");
-    storedTracks.push(trackId);
-    localStorage.setItem("our_saved_track_ids", JSON.stringify(storedTracks));
-    loadMusicWidgets();
+  const val = prompt("Paste your favorite Spotify Track Link or Track ID here:");
+  if(val) {
+    let id = val.includes("track/") ? val.split("track/")[1].split("?")[0] : val;
+    let stored = JSON.parse(localStorage.getItem("our_saved_track_ids") || "[]");
+    stored.push(id); localStorage.setItem("our_saved_track_ids", JSON.stringify(stored)); loadMusicWidgets();
   }
 }
 
 function loadMusicWidgets(){
-  const grid = document.getElementById("musicGrid");
-  grid.innerHTML = ""; 
-  let storedTracks = JSON.parse(localStorage.getItem("our_saved_track_ids") || "[]");
-  let integratedList = [...customTracksArray, ...storedTracks];
-
-  integratedList.forEach(id => {
-    let card = document.createElement("div");
-    card.className = "musicCard";
+  const grid = document.getElementById("musicGrid"); grid.innerHTML = "";
+  let list = [...customTracksArray, ...JSON.parse(localStorage.getItem("our_saved_track_ids") || "[]")];
+  list.forEach(id => {
+    let card = document.createElement("div"); card.className = "musicCard";
     card.innerHTML = `<iframe src="https://open.spotify.com/embed/track/${id}?utm_source=generator&theme=0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
     grid.appendChild(card);
   });
 }
 
-/* 📝 INTERACTIVE METRIC LOGS */
-function switchNoteAuthor(author) {
-  currentAuthor = author;
-  document.getElementById("btnHru").classList.toggle("active", author === "Rishi");
-  document.getElementById("btnPav").classList.toggle("active", author === "Pavani");
-  document.getElementById("noteInput").placeholder = `Leaving a note as ${author}...`;
+function switchNoteAuthor(a) {
+  currentAuthor = a;
+  document.getElementById("btnHru").classList.toggle("active", a === "Rishi");
+  document.getElementById("btnPav").classList.toggle("active", a === "Pavani");
+  document.getElementById("noteInput").placeholder = `Leaving a note as ${a}...`;
 }
 
 function commitNoteToBoard() {
-  const input = document.getElementById("noteInput");
-  const text = input.value.trim();
-  if(!text) return;
-
-  let notes = JSON.parse(localStorage.getItem("our_miss_you_notes") || "[]");
-  const newNote = {
-    id: Date.now(),
+  const input = document.getElementById("noteInput"); if(!input.value.trim()) return;
+  const payload = {
     author: currentAuthor,
-    content: text,
-    time: new Date().toLocaleString([], {month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'})
+    content: input.value.trim(),
+    time: new Date().toLocaleString([], {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'})
   };
-
-  notes.unshift(newNote); 
-  localStorage.setItem("our_miss_you_notes", JSON.stringify(notes));
+  if (db) { db.ref('notes').push(payload); } 
+  else {
+    let notes = JSON.parse(localStorage.getItem("our_miss_you_notes") || "[]"); notes.unshift(payload);
+    localStorage.setItem("our_miss_you_notes", JSON.stringify(notes)); renderNotes();
+  }
   input.value = "";
-  renderNotes();
 }
 
 function renderNotes() {
-  const board = document.getElementById("notesBoard");
-  let notes = JSON.parse(localStorage.getItem("our_miss_you_notes") || "[]");
-  if(notes.length === 0) {
-    board.innerHTML = `<p style="color: var(--text-muted); font-size: 14px; text-align: center; font-style: italic; padding: 10px;">No notes left yet. Leave one when you're thinking of her! 💭</p>`;
-    return;
-  }
-  board.innerHTML = notes.map(note => `
-    <div class="note-card ${note.author === 'Pavani' ? 'pavani' : ''}">
-      <div class="note-header">
-        <span>${note.author === 'Pavani' ? '👩‍🦰 Pavani' : '👨 Rishi'}</span>
-        <span>${note.time}</span>
-      </div>
-      <div class="note-body">"${note.content}"</div>
-    </div>
-  `).join('');
+  const board = document.getElementById("notesBoard"); let n = JSON.parse(localStorage.getItem("our_miss_you_notes") || "[]");
+  if(n.length === 0) { board.innerHTML = `<p style="color:var(--text-muted); font-size:14px; text-align:center; font-style:italic;">No notes left yet. 💭</p>`; return; }
+  board.innerHTML = n.map(note => `<div class="note-card ${note.author === 'Pavani' ? 'pavani' : ''}"><div class="note-header"><span>${note.author === 'Pavani' ? '👩‍🦰 Pavani' : '👨 Rishi'}</span><span>${note.time}</span></div><div class="note-body">"${note.content}"</div></div>`).join('');
 }
 
-/* 📍 REAL HAVERSINE GPS CALCULATORS */
-const MY_LATITUDE = 17.3850;  
-const MY_LONGITUDE = 78.4867; 
-
+const MY_LATITUDE = 17.3850; const MY_LONGITUDE = 78.4867;
 function calculateRealDistance() {
-  const distanceElement = document.getElementById("liveDistance");
-  if (!navigator.geolocation || !navigator.geolocation.getCurrentPosition) {
-    distanceElement.innerText = "612.0 kms 💖";
-    return;
-  }
+  const el = document.getElementById("liveDistance");
+  if (!navigator.geolocation || !navigator.geolocation.getCurrentPosition) { el.innerText = "612.0 kms 💖"; return; }
   navigator.geolocation.getCurrentPosition((pos) => {
-    const partnerLat = pos.coords.latitude;
-    const partnerLng = pos.coords.longitude;
-    const R = 6371;
-    const dLat = deg2rad(partnerLat - MY_LATITUDE);
-    const dLon = deg2rad(partnerLng - MY_LONGITUDE);
-    const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(deg2rad(MY_LATITUDE)) * Math.cos(deg2rad(partnerLat)) * Math.sin(dLon/2) * Math.sin(dLon/2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    distanceElement.innerHTML = `${(R * c).toFixed(1)} kms 💖`;
-  }, () => {
-    distanceElement.innerText = "612.0 kms 💖";
-  }, { enableHighAccuracy: false, timeout: 4000 });
+    const r = 6371; const dLat = deg2rad(pos.coords.latitude - MY_LATITUDE); const dLon = deg2rad(pos.coords.longitude - MY_LONGITUDE);
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(deg2rad(MY_LATITUDE)) * Math.cos(deg2rad(pos.coords.latitude)) * Math.sin(dLon/2) * Math.sin(dLon/2);
+    el.innerHTML = `${(r * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)))).toFixed(1)} kms 💖`;
+  }, () => { el.innerText = "612.0 kms 💖"; }, { enableHighAccuracy: false, timeout: 4000 });
 }
-
 function deg2rad(deg) { return deg * (Math.PI/180); }
 
-/* ⏳ TIME PROGRESS INCREMENTORS */
 function runLiveCounter() {
-  const start = new Date("2020-05-09T00:00:00");
-  const timeContainer = document.getElementById("time");
-  function updateCounter() {
-    const now = new Date();
-    const diff = now - start;
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((diff / (1000 * 60)) % 60);
-    const seconds = Math.floor((diff / 1000) % 60);
-    timeContainer.innerText = `${days}d : ${hours}h : ${minutes}m : ${seconds}s together 💖`;
-  }
-  updateCounter();
-  setInterval(updateCounter, 1000); 
+  const start = new Date("2020-05-09T00:00:00"); const el = document.getElementById("time");
+  setInterval(() => {
+    const diff = new Date() - start;
+    el.innerText = `${Math.floor(diff / 86400000)}d : ${Math.floor((diff / 3600000) % 24)}h : ${Math.floor((diff / 60000) % 60)}m : ${Math.floor((diff / 1000) % 60)}s together 💖`;
+  }, 1000);
 }
 
-/* 💌 ACCORDION TYPEWRITER SHEET SYSTEM */
-let charIndex = 0;
-let letterStarted = false;
-const msg = `Pavaniii,\n\nidk how to say all this properly but I just wanted to tell you… you mean a lot to me. Like really a lot.\n\nWe’ve been through some tough things… misunderstandings, pain, and those moments where it felt heavy for both of us. But even then, my feelings for you never changed. If anything, it made me realize how much you matter in my life.\n\nI still think abt you all the time, still miss you even when we’re not talking, and honestly my day just feels better when it’s you.\n\nSometimes I remember those small moments… like when we used to talk for hours and laugh at the most random things. Those moments weren’t just time pass for me… they meant everything.\n\nI know we’re not perfect, but I’m willing to try more, understand you better, and handle things in a way that doesn't hurt us again.\n\nI just want you to know I’m here… for you, for us, and for everything we’re building together ❤️\nI love you soo much 🫂`.trim();
+let charIndex = 0; let letterStarted = false;
+const msg = `Pavaniii,\n\nidk how to say all this properly but I just wanted to tell you… you mean a lot to me. Like really a lot.\n\nWe’ve been through some tough things… misunderstandings, pain, and those moments where it felt heavy for both of us. But even then, my feelings for you never changed. If anything, it made me realize how much you matter in my life.\n\nI still think abt you all the time, still miss you even when we’re not talking, and honestly my day just feels better when it’s you.\n\nSometimes I remember those small moments… like when we used to talk for hours and laugh at the most random things. Those moments weren’t just time pass for me… they meant everything.\n\nI know we’re not perfect, but I’m willing to try more, understand you better, and handle things in a way that doesn’t hurt us again.\n\nI just want you to know I’m here… for you, for us, and for everything we’re building together ❤️\nI love you soo much 🫂`.trim();
 
 function startTypewriterLetterStream(){
-  if (letterStarted) return;
-  letterStarted = true;
-  document.getElementById("envelope").classList.add("open");
-  document.getElementById("gift").style.display = "none";
-  const el = document.getElementById("text");
-  const cursor = document.getElementById("cursorElement");
-  cursor.className = "cursor active";
-
+  if (letterStarted) return; letterStarted = true;
+  document.getElementById("envelope").classList.add("open"); document.getElementById("gift").style.display = "none";
+  const el = document.getElementById("text"); const cur = document.getElementById("cursorElement"); cur.className = "cursor active";
   function type(){
-    if (charIndex < msg.length){
-      el.innerHTML += msg[charIndex] === "\n" ? "<br>" : msg[charIndex];
-      charIndex++;
-      setTimeout(type, 40);
-    } else {
-      cursor.className = "cursor"; 
-    }
+    if (charIndex < msg.length){ el.innerHTML += msg[charIndex] === "\n" ? "<br>" : msg[charIndex]; charIndex++; setTimeout(type, 40); }
+    else { cur.className = "cursor"; }
   }
-  setTimeout(type, 650); 
+  setTimeout(type, 650);
 }
 
-/* 💖 PARTICLE CLOUD CHANNELS */
 function startHeartRain() {
   setInterval(() => {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    if(currentParticleType === "miss") heart.innerHTML = "🥺";
-    else if(currentParticleType === "cozy") heart.innerHTML = "✨";
-    else if(currentParticleType === "cute") heart.innerHTML = "💋";
-    else heart.innerHTML = Math.random() > 0.5 ? "💖" : "❤️";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.animationDuration = (Math.random() * 2 + 4) + "s";
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 5000);
+    const h = document.createElement("div"); h.className = "heart";
+    h.innerHTML = currentParticleType === "miss" ? "🥺" : currentParticleType === "cozy" ? "✨" : currentParticleType === "cute" ? "💋" : (Math.random() > 0.5 ? "💖" : "❤️");
+    h.style.left = Math.random() * 100 + "vw"; h.style.animationDuration = (Math.random() * 2 + 4) + "s";
+    document.body.appendChild(h); setTimeout(() => h.remove(), 5000);
   }, 2000);
 }
-
-function openLightbox(imgElement) {
-  const viewer = document.getElementById("viewer");
-  const viewerImg = document.getElementById("viewerImg");
-  viewerImg.src = imgElement.src;
-  viewer.style.display = "flex";
-}
+function openLightbox(img) { const v = document.getElementById("viewer"); const vi = document.getElementById("viewerImg"); vi.src = img.src; v.style.display = "flex"; }
 </script>
-
 </body>
 </html>
