@@ -62,7 +62,7 @@ html { scroll-behavior: smooth; }
   display: flex;
   justify-content: center;
   align-items: center;
-  background: url('https://w0.peakpx.com/wallpaper/725/587/HD-wallpaper-pink-aesthetic-2-glitch-lock-screen-macaroon-pink-aesthetic.jpg') no-repeat center center;
+  background: linear-gradient(135deg, #ffcad4 0%, #ffe5ec 100%);
   background-size: cover;
   z-index: 99999;
   padding: 20px;
@@ -184,11 +184,11 @@ h2 {
   margin-bottom: 20px;
 }
 
-/* 📖 FLUID BOOK COMPONENT */
+/* 📖 BOOK COMPONENT */
 .smooth-book {
   width: 100%;
   max-width: 340px;
-  height: 450px;
+  height: 440px;
   margin: 0 auto;
   position: relative;
   perspective: 1500px;
@@ -230,7 +230,7 @@ h2 {
   transform: rotateY(-140deg);
 }
 
-/* 🗂️ APP NAVIGATION DOCK */
+/* 🗂️ APP BOTTOM DOCK NAVIGATION */
 .app-nav-bar {
   position: fixed;
   bottom: 0; left: 0; right: 0;
@@ -260,7 +260,7 @@ h2 {
 .nav-item.active { color: var(--primary); }
 .nav-item.active span.icon { transform: scale(1.15); }
 
-/* 📸 CORE DESIGN CONFIGS */
+/* 📸 5-PER-ROW GRID GALLERY */
 .gallery {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -277,6 +277,7 @@ h2 {
   cursor: pointer;
 }
 
+/* COMFORT MOVIES CAROUSEL */
 .movies {
   display: flex;
   overflow-x: auto;
@@ -295,6 +296,17 @@ h2 {
   scroll-snap-align: start;
 }
 
+/* ACTION BUTTONS */
+.upload-btn-wrapper { margin-top: 10px; width: 100%; }
+.ios-action-btn {
+  width: 100%; padding: 14px; border: none; border-radius: 18px;
+  background: rgba(255, 255, 255, 0.35); color: var(--primary);
+  font-weight: 700; font-size: 15px; cursor: pointer;
+  display: flex; justify-content: center; align-items: center; gap: 8px;
+  border: 1px solid var(--card-border);
+}
+
+/* MAP COMPONENT */
 .cartoon-map-container {
   width: 100%; height: 180px; border-radius: 24px;
   background: linear-gradient(to bottom, #d4fc79, #96e6a1);
@@ -323,6 +335,7 @@ h2 {
 }
 .map-line { position: absolute; top: 50%; left: 20%; right: 20%; height: 2px; border-top: 3px dashed white; z-index: 1; }
 
+/* 🫙 TRADITIONAL LOVE JAR */
 .jar-container { text-align: center; padding: 10px 0; }
 .love-jar { font-size: 65px; cursor: pointer; display: inline-block; user-select: none; transition: transform 0.2s; }
 .love-jar.shake { animation: jarShake 0.4s ease-in-out; }
@@ -333,6 +346,7 @@ h2 {
 }
 .jar-bubble { margin-top: 15px; padding: 18px; border-radius: 20px; display: none; animation: fadeIn 0.4s ease forwards; font-weight: 600; line-height: 1.5; text-align: center; }
 
+/* CONFETTI IMPACT BLAST SPLASHES */
 .confetti-particle {
   position: absolute; width: 8px; height: 8px;
   border-radius: 50%; z-index: 5; pointer-events: none;
@@ -343,13 +357,16 @@ h2 {
   100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
 }
 
+/* CAMERA INPUT WINDOW */
 .cam-wrapper { display: flex; flex-direction: column; align-items: center; gap: 12px; }
 #camFeed { width: 100%; max-width: 400px; height: 260px; border-radius: 22px; background: #000; display: none; transform: scaleX(-1); object-fit: cover; }
 
+/* SPOTIFY IFRAMES CONTAINER */
 .musicGrid { display: grid; grid-template-columns: 1fr; gap: 14px; width: 100%; }
 .musicCard { width: 100%; border-radius: 20px; overflow: hidden; background: #000; border: 1px solid var(--card-border); }
 .musicCard iframe { width: 100%; height: 80px; border: none; display: block; }
 
+/* ENVELOPE SHEET */
 .letter-box-container { cursor: pointer; text-align: center; }
 .envelope { position: relative; width: 160px; height: 110px; margin: 15px auto; perspective: 600px; }
 .envelope .body { position: absolute; bottom: 0; width: 100%; height: 75px; background: #ffffff; border-radius: 0 0 16px 16px; border: 1px solid #ffe5ec; z-index: 2; }
@@ -363,6 +380,7 @@ h2 {
 .cursor.active::after { content: "|"; font-weight: 700; color: var(--primary); animation: blink 1s steps(2, start) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 
+/* BULLETIN MESSAGES */
 .board-input-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
 .author-select, .mood-select-row { display: flex; gap: 10px; flex-wrap: wrap; }
 .author-btn, .mood-btn { flex: 1; padding: 12px; border: 1px solid var(--card-border); background: rgba(255, 255, 255, 0.3); border-radius: 14px; font-weight: 700; cursor: pointer; color: var(--text-main); font-size: 13px; min-width: 100px; }
@@ -375,6 +393,7 @@ h2 {
 .note-header { display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; }
 .note-body { font-size: 14px; font-weight: 500; text-align: left; }
 
+/* WISHLIST CONFIG */
 .wishlist-textarea {
   width: 100%; height: 90px; padding: 12px;
   border-radius: 14px; border: 1px solid var(--card-border);
@@ -390,6 +409,7 @@ h2 {
 }
 .wishlist-item button { background: none; border: none; color: var(--primary); font-weight: 700; cursor: pointer; }
 
+/* TIMELINE CAPSULE */
 .timeline { display: flex; flex-direction: column; gap: 20px; position: relative; padding-left: 20px; }
 .timeline::before { content: ''; position: absolute; left: 5px; top: 5px; bottom: 5px; width: 2px; background: var(--card-border); }
 .timeline-node { position: relative; }
@@ -397,6 +417,7 @@ h2 {
 .timeline-title { font-weight: 700; font-size: 15px; margin-bottom: 2px; }
 .timeline-desc { font-size: 13px; color: var(--text-muted); }
 
+/* FLOATING HEARTS PARTICLES */
 .heart { position: fixed; font-size: 22px; user-select: none; pointer-events: none; z-index: 1; bottom: -50px; opacity: 0; animation: floatUp 5s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
 @keyframes floatUp {
   0% { transform: translateY(0) scale(0.7) rotate(0deg); opacity: 0; }
@@ -626,22 +647,11 @@ h2 {
 </div>
 
 <script>
-// ⚠️ CONFIGURE YOUR PROJECT DATABASE ACCESS KEYS BELOW WHEN READY TO SYNC ⚠️
+// ⚠️ REPLACE WITH YOUR ACTUAL SUPABASE KEYS ⚠️
 const SUPABASE_URL = "https://YOUR_PROJECT_ID.supabase.co";
 const SUPABASE_KEY = "YOUR_ANON_PUBLIC_KEY";
 
-let supabase = null;
-
-// Crash-proof initialization block
-try {
-  if (SUPABASE_URL && !SUPABASE_URL.includes("YOUR_PROJECT_ID")) {
-    supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-  } else {
-    console.log("Supabase is unconfigured. App running smoothly in offline demo preview mode!");
-  }
-} catch (e) {
-  console.log("Database bridge bypassed. Local metrics context initialized.", e);
-}
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let currentAuthor = "Rishi";
 let currentParticleType = "standard";
@@ -659,7 +669,7 @@ const jarNotes = [
   "You're my forever and always, Pavani! 👑"
 ];
 
-/* 🔓 UNLOCK INTERFACES */
+/* 🔓 UNLOCK SYSTEM WITH SMOOTH IN-PLACE PAGE FLIP */
 function unlockAppWithFluidTransition() {
   const inputPass = document.getElementById("password").value;
   if(inputPass === "22010503") {
@@ -696,7 +706,7 @@ function unlockAppWithFluidTransition() {
   }
 }
 
-/* 🗂️ DECK ROUTERS */
+/* 🗂️ TAB SLIDER DECK CONTROLLERS */
 function slideToIndexScreen(pageIndex, navElement) {
   const track = document.getElementById("appSliderTrack");
   track.style.transform = `translateX(-${pageIndex * 100}vw)`;
@@ -713,7 +723,7 @@ function evaluateAdaptiveTimeSky() {
   document.body.classList.remove("night-mode");
 }
 
-/* 🫂 VAULT ACTIONS */
+/* 🫂 ACTION VAULT LOGS */
 function triggerVaultAction(type) {
   let count = parseInt(localStorage.getItem(`vault_${type}_bank`) || "0");
   count += 1;
@@ -731,7 +741,7 @@ function updateActionVaultDisplays() {
   document.getElementById("hugCountDisplay").innerText = `${hugs} Hugs`;
 }
 
-/* 🥺 MISSED COUNTER INTERFACES */
+/* 🥺 MUTUAL MISSED COUNTER */
 function incrementMissedCounter() {
   let count = parseInt(localStorage.getItem("mutual_missed_moments") || "0");
   count += 1;
@@ -780,25 +790,25 @@ function renderWishlist() {
   `).join('');
 }
 
-/* 📸 SUPABASE IMMUTABLE PHOTO ENGINES */
+/* 📸 SUPABASE SHARED PHOTO ENGINE */
 function triggerNativePhotoUpload() {
   document.getElementById("nativePhotoPicker").click();
 }
 
 async function handleNativePhotoUpload(inputNode) {
-  if (!supabase) {
-    alert("Supabase keys are unconfigured. The upload button runs in live cloud sync mode once keys are loaded! 📱");
-    return;
-  }
   if(inputNode.files && inputNode.files[0]) {
     const reader = new FileReader();
     reader.onload = async function(e) {
       const base64Image = e.target.result;
-      const { error } = await supabase.from('photos').insert([{ url: base64Image }]);
+      
+      const { error } = await supabase
+        .from('photos')
+        .insert([{ url: base64Image }]);
+        
       if (!error) {
         fetchSharedPhotos();
       } else {
-        alert("Upload failed 💔 check table schema configurations!");
+        alert("Upload failed 💔 Make sure Supabase keys are configured!");
       }
     }
     reader.readAsDataURL(inputNode.files[0]);
@@ -807,29 +817,28 @@ async function handleNativePhotoUpload(inputNode) {
 
 async function fetchSharedPhotos() {
   const gallery = document.getElementById("photoGallery");
-  if (!supabase) {
-    gallery.innerHTML = `<p style="font-size:12px; grid-column: span 5; font-style:italic; color:var(--text-muted); text-align:center; padding: 20px 0;">Offline preview mode. Connect your cloud database to share live updates with Pavani! 📸</p>`;
-    return;
-  }
-  try {
-    const { data, error } = await supabase.from('photos').select('url').order('id', { ascending: false });
-    if (!error && data) {
-      gallery.innerHTML = ""; 
-      if (data.length === 0) {
-        gallery.innerHTML = `<p style="font-size:12px; grid-column: span 5; font-style:italic; color:var(--text-muted); text-align:center; padding: 20px 0;">No shared photos. Tap upload to add your first click! 📸</p>`;
-        return;
-      }
-      data.forEach(item => {
-        let img = document.createElement("img");
-        img.src = item.url;
-        img.onclick = function() { openLightbox(this); };
-        gallery.appendChild(img);
-      });
+  
+  const { data, error } = await supabase
+    .from('photos')
+    .select('url')
+    .order('id', { ascending: false });
+
+  if (!error && data) {
+    gallery.innerHTML = ""; 
+    if (data.length === 0) {
+      gallery.innerHTML = `<p style="font-size:12px; grid-column: span 5; font-style:italic; color:var(--text-muted); text-align:center; padding: 20px 0;">No shared photos. Tap upload to add your first click! 📸</p>`;
+      return;
     }
-  } catch (err) { console.log(err); }
+    data.forEach(item => {
+      let img = document.createElement("img");
+      img.src = item.url;
+      img.onclick = function() { openLightbox(this); };
+      gallery.appendChild(img);
+    });
+  }
 }
 
-/* 🎞️ INTERFACES ACCESS SYSTEM */
+/* 📸 CAMERA MODULES */
 async function toggleCameraDeviceStream() {
   const video = document.getElementById("camFeed");
   const toggleBtn = document.getElementById("toggleCamBtn");
@@ -843,13 +852,16 @@ async function toggleCameraDeviceStream() {
     toggleBtn.innerText = "Open Cam 🎥";
   } else {
     try {
-      localStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false });
+      localStream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "user" }, 
+        audio: false
+      });
       video.srcObject = localStream;
       video.style.display = "block";
       snapBtn.style.display = "block";
       toggleBtn.innerText = "Close Cam ❌";
     } catch (err) {
-      alert("Camera streaming requires secure HTTPS execution protocols or local server routing blocks. 💔");
+      alert("Camera access denied or unsupported on this device. 💔");
     }
   }
 }
@@ -857,72 +869,76 @@ async function toggleCameraDeviceStream() {
 async function takeInstantFlipbookSnapshot() {
   const video = document.getElementById("camFeed");
   if (!localStream) return;
-  if (!supabase) {
-    alert("Syncing instant camera snaps requires your cloud database keys! 📸");
-    return;
-  }
 
   const canvas = document.createElement("canvas");
   canvas.width = video.videoWidth || 640;
   canvas.height = video.videoHeight || 480;
+  
   const ctx = canvas.getContext("2d");
   ctx.translate(canvas.width, 0);
   ctx.scale(-1, 1);
   ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
   const base64Image = canvas.toDataURL("image/jpeg");
-  const { error } = await supabase.from('photos').insert([{ url: base64Image }]);
+
+  const { error } = await supabase
+    .from('photos')
+    .insert([{ url: base64Image }]);
+
   if (!error) {
     fetchSharedPhotos();
     toggleCameraDeviceStream();
   } else {
-    alert("Snapshot deployment failure 💔");
+    alert("Snapshot failed to sync 💔");
   }
 }
 
-/* 🍿 WATCHLIST PIPELINES */
+/* 🍿 SUPABASE SHARED MOVIES ENGINE */
 async function addNewSharedMovie() {
-  if (!supabase) {
-    alert("Connect your cloud database keys to store movie watchlists! 🎬");
-    return;
-  }
   const titleInput = document.getElementById("movieTitleInput");
   const posterInput = document.getElementById("moviePosterInput");
+  
   const title = titleInput.value.trim();
   const posterUrl = posterInput.value.trim();
   
   if (!title || !posterUrl) {
-    alert("Please fill out both fields! 🎬");
+    alert("Please fill out both the title and poster URL! 🎬");
     return;
   }
-  const { error } = await supabase.from('movies').insert([{ title: title, poster_url: posterUrl }]);
+
+  const { error } = await supabase
+    .from('movies')
+    .insert([{ title: title, poster_url: posterUrl }]);
+
   if (!error) {
-    titleInput.value = ""; posterInput.value = "";
+    titleInput.value = "";
+    posterInput.value = "";
     fetchSharedMovies(); 
   } else {
-    alert("Watchlist update error 💔");
+    alert("Failed to add movie 💔");
   }
 }
 
 async function fetchSharedMovies() {
   const carousel = document.getElementById("movieCarousel");
-  if (!supabase) {
-    carousel.innerHTML = `<p style="font-size: 12px; font-style: italic; color: var(--text-muted); padding: 10px;">Offline template view. Set your cloud configurations to launch shared watchlists! 🍿</p>`;
-    return;
-  }
-  try {
-    const { data, error } = await supabase.from('movies').select('title, poster_url').order('id', { ascending: false });
-    if (!error && data) {
-      if (data.length === 0) {
-        carousel.innerHTML = `<p style="font-size: 12px; font-style: italic; color: var(--text-muted); padding: 10px;">Watchlist is currently empty. Add your comfort tracks down below!</p>`;
-        return;
-      }
-      carousel.innerHTML = data.map(movie => `<img src="${movie.poster_url}" alt="${movie.title}" title="${movie.title}" onclick="openLightbox(this)">`).join('');
+  
+  const { data, error } = await supabase
+    .from('movies')
+    .select('title, poster_url')
+    .order('id', { ascending: false });
+
+  if (!error && data) {
+    if (data.length === 0) {
+      carousel.innerHTML = `<p style="font-size: 12px; font-style: italic; color: var(--text-muted); padding: 10px;">Your movie list is empty. Add your favorites below! 🍿</p>`;
+      return;
     }
-  } catch (err) { console.log(err); }
+    carousel.innerHTML = data.map(movie => `
+      <img src="${movie.poster_url}" alt="${movie.title}" title="${movie.title}" onclick="openLightbox(this)">
+    `).join('');
+  }
 }
 
-/* 🫙 COMPLIMENT JAR PIPELINES */
+/* 🫙 TRADITIONAL RANDOM COMPLIMENT JAR */
 function drawComplimentJarMessage() {
   const jar = document.getElementById("interactiveJar");
   const bubble = document.getElementById("jarBubble");
@@ -933,6 +949,7 @@ function drawComplimentJarMessage() {
 
   setTimeout(() => {
     jar.classList.remove("shake");
+    
     let randomIndex;
     do {
       randomIndex = Math.floor(Math.random() * jarNotes.length);
@@ -966,7 +983,7 @@ function triggerConfettiBlastEffect() {
   }
 }
 
-/* 🎵 MEDIA ROUTERS */
+/* 🎵 SPOTIFY CONTROLLERS */
 const customTracksArray = ["3vCzLB6kS2lGcIpm1OOUsy", "6lanRgr6wXibZr8KgzXxBl", "3hB9lDLyAClYVZivMMl20N", "7FwYs4qSJCJi2Hd6ZV8Q3M", "4QNSMIeCknaH5m0EM2yNTI"];
 
 function promptCustomSpotifyTrackId() {
@@ -997,7 +1014,7 @@ function loadMusicWidgets(){
   });
 }
 
-/* 📝 INTERACTIVE METRIC LOGS */
+/* 📝 SHARED BULLETIN MESSAGES */
 function switchNoteAuthor(author) {
   currentAuthor = author;
   document.getElementById("btnHru").classList.toggle("active", author === "Rishi");
@@ -1042,7 +1059,7 @@ function renderNotes() {
   `).join('');
 }
 
-/* 📍 REAL HA VERSINE GPS CALCULATORS */
+/* 📍 VERSINE GPS METRICS TRACER */
 const MY_LATITUDE = 17.3850;  
 const MY_LONGITUDE = 78.4867; 
 
@@ -1068,7 +1085,7 @@ function calculateRealDistance() {
 
 function deg2rad(deg) { return deg * (Math.PI/180); }
 
-/* ⏳ TIME PROGRESS INCREMENTORS */
+/* ⏳ TIME METRIC PIPELINES */
 function runLiveCounter() {
   const start = new Date("2020-05-09T00:00:00");
   const timeContainer = document.getElementById("time");
@@ -1085,7 +1102,7 @@ function runLiveCounter() {
   setInterval(updateCounter, 1000); 
 }
 
-/* 💌 ACCORDION TYPEWRITER SHEET SYSTEM */
+/* 💌 TYPEWRITER COMPONENT */
 let charIndex = 0;
 let letterStarted = false;
 const msg = `Pavaniii,\n\nidk how to say all this properly but I just wanted to tell you… you mean a lot to me. Like really a lot.\n\nWe’ve been through some tough things… misunderstandings, pain, and those moments where it felt heavy for both of us. But even then, my feelings for you never changed. If anything, it made me realize how much you matter in my life.\n\nI still think abt you all the time, still miss you even when we’re not talking, and honestly my day just feels better when it’s you.\n\nSometimes I remember those small moments… like when we used to talk for hours and laugh at the most random things. Those moments weren’t just time pass for me… they meant everything.\n\nI know we’re not perfect, but I’m willing to try more, understand you better, and handle things in a way that doesn’t hurt us again.\n\nI just want you to know I’m here… for you, for us, and for everything we’re building together ❤️\nI love you soo much 🫂`.trim();
@@ -1121,7 +1138,7 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-/* 💖 PARTICLE CLOUD CHANNELS */
+/* 💖 HEART ATMOSPHERE PIPELINES */
 function startHeartRain() {
   setInterval(() => {
     const heart = document.createElement("div");
