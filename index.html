@@ -4,132 +4,234 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Our World 💖</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#ff6b81">
+<title>💖 Our World</title>
 
 <style>
-body{
-  margin:0;
-  font-family:'Poppins',sans-serif;
-  background:linear-gradient(135deg,#ffd6e0,#e0c3fc);
-  overflow-x:hidden;
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #ff758c, #ff7eb3);
+  color: white;
+  overflow-x: hidden;
+  min-height: 100vh;
+  transition: background 0.3s, color 0.3s;
 }
 
-/* SPLASH */
-#splash{
-  position:fixed;
-  inset:0;
-  background:#ff6b81;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  color:white;
-  font-size:28px;
-  z-index:9999;
+/* Splash */
+#splash {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: #ff5c8a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 26px;
+  z-index: 9999;
+  transition: opacity 0.5s, visibility 0.5s;
 }
 
-/* LOCK */
-#lockScreen{
-  position:fixed;
-  inset:0;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:9998;
+/* Main */
+#main {
+  display: none;
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
-.lockBox{
-  background:rgba(255,255,255,0.2);
-  backdrop-filter:blur(20px);
-  padding:25px;
-  border-radius:20px;
+/* Glass Card */
+.card {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 20px;
+  border-radius: 15px;
+  margin: 15px 0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-input,button{
-  padding:10px;
-  border:none;
-  border-radius:10px;
+/* Button */
+button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 10px;
+  background: #fff;
+  color: #ff4d6d;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: transform 0.1s, background 0.2s;
 }
 
-button{
-  background:#ff6b81;
-  color:white;
+button:active {
+  transform: scale(0.95);
 }
 
-/* CARD */
-.card{
-  margin:15px;
-  padding:20px;
-  border-radius:20px;
-  backdrop-filter:blur(20px);
-  background:rgba(255,255,255,0.2);
+/* Dark Mode Theme styling overrides */
+body.dark {
+  background: #121212;
+  color: #e0e0e0;
 }
 
-/* GALLERY */
-.gallery{
-  display:flex;
-  overflow-x:auto;
-  gap:10px;
-}
-.gallery img{
-  width:150px;
-  border-radius:15px;
+body.dark .card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* VIEWER */
-#viewer{
-  position:fixed;
-  inset:0;
-  display:none;
-  justify-content:center;
-  align-items:center;
-  background:black;
-}
-#viewer img{
-  width:90%;
+body.dark button {
+  background: #222;
+  color: #ff758c;
+  border: 1px solid #ff758c;
 }
 
-/* DARK */
-.dark{
-  background:#111;
-  color:white;
+/* Gallery */
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
 }
 
-/* BUTTON */
-.toggle{
-  position:fixed;
-  top:10px;
-  right:10px;
+.gallery img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.gallery img:hover {
+  transform: scale(1.05);
+}
+
+/* Fullscreen image viewer */
+#viewer {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
+
+#viewer img {
+  max-width: 90%;
+  max-height: 80%;
+  border-radius: 10px;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+}
+
+/* Secret section styling */
+#secret {
+  display: none;
+  color: #ffe600;
+  font-size: 18px;
+  margin-top: 15px;
+  padding: 10px;
+  border-left: 3px solid #ffe600;
+  background: rgba(255, 230, 0, 0.1);
+  border-radius: 0 10px 10px 0;
 }
 </style>
 </head>
 
 <body>
 
+<!-- Splash Screen -->
 <div id="splash">💖 Our World</div>
 
-<div id="lockScreen">
-  <div class="lockBox">
-    <h2>Unlock 💖</h2>
-    <input type="password" id="password">
-    <button onclick="unlock()">Enter</button>
+<!-- Main App -->
+<div id="main">
+  <h2>Welcome ❤️</h2>
+  
+  <!-- Theme controls -->
+  <div class="card">
+    <h3>Settings</h3>
+    <button id="themeToggle">Toggle Dark Mode</button>
+  </div>
+
+  <!-- Image Gallery -->
+  <div class="card">
+    <h3>Memory Gallery</h3>
+    <p>Click any photo to view fullscreen.</p>
+    <div class="gallery">
+      <!-- Placeholder images using Unsplash (swap with your own src paths) -->
+      <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=300" alt="Memory 1" class="gallery-img">
+      <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=300" alt="Memory 2" class="gallery-img">
+      <img src="https://images.unsplash.com/photo-1494972308805-463bc619d34e?w=300" alt="Memory 3" class="gallery-img">
+    </div>
+  </div>
+
+  <!-- Secret Box Interaction -->
+  <div class="card">
+    <h3>A Special Note</h3>
+    <p>There's a hidden message waiting for you.</p>
+    <button id="secretToggle">Reveal Secret</button>
+    <div id="secret">
+      ✨ "You make the world a whole lot brighter just by being in it!" ✨
+    </div>
   </div>
 </div>
 
-<button class="toggle" onclick="toggleDark()">🌙</button>
+<!-- Fullscreen Lightbox Viewer -->
+<div id="viewer">
+  <img id="viewerImg" src="" alt="Fullscreen view">
+</div>
 
-<section><h1>💖 Our World 💖</h1></section>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const splash = document.getElementById('splash');
+  const main = document.getElementById('main');
+  const themeToggle = document.getElementById('themeToggle');
+  const secretToggle = document.getElementById('secretToggle');
+  const secretSection = document.getElementById('secret');
+  const viewer = document.getElementById('viewer');
+  const viewerImg = document.getElementById('viewerImg');
+  const galleryImages = document.querySelectorAll('.gallery-img');
 
-<section>
-<div class="card" id="time"></div>
-</section>
+  // 1. Splash Screen Fade Out
+  setTimeout(() => {
+    splash.style.opacity = '0';
+    splash.style.visibility = 'hidden';
+    main.style.display = 'block';
+  }, 1500); // Displays splash screen for 1.5 seconds
 
-<section>
-<h2>📸 Memories</h2>
-<div class="gallery">
-<img src="photo01.jpg" onclick="view(this)">
-<img
+  // 2. Dark Mode Toggle
+  themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+  });
+
+  // 3. Secret Section Reveal
+  secretToggle.addEventListener('click', () => {
+    if (secretSection.style.display === 'block') {
+      secretSection.style.display = 'none';
+      secretToggle.textContent = 'Reveal Secret';
+    } else {
+      secretSection.style.display = 'block';
+      secretToggle.textContent = 'Hide Secret';
+    }
+  });
+
+  // 4. Lightbox Gallery Functionality
+  galleryImages.forEach(img => {
+    img.addEventListener('click', () => {
+      viewerImg.src = img.src.replace('?w=300', '?w=1200'); // Request higher res if using Unsplash
+      viewer.style.display = 'flex';
+    });
+  });
+
+  // Close Lightbox on click
+  viewer.addEventListener('click', () => {
+    viewer.style.display = 'none';
+    viewerImg.src = '';
+  });
+});
+</script>
+
+</body>
+</html>
