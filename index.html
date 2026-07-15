@@ -8,11 +8,6 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIk91ciBXb3JsZCIsCiAgInNob3J0X25hbWUiIjogIk91ciBXb3JsZCIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjZmZlNWVjIiwKICAidGhlbWVfY29sb3IiOiAiI2ZmNGQ2ZCIsCiAgIm9yaWVudGF0aW9uIjogInBvcnRyYWl0IiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiaHR0cHM6Ly9jZG4taWNvbnMtcG5nLmZsYXRpY29uLmNvbS81MTIvODMzLzgzMzQ3Mi5wbmciLAogICAgICAidHlwZSI6 'image/png',
-      'sizes': '512x512'
-    }
-  ]
-}">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -66,7 +61,7 @@ html { scroll-behavior: smooth; }
   display: flex;
   justify-content: center;
   align-items: center;
-  background: url('lock-bg.png') no-repeat center center;
+  background: linear-gradient(135deg, #ffcad4 0%, #ffe5ec 100%);
   background-size: cover;
   z-index: 99999;
   padding: 20px;
@@ -76,7 +71,7 @@ html { scroll-behavior: smooth; }
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(40, 20, 25, 0.25);
+  background: rgba(40, 20, 25, 0.15);
   z-index: 1;
 }
 
@@ -85,12 +80,12 @@ html { scroll-behavior: smooth; }
   z-index: 2;
   padding: 40px 30px;
   border-radius: 32px;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.25);
   backdrop-filter: blur(30px) saturate(170%);
   -webkit-backdrop-filter: blur(30px) saturate(170%);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.4);
   text-align: center;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
   max-width: 340px;
   width: 100%;
 }
@@ -98,16 +93,16 @@ html { scroll-behavior: smooth; }
 .lockBox h2 {
   margin-bottom: 25px;
   font-weight: 800;
-  color: #fff;
+  color: #ff4d6d;
   font-size: 28px;
-  text-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  text-shadow: 0 2px 12px rgba(255, 77, 109, 0.15);
 }
 
 .lockBox input {
   padding: 16px 20px;
   width: 100%;
   border-radius: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.5);
   text-align: center;
   font-size: 16px;
   background: rgba(255, 255, 255, 0.88);
@@ -128,6 +123,13 @@ html { scroll-behavior: smooth; }
   font-weight: 700;
   font-size: 16px;
   cursor: pointer;
+  box-shadow: 0 4px 15px rgba(255, 107, 129, 0.4);
+  transition: transform 0.2s, background 0.2s;
+}
+
+.lockBox button:active {
+  transform: scale(0.98);
+  background: #ff4d6d;
 }
 
 /* 📱 HORIZONTAL APP LAYOUT */
@@ -469,15 +471,7 @@ h2 {
       
       <h2>📸 Fav Clicks</h2>
       <div class="gallery" id="photoGallery">
-        <img src="photo01.jpg" alt="Memory 1" onclick="openLightbox(this)">
-        <img src="photo02.jpg" alt="Memory 2" onclick="openLightbox(this)">
-        <img src="photo03.jpg" alt="Memory 3" onclick="openLightbox(this)">
-        <img src="photo04.jpg" alt="Memory 4" onclick="openLightbox(this)">
-        <img src="photo05.jpg" alt="Memory 5" onclick="openLightbox(this)">
-        <img src="photo06.jpg" alt="Memory 6" onclick="openLightbox(this)">
-        <img src="photo07.jpg" alt="Memory 7" onclick="openLightbox(this)">
-        <img src="photo08.jpg" alt="Memory 8" onclick="openLightbox(this)">
-        <img src="photo09.jpg" alt="Memory 9" onclick="openLightbox(this)">
+        <!-- Placeholder structures fallback or stored library snapshots populate here -->
       </div>
 
       <div class="upload-btn-wrapper">
@@ -489,8 +483,8 @@ h2 {
       <div class="card ios-blur cam-wrapper">
         <video id="camFeed" autoplay playsinline></video>
         <div class="cam-controls">
-          <button type="button" class="cam-btn ios-blur" id="toggleCamBtn" onclick="toggleCameraDeviceStream()">Open Cam 🎥</button>
-          <button type="button" class="cam-btn snap" id="snapBtn" onclick="takeInstantFlipbookSnapshot()" style="display:none;">Take Snap 📸</button>
+          <button type="button" class="ios-action-btn ios-blur" id="toggleCamBtn" onclick="toggleCameraDeviceStream()">Open Cam 🎥</button>
+          <button type="button" class="ios-action-btn ios-blur" id="snapBtn" onclick="takeInstantFlipbookSnapshot()" style="display:none; margin-top:10px; background:var(--primary); color:white;">Take Snap 📸</button>
         </div>
       </div>
     </div>
@@ -500,15 +494,8 @@ h2 {
       
       <h2>🎬 Comfort Movies</h2>
       <div class="movies">
-        <img src="movie01.jpg" alt="Movie 1" onclick="openLightbox(this)">
-        <img src="movie02.jpg" alt="Movie 2" onclick="openLightbox(this)">
-        <img src="movie03.jpg" alt="Movie 3" onclick="openLightbox(this)">
-        <img src="movie04.jpg" alt="Movie 4" onclick="openLightbox(this)">
-        <img src="movie05.jpg" alt="Movie 5" onclick="openLightbox(this)">
-        <img src="movie06.jpg" alt="Movie 6" onclick="openLightbox(this)">
-        <img src="movie07.jpg" alt="Movie 7" onclick="openLightbox(this)">
-        <img src="movie08.jpg" alt="Movie 8" onclick="openLightbox(this)">
-        <img src="movie09.jpg" alt="Movie 9" onclick="openLightbox(this)">
+        <!-- Add links to movie images here once hosted, e.g. <img src="movie1.jpg" /> -->
+        <p style="font-size: 12px; font-style: italic; color: var(--text-muted); padding: 10px;">No movies loaded. Tap the button to link media!</p>
       </div>
 
       <h2>🎵 Songs We Love</h2>
@@ -667,8 +654,9 @@ const jarNotes = [
 ];
 
 /* 🔓 UNLOCK SYSTEM WITH SMOOTH IN-PLACE PAGE FLIP */
-function unlockAppToFlipbook() {
+function unlockAppWithFluidTransition() {
   const inputPass = document.getElementById("password").value;
+  // Using the original password hardcoded in your app sequence
   if(inputPass === "22010503") {
     // Phase 1: Smoothly fade lockscreen away
     const lock = document.getElementById("lockScreen");
@@ -722,7 +710,6 @@ function slideToIndexScreen(pageIndex, navElement) {
 
 /* 🌅 TIMELINE ADAPTIVE OVERRIDES REMOVED: PERMANENT PASTEL MODE FORCED */
 function evaluateAdaptiveTimeSky() {
-  // Keeps colors permanently targeted to pink glass configuration parameters
   document.body.classList.remove("night-mode");
 }
 
