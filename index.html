@@ -59,7 +59,7 @@ body {
 
 html { scroll-behavior: smooth; }
 
-/* Authentic iOS Frosted Glass Template Architecture */
+/* Authentic iOS Frosted Glass UI Styling */
 .ios-blur {
   backdrop-filter: blur(40px) saturate(210%);
   -webkit-backdrop-filter: blur(40px) saturate(210%);
@@ -194,7 +194,7 @@ html { scroll-behavior: smooth; }
 .book-shell.open .cover-front { transform: rotateY(-145deg); }
 .book-shell.open .page-internal { transform: rotateY(-135deg); }
 
-/* 📱 HORIZONTAL APP LAYOUT INTERFACE */
+/* 📱 HORIZONTAL APP LAYOUT */
 #mainContent {
   display: none;
   height: 100vh;
@@ -273,7 +273,7 @@ h2 {
 .nav-item.active { color: var(--primary); }
 .nav-item.active span.icon { transform: scale(1.15); }
 
-/* 📸 5-PER-ROW GRID LAYOUT Portfolio */
+/* 📸 5-PER-ROW GRID GALLERY */
 .gallery {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -290,7 +290,7 @@ h2 {
   cursor: pointer;
 }
 
-/* HORIZONTAL SCROLL CAROUSEL (For Movies Only) */
+/* COMFORT MOVIES CAROUSEL */
 .movies {
   display: flex;
   overflow-x: auto;
@@ -309,7 +309,7 @@ h2 {
   scroll-snap-align: start;
 }
 
-/* MEDIA ATTACHMENTS BUTTONS */
+/* UPLOADER ACTION BUTTONS */
 .upload-btn-wrapper { margin-top: 10px; width: 100%; }
 .ios-action-btn {
   width: 100%; padding: 14px; border: none; border-radius: 18px;
@@ -319,7 +319,7 @@ h2 {
   border: 1px solid var(--card-border);
 }
 
-/* CARTOON INTERACTIVE MAP WITHOUT EMOJIS */
+/* CARTOON MINIMALIST POSITION MAP */
 .cartoon-map-container {
   width: 100%; height: 180px; border-radius: 24px;
   background: linear-gradient(to bottom, #d4fc79, #96e6a1);
@@ -349,7 +349,7 @@ body.night-mode .cartoon-map-container { background: linear-gradient(to bottom, 
 }
 .map-line { position: absolute; top: 50%; left: 20%; right: 20%; height: 2px; border-top: 3px dashed white; z-index: 1; }
 
-/* 🫙 COMPLIMENT JAR CONFIG */
+/* 🫙 TRADITIONAL LOVE JAR */
 .jar-container { text-align: center; padding: 10px 0; }
 .love-jar { font-size: 65px; cursor: pointer; display: inline-block; user-select: none; transition: transform 0.2s; }
 .love-jar.shake { animation: jarShake 0.4s ease-in-out; }
@@ -360,7 +360,7 @@ body.night-mode .cartoon-map-container { background: linear-gradient(to bottom, 
 }
 .jar-bubble { margin-top: 15px; padding: 18px; border-radius: 20px; display: none; animation: fadeIn 0.4s ease forwards; font-weight: 600; line-height: 1.5; text-align: center; }
 
-/* CONFETTI BLAST BURST EFFECT */
+/* CONFETTI IMPACT BLAST SPLASHES */
 .confetti-particle {
   position: absolute; width: 8px; height: 8px;
   border-radius: 50%; z-index: 5; pointer-events: none;
@@ -371,16 +371,16 @@ body.night-mode .cartoon-map-container { background: linear-gradient(to bottom, 
   100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
 }
 
-/* CAM WORKSPACE */
+/* CAMERA INPUT WINDOW */
 .cam-wrapper { display: flex; flex-direction: column; align-items: center; gap: 12px; }
 #camFeed { width: 100%; max-width: 400px; height: 260px; border-radius: 22px; background: #000; display: none; transform: scaleX(-1); object-fit: cover; }
 
-/* MUSIC STACK */
+/* SPOTIFY IFRAMES CONTAINER */
 .musicGrid { display: grid; grid-template-columns: 1fr; gap: 14px; width: 100%; }
 .musicCard { width: 100%; border-radius: 20px; overflow: hidden; background: #000; border: 1px solid var(--card-border); }
 .musicCard iframe { width: 100%; height: 80px; border: none; display: block; }
 
-/* ENVELOPE SHEET */
+/* LETTER WRAPPING INTERFACES */
 .letter-box-container { cursor: pointer; text-align: center; }
 .envelope { position: relative; width: 160px; height: 110px; margin: 15px auto; perspective: 600px; }
 .envelope .body { position: absolute; bottom: 0; width: 100%; height: 75px; background: #ffffff; border-radius: 0 0 16px 16px; border: 1px solid #ffe5ec; z-index: 2; }
@@ -394,7 +394,7 @@ body.night-mode .cartoon-map-container { background: linear-gradient(to bottom, 
 .cursor.active::after { content: "|"; font-weight: 700; color: var(--primary); animation: blink 1s steps(2, start) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 
-/* CONNECT CONFIG */
+/* BULLETIN MESSAGE CHANNELS */
 .board-input-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
 .author-select, .mood-select-row { display: flex; gap: 10px; flex-wrap: wrap; }
 .author-btn, .mood-btn { flex: 1; padding: 12px; border: 1px solid var(--card-border); background: rgba(255, 255, 255, 0.2); border-radius: 14px; font-weight: 700; cursor: pointer; color: var(--text-main); font-size: 13px; min-width: 100px; }
@@ -407,7 +407,7 @@ body.night-mode .cartoon-map-container { background: linear-gradient(to bottom, 
 .note-header { display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; }
 .note-body { font-size: 14px; font-weight: 500; text-align: left; }
 
-/* WISHLIST SHEET CONFIG */
+/* WISHLIST NOTEPAD MEMO CANVAS */
 .wishlist-textarea {
   width: 100%; height: 90px; padding: 12px;
   border-radius: 14px; border: 1px solid var(--card-border);
@@ -423,7 +423,7 @@ body.night-mode .cartoon-map-container { background: linear-gradient(to bottom, 
 }
 .wishlist-item button { background: none; border: none; color: var(--primary); font-weight: 700; cursor: pointer; }
 
-/* TIMELINE CAPSULE */
+/* ROADMAP MILESTONES TRAIL */
 .timeline { display: flex; flex-direction: column; gap: 20px; position: relative; padding-left: 20px; }
 .timeline::before { content: ''; position: absolute; left: 5px; top: 5px; bottom: 5px; width: 2px; background: var(--card-border); }
 .timeline-node { position: relative; }
@@ -431,7 +431,7 @@ body.night-mode .cartoon-map-container { background: linear-gradient(to bottom, 
 .timeline-title { font-weight: 700; font-size: 15px; margin-bottom: 2px; }
 .timeline-desc { font-size: 13px; color: var(--text-muted); }
 
-/* FLOATING HEARTS PARTICLES */
+/* AMBIENT EMITTORS RAIN RUNNERS */
 .heart { position: fixed; font-size: 22px; user-select: none; pointer-events: none; z-index: 1; bottom: -50px; opacity: 0; animation: floatUp 5s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
 @keyframes floatUp {
   0% { transform: translateY(0) scale(0.7) rotate(0deg); opacity: 0; }
@@ -458,7 +458,7 @@ body.night-mode .cartoon-map-container { background: linear-gradient(to bottom, 
   </div>
 </div>
 
-<!-- FLIPBOOK OPENING INTRO -->
+<!-- FLIPBOOK INTRODUCTORY SLIDE CANVAS OVERLAY -->
 <div id="flipbookIntroContainer">
   <div class="book-shell" id="loveBook">
     <div class="book-page cover-front">
@@ -472,11 +472,11 @@ body.night-mode .cartoon-map-container { background: linear-gradient(to bottom, 
   </div>
 </div>
 
-<!-- MAIN APPLICATION SLIDER TRACK -->
+<!-- DYNAMIC SLIDER DISPLAY BASE -->
 <div id="mainContent">
   <div class="app-slider-track" id="appSliderTrack">
 
-    <!-- SCREEN 1: 📖 WELCOME SHEET -->
+    <!-- PAGE 1: 📖 WELCOME BOARD -->
     <div class="app-screen">
       <header><h1>Welcome Home</h1></header>
       <div class="card ios-blur" style="text-align: center; padding: 40px 20px;">
@@ -490,7 +490,7 @@ body.night-mode .cartoon-map-container { background: linear-gradient(to bottom, 
       </div>
     </div>
 
-    <!-- SCREEN 2: 📸 VAULT (5-Per-Row Grid Layout Portfolio) -->
+    <!-- PAGE 2: 📸 MEDIA VAULT (5-Per-Row Grid Display) -->
     <div class="app-screen">
       <header><h1>Memory Vault</h1></header>
       
@@ -507,7 +507,7 @@ body.night-mode .cartoon-map-container { background: linear-gradient(to bottom, 
         <img src="photo09.jpg" alt="Memory 9" onclick="openLightbox(this)">
       </div>
 
-      <!-- Native Image Uploader -->
+      <!-- File Attachment Action Block -->
       <div class="upload-btn-wrapper">
         <button class="ios-action-btn ios-blur" onclick="triggerNativePhotoUpload()">➕ Upload Photo to Gallery</button>
         <input type="file" id="nativePhotoPicker" accept="image/*" style="display:none;" onchange="handleNativePhotoUpload(this)">
@@ -523,7 +523,7 @@ body.night-mode .cartoon-map-container { background: linear-gradient(to bottom, 
       </div>
     </div>
 
-    <!-- SCREEN 3: 🎬 ENTERTAINMENT -->
+    <!-- PAGE 3: 🎬 MOVIES & SONGS -->
     <div class="app-screen">
       <header><h1>Entertainment</h1></header>
       
@@ -543,13 +543,13 @@ body.night-mode .cartoon-map-container { background: linear-gradient(to bottom, 
       <h2>🎵 Songs We Love</h2>
       <div class="musicGrid" id="musicGrid"></div>
       
-      <!-- Native Song URL Linker -->
+      <!-- Spotify Widget Injektor Controller -->
       <div class="upload-btn-wrapper" style="margin-top:20px;">
         <button class="ios-action-btn ios-blur" onclick="promptCustomSpotifyTrackId()">🎵 Link a Spotify Track Link</button>
       </div>
     </div>
 
-    <!-- SCREEN 4: 💭 FEELINGS SPACE -->
+    <!-- PAGE 4: 💭 FEELINGS LOGS & WISHLIST CANVAS -->
     <div class="app-screen">
       <header><h1>Feelings Space</h1></header>
       
@@ -589,18 +589,18 @@ body.night-mode .cartoon-map-container { background: linear-gradient(to bottom, 
       </div>
     </div>
 
-    <!-- SCREEN 5: 📊 CURRENT STATUS -->
+    <!-- PAGE 5: 📊 CURRENT REAL METRICS STATUS -->
     <div class="app-screen">
       <header><h1>Current Status</h1></header>
       
       <h2>⏳ Time Together</h2>
       <div class="card ios-blur" id="time" style="font-size: 20px; font-weight: 700; color: var(--primary); text-align: center; letter-spacing: -0.2px; line-height: 1.4;"></div>
 
-      <h2>💋 Interactive Action Vaults</h2>
+      <h2>💗 love Booth</h2>
       <div class="card ios-blur" style="text-align: center;">
         <div style="display:flex; justify-content:space-around; margin-bottom:15px;">
           <div>
-            <span style="font-size:32px; cursor:pointer;" onclick="triggerVaultAction('kiss')">💋</span>
+            <span style="font-size:32px; cursor:pointer;" onclick="triggerVaultAction('kiss')">😗</span>
             <h4 id="kissCountDisplay" style="color:var(--primary); font-size:16px; margin-top:5px;">0 Kisses</h4>
           </div>
           <div>
@@ -626,7 +626,7 @@ body.night-mode .cartoon-map-container { background: linear-gradient(to bottom, 
       </div>
     </div>
 
-    <!-- SCREEN 6: 💌 STORY PAGE -->
+    <!-- PAGE 6: 💌 TYPEWRITER LETTER SHEETS -->
     <div class="app-screen">
       <header><h1>Our Story</h1></header>
       
@@ -655,7 +655,7 @@ body.night-mode .cartoon-map-container { background: linear-gradient(to bottom, 
 
   </div>
 
-  <!-- BOTTOM NAVIGATION DOCK -->
+  <!-- FIXED BLUR NAVIGATION SYSTEM BAR -->
   <nav class="app-nav-bar ios-blur">
     <button class="nav-item active" onclick="slideToIndexScreen(0, this)">
       <span class="icon">🏠</span><span>Welcome</span>
@@ -679,7 +679,7 @@ body.night-mode .cartoon-map-container { background: linear-gradient(to bottom, 
 
 </div>
 
-<!-- LIGHTBOX -->
+<!-- PORTFOLIO EXPANDER POP LIGHTBOX -->
 <div id="viewer" onclick="this.style.display='none'">
   <img id="viewerImg" src="" alt="Expanded View Portfolio">
 </div>
@@ -701,7 +701,7 @@ const jarNotes = [
   "You're my forever and always, Pavani! 👑"
 ];
 
-/* 🔓 UNLOCK SYSTEM */
+/* 🔓 ACCESS CORES ACCESS PORTALS */
 function unlockAppToFlipbook() {
   const inputPass = document.getElementById("password").value;
   if(inputPass === "22010503") {
@@ -739,7 +739,7 @@ document.getElementById("password").addEventListener("keydown", (e) => {
   if (e.key === "Enter") unlockAppToFlipbook();
 });
 
-/* 🗂️ TAB SLIDER MATRIX ENGINE */
+/* 🗂️ APP DECK SLIDE FRAMEWORK ROUTERS */
 function slideToIndexScreen(pageIndex, navElement) {
   const track = document.getElementById("appSliderTrack");
   track.style.transform = `translateX(-${pageIndex * 100}vw)`;
@@ -752,7 +752,7 @@ function slideToIndexScreen(pageIndex, navElement) {
   }
 }
 
-/* 🌅 ADAPTIVE THEME STATES */
+/* 🌅 ADAPTIVE SYSTEM SUNSET DETECTORS */
 function evaluateAdaptiveTimeSky() {
   const localHour = new Date().getHours();
   if (localHour >= 18 || localHour < 6) {
@@ -762,7 +762,7 @@ function evaluateAdaptiveTimeSky() {
   }
 }
 
-/* 💋 HUG & KISS ACTIONS */
+/* 💋 TRACK VAULT EMBRACES ENGINE */
 function triggerVaultAction(type) {
   let count = parseInt(localStorage.getItem(`vault_${type}_bank`) || "0");
   count += 1;
@@ -780,7 +780,7 @@ function updateActionVaultDisplays() {
   document.getElementById("hugCountDisplay").innerText = `${hugs} Hugs`;
 }
 
-/* 🥺 MISSED COUNTER ENGINE */
+/* 🥺 MEMORY SHARE MODULE */
 function incrementMissedCounter() {
   let count = parseInt(localStorage.getItem("mutual_missed_moments") || "0");
   count += 1;
@@ -794,7 +794,7 @@ function updateMissedDisplay() {
   document.getElementById("missedCounterDisplay").innerText = `${count} Missed Moments Shared`;
 }
 
-/* 📝 WISHLIST NOTEPAD ENGINE */
+/* 📝 WISHLIST STORAGE COMPILER MODULE */
 function addWishlistItem() {
   const textarea = document.getElementById("wishlistInput");
   const text = textarea.value.trim();
@@ -829,7 +829,7 @@ function renderWishlist() {
   `).join('');
 }
 
-/* 📸 LOCAL MEDIA ATTACHMENTS SYSTEM */
+/* 📸 LOCAL DATA PHOTO FILE LOG APPRENDERS */
 function triggerNativePhotoUpload() {
   document.getElementById("nativePhotoPicker").click();
 }
@@ -860,7 +860,7 @@ function renderUploadedPhotos() {
   });
 }
 
-/* 📸 CAMERA DEVICE CONTROLLERS */
+/* 📸 CAMERA HARDWARE INPUT COMPILERS */
 async function toggleCameraDeviceStream() {
   const video = document.getElementById("camFeed");
   const toggleBtn = document.getElementById("toggleCamBtn");
@@ -871,7 +871,7 @@ async function toggleCameraDeviceStream() {
     localStream = null;
     video.style.display = "none";
     snapBtn.style.display = "none";
-    toggleBtn.innerText = "Open Cam 🎥";
+    toggleBtn.innerText = "Open Cam 📸";
   } else {
     try {
       localStream = await navigator.mediaDevices.getUserMedia({
@@ -924,7 +924,7 @@ function loadSavedSnapshots() {
   renderUploadedPhotos(); 
 }
 
-/* 🫙 UNIQUE SEQUENTIAL RANDOMIZER COMPLIMENT JAR */
+/* 🫙 COMPLIMENT JAR SHAKER ENGINE */
 function drawComplimentJarMessage() {
   const jar = document.getElementById("interactiveJar");
   const bubble = document.getElementById("jarBubble");
@@ -969,7 +969,9 @@ function triggerConfettiBlastEffect() {
   }
 }
 
-/* 🎵 TRACKS GENERATOR COMPONENT */
+/* 🎵 DEFAULT SPOTIFY INJECTIONS */
+const customTracksArray = ["3vCzLB6kS2lGcIpm1OOUsy", "6lanRgr6wXibZr8KgzXxBl", "3hB9lDLyAClYVZivMMl20N", "7FwYs4qSJCJi2Hd6ZV8Q3M", "4QNSMIeCknaH5m0EM2yNTI"];
+
 function promptCustomSpotifyTrackId() {
   const inputUrl = prompt("Paste your favorite Spotify Track Link or Track ID here:");
   if(inputUrl) {
@@ -988,14 +990,7 @@ function loadMusicWidgets(){
   const grid = document.getElementById("musicGrid");
   grid.innerHTML = ""; 
   let storedTracks = JSON.parse(localStorage.getItem("our_saved_track_ids") || "[]");
-  let integratedList = [
-    "3vCzLB6kS2lGcIpm1OOUsy", 
-    "6lanRgr6wXibZr8KgzXxBl", 
-    "3hB9lDLyAClYVZivMMl20N", 
-    "7FwYs4qSJCJi2Hd6ZV8Q3M", 
-    "4QNSMIeCknaH5m0EM2yNTI",
-    ...storedTracks
-  ];
+  let integratedList = [...customTracksArray, ...storedTracks];
 
   integratedList.forEach(id => {
     let card = document.createElement("div");
@@ -1005,7 +1000,7 @@ function loadMusicWidgets(){
   });
 }
 
-/* 📝 SYNC MESSAGE BULLETIN BOARD */
+/* 📝 BULLETIN SYNC MESSAGE BOARD */
 function switchNoteAuthor(author) {
   currentAuthor = author;
   document.getElementById("btnHru").classList.toggle("active", author === "Rishi");
@@ -1050,7 +1045,7 @@ function renderNotes() {
   `).join('');
 }
 
-/* 📍 REAL HA VERSINE GPS COORDINATES ENGINE */
+/* 📍 REAL HA VERSINE DYNAMIC PROXIMITY CALCULATOR */
 const MY_LATITUDE = 17.3850;  
 const MY_LONGITUDE = 78.4867; 
 
@@ -1076,7 +1071,7 @@ function calculateRealDistance() {
 
 function deg2rad(deg) { return deg * (Math.PI/180); }
 
-/* ⏳ TIME COUNTER ENGINE */
+/* ⏳ TIME RELATIONSHIP COUNTER */
 function runLiveCounter() {
   const start = new Date("2020-05-09T00:00:00");
   const timeContainer = document.getElementById("time");
@@ -1093,7 +1088,7 @@ function runLiveCounter() {
   setInterval(updateCounter, 1000); 
 }
 
-/* 💌 TYPEWRITER TEXT ENGINE Preserving exact custom copy lines */
+/* 💌 TYPEWRITER MATRIX HANDLERS */
 let charIndex = 0;
 let letterStarted = false;
 const msg = `Pavaniii,\n\nidk how to say all this properly but I just wanted to tell you… you mean a lot to me. Like really a lot.\n\nWe’ve been through some tough things… misunderstandings, pain, and those moments where it felt heavy for both of us. But even then, my feelings for you never changed. If anything, it made me realize how much you matter in my life.\n\nI still think abt you all the time, still miss you even when we’re not talking, and honestly my day just feels better when it’s you.\n\nSometimes I remember those small moments… like when we used to talk for hours and laugh at the most random things. Those moments weren’t just time pass for me… they meant everything.\n\nI know we’re not perfect, but I’m willing to try more, understand you better, and handle things in a way that doesn’t hurt us again.\n\nI just want you to know I’m here… for you, for us, and for everything we’re building together ❤️\nI love you soo much 🫂`.trim();
@@ -1130,7 +1125,7 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-/* 💖 EMITTOR RAIN SYSTEM */
+/* 💖 ENVIRONMENT PARTICLE FLOWS */
 function startHeartRain() {
   setInterval(() => {
     const heart = document.createElement("div");
