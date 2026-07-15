@@ -263,7 +263,7 @@ h2 {
 /* 📸 CORE DESIGN CONFIGS */
 .gallery {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 8px;
   padding: 10px 2px;
 }
@@ -274,6 +274,20 @@ h2 {
   object-fit: cover;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+}
+
+.upload-btn-wrapper {
+  margin: 10px 0 20px 0;
+}
+
+.ios-action-btn {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  font-weight: 700;
+  color: var(--text-main);
   cursor: pointer;
 }
 
@@ -455,8 +469,7 @@ h2 {
       <header><h1>Memory Vault</h1></header>
       
       <h2>📸 Fav Clicks</h2>
-      <div class="gallery" id="photoGallery">
-        </div>
+      <div class="gallery" id="photoGallery"></div>
 
       <div class="upload-btn-wrapper">
         <button class="ios-action-btn ios-blur" onclick="triggerNativePhotoUpload()">➕ Upload Photo to Shared Gallery</button>
@@ -477,8 +490,7 @@ h2 {
       <header><h1>Entertainment</h1></header>
       
       <h2>🎬 Comfort Movies</h2>
-      <div class="movies" id="movieCarousel">
-        </div>
+      <div class="movies" id="movieCarousel"></div>
 
       <div class="card ios-blur" style="margin-top: 10px;">
         <p style="font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--text-muted);">Add a Comfort Movie together:</p>
@@ -630,12 +642,12 @@ h2 {
 const SUPABASE_URL = "https://YOUR_PROJECT_ID.supabase.co";
 const SUPABASE_KEY = "YOUR_ANON_PUBLIC_KEY";
 
-let supabase = null;
+let supabaseClient = null;
 
-// Crash-proof initialization block
+// Crash-proof initialization block fixed to avoid namespace masking
 try {
   if (SUPABASE_URL && !SUPABASE_URL.includes("YOUR_PROJECT_ID")) {
-    supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   } else {
     console.log("Supabase is unconfigured. App running smoothly in offline demo preview mode!");
   }
@@ -722,6 +734,10 @@ function triggerVaultAction(type) {
   
   currentParticleType = (type === 'kiss') ? 'cute' : 'cozy';
   triggerConfettiBlastEffect();
+
+  setTimeout(() => {
+    currentParticleType = 'standard';
+  }, 4000);
 }
 
 function updateActionVaultDisplays() {
@@ -738,6 +754,10 @@ function incrementMissedCounter() {
   localStorage.setItem("mutual_missed_moments", count);
   currentParticleType = 'miss';
   updateMissedDisplay();
+
+  setTimeout(() => {
+    currentParticleType = 'standard';
+  }, 4000);
 }
 
 function updateMissedDisplay() {
@@ -780,13 +800,13 @@ function renderWishlist() {
   `).join('');
 }
 
-/* 📸 SUPABASE IMMUTABLE PHOTO ENGINES */
+/* 📸 SUPABASE PHOTO ENGINES */
 function triggerNativePhotoUpload() {
   document.getElementById("nativePhotoPicker").click();
 }
 
 async function handleNativePhotoUpload(inputNode) {
-  if (!supabase) {
+  if (!supabaseClient) {
     alert("Supabase keys are unconfigured. The upload button runs in live cloud sync mode once keys are loaded! 📱");
     return;
   }
@@ -794,7 +814,7 @@ async function handleNativePhotoUpload(inputNode) {
     const reader = new FileReader();
     reader.onload = async function(e) {
       const base64Image = e.target.result;
-      const { error } = await supabase.from('photos').insert([{ url: base64Image }]);
+      const { error } = await supabaseClient.from('photos').insert([{ url: base64Image }]);
       if (!error) {
         fetchSharedPhotos();
       } else {
@@ -807,16 +827,16 @@ async function handleNativePhotoUpload(inputNode) {
 
 async function fetchSharedPhotos() {
   const gallery = document.getElementById("photoGallery");
-  if (!supabase) {
-    gallery.innerHTML = `<p style="font-size:12px; grid-column: span 5; font-style:italic; color:var(--text-muted); text-align:center; padding: 20px 0;">Offline preview mode. Connect your cloud database to share live updates with Pavani! 📸</p>`;
+  if (!supabaseClient) {
+    gallery.innerHTML = `<p style="font-size:12px; grid-column: span 3; font-style:italic; color:var(--text-muted); text-align:center; padding: 20px 0;">Offline preview mode. Connect your cloud database to share live updates with Pavani! 📸</p>`;
     return;
   }
   try {
-    const { data, error } = await supabase.from('photos').select('url').order('id', { ascending: false });
+    const { data, error } = await supabaseClient.from('photos').select('url').order('id', { ascending: false });
     if (!error && data) {
       gallery.innerHTML = ""; 
       if (data.length === 0) {
-        gallery.innerHTML = `<p style="font-size:12px; grid-column: span 5; font-style:italic; color:var(--text-muted); text-align:center; padding: 20px 0;">No shared photos. Tap upload to add your first click! 📸</p>`;
+        gallery.innerHTML = `<p style="font-size:12px; grid-column: span 3; font-style:italic; color:var(--text-muted); text-align:center; padding: 20px 0;">No shared photos. Tap upload to add your first click! 📸</p>`;
         return;
       }
       data.forEach(item => {
@@ -857,7 +877,7 @@ async function toggleCameraDeviceStream() {
 async function takeInstantFlipbookSnapshot() {
   const video = document.getElementById("camFeed");
   if (!localStream) return;
-  if (!supabase) {
+  if (!supabaseClient) {
     alert("Syncing instant camera snaps requires your cloud database keys! 📸");
     return;
   }
@@ -871,7 +891,7 @@ async function takeInstantFlipbookSnapshot() {
   ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
   const base64Image = canvas.toDataURL("image/jpeg");
-  const { error } = await supabase.from('photos').insert([{ url: base64Image }]);
+  const { error } = await supabaseClient.from('photos').insert([{ url: base64Image }]);
   if (!error) {
     fetchSharedPhotos();
     toggleCameraDeviceStream();
@@ -882,7 +902,7 @@ async function takeInstantFlipbookSnapshot() {
 
 /* 🍿 WATCHLIST PIPELINES */
 async function addNewSharedMovie() {
-  if (!supabase) {
+  if (!supabaseClient) {
     alert("Connect your cloud database keys to store movie watchlists! 🎬");
     return;
   }
@@ -895,7 +915,7 @@ async function addNewSharedMovie() {
     alert("Please fill out both fields! 🎬");
     return;
   }
-  const { error } = await supabase.from('movies').insert([{ title: title, poster_url: posterUrl }]);
+  const { error } = await supabaseClient.from('movies').insert([{ title: title, poster_url: posterUrl }]);
   if (!error) {
     titleInput.value = ""; posterInput.value = "";
     fetchSharedMovies(); 
@@ -906,12 +926,12 @@ async function addNewSharedMovie() {
 
 async function fetchSharedMovies() {
   const carousel = document.getElementById("movieCarousel");
-  if (!supabase) {
+  if (!supabaseClient) {
     carousel.innerHTML = `<p style="font-size: 12px; font-style: italic; color: var(--text-muted); padding: 10px;">Offline template view. Set your cloud configurations to launch shared watchlists! 🍿</p>`;
     return;
   }
   try {
-    const { data, error } = await supabase.from('movies').select('title, poster_url').order('id', { ascending: false });
+    const { data, error } = await supabaseClient.from('movies').select('title, poster_url').order('id', { ascending: false });
     if (!error && data) {
       if (data.length === 0) {
         carousel.innerHTML = `<p style="font-size: 12px; font-style: italic; color: var(--text-muted); padding: 10px;">Watchlist is currently empty. Add your comfort tracks down below!</p>`;
@@ -1042,7 +1062,7 @@ function renderNotes() {
   `).join('');
 }
 
-/* 📍 REAL HA VERSINE GPS CALCULATORS */
+/* 📍 REAL HAVERSINE GPS CALCULATORS */
 const MY_LATITUDE = 17.3850;  
 const MY_LONGITUDE = 78.4867; 
 
