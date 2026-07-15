@@ -4,558 +4,307 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Our World 💖</title>
-<style>
-body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #ffd6e0, #e0c3fc);
-  text-align: center;
-  color: #333;
-  overflow-x: hidden;
-  min-height: 100vh;
-  transition: background 0.3s, color 0.3s;
-}
 
-html {
-  scroll-behavior: smooth;
+<style>
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  background: linear-gradient(135deg,#ffd6e0,#e0c3fc);
+  text-align:center;
+  color:#333;
+  overflow-x:hidden;
 }
 
 /* 🔓 LOCK SCREEN */
-#lockScreen {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
+#lockScreen{
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background: linear-gradient(135deg,#ff9a9e,#fad0c4);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
 }
 
-.lockBox {
-  background: rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  padding: 30px;
-  border-radius: 20px;
-  text-align: center;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-  max-width: 320px;
-  width: 90%;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+.lockBox{
+  background:rgba(255,255,255,0.3);
+  backdrop-filter:blur(15px);
+  padding:30px;
+  border-radius:20px;
+  text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,0.2);
 }
 
-#typing {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 15px;
-  min-height: 28px;
-  color: #ff4d6d;
+.lockBox input{
+  padding:10px;
+  border:none;
+  border-radius:10px;
+  margin-top:10px;
+  width:200px;
 }
 
-.lockBox input {
-  padding: 12px;
-  border: none;
-  border-radius: 10px;
-  margin-top: 10px;
-  width: 80%;
-  box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
-  font-size: 16px;
-  text-align: center;
+.lockBox button{
+  margin-top:15px;
+  padding:10px 20px;
+  border:none;
+  border-radius:15px;
+  background:#ff6b81;
+  color:white;
+  cursor:pointer;
 }
 
-.lockBox button {
-  margin-top: 15px;
-  padding: 10px 25px;
-  border: none;
-  border-radius: 15px;
-  background: #ff6b81;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(255,107,129,0.3);
-  transition: transform 0.1s;
+/* sections */
+section{
+  padding:40px 20px;
+  animation:fadeIn 1s ease;
 }
 
-.lockBox button:active {
-  transform: scale(0.95);
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(20px);}
+  to{opacity:1; transform:translateY(0);}
 }
 
-/* 📱 MAIN CONTAINER */
-#mainContent {
-  display: none; /* Hidden until unlocked */
-  padding-bottom: 50px;
+.gallery,.movies{
+  display:flex;
+  overflow-x:auto;
+  gap:20px;
 }
 
-/* SECTIONS & GLASS CARDS */
-section {
-  padding: 30px 15px;
-  max-width: 600px;
-  margin: 0 auto;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+.gallery img,.movies img{
+  width:160px;
+  height:260px;
+  object-fit:cover;
+  border-radius:20px;
+  cursor:pointer;
 }
 
-section.visible {
-  opacity: 1;
-  transform: translateY(0);
+.music{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+  align-items:center;
 }
 
-.card {
-  background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  padding: 20px;
-  border-radius: 20px;
-  margin: 15px auto;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-  text-align: left;
-  line-height: 1.6;
+.card{
+  background:rgba(255,255,255,0.3);
+  backdrop-filter:blur(10px);
+  padding:20px;
+  border-radius:20px;
+  max-width:400px;
+  margin:auto;
 }
 
-h1, h2, h3 {
-  color: #ff4d6d;
+/* viewer */
+#viewer{
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background:black;
+  display:none;
+  justify-content:center;
+  align-items:center;
 }
 
-/* THEME CONTROL */
-.theme-btn {
-  padding: 8px 15px;
-  border: none;
-  border-radius: 10px;
-  background: white;
-  color: #ff6b81;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+#viewer img{
+  max-width:90%;
+  max-height:90%;
 }
 
-/* DARK MODE OVERRIDES */
-body.dark {
-  background: #121212;
-  color: #e0e0e0;
-}
-body.dark .card {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  color: #e0e0e0;
-}
-body.dark h1, body.dark h2, body.dark h3 {
-  color: #ff758c;
-}
-body.dark .theme-btn {
-  background: #222;
-  color: #ff758c;
-  border: 1px solid #ff758c;
+/* hearts */
+.heart{
+  position:fixed;
+  animation:float 4s linear infinite;
 }
 
-/* SCROLLABLE CAROUSELS */
-.gallery, .movies {
-  display: flex;
-  overflow-x: auto;
-  gap: 15px;
-  padding: 10px 5px;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none; /* Firefox */
+@keyframes float{
+  0%{transform:translateY(0);opacity:1;}
+  100%{transform:translateY(-600px);opacity:0;}
 }
 
-.gallery::-webkit-scrollbar, .movies::-webkit-scrollbar {
-  display: none; /* Safari and Chrome */
+/* 💌 LETTER ADDITION ONLY */
+.cursor::after{
+  content:"|";
+  animation:blink 1s infinite;
 }
 
-.cardWrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex: 0 0 auto;
-  scroll-snap-align: start;
-}
-
-.gallery img, .movies img {
-  width: 150px;
-  height: 230px;
-  object-fit: cover;
-  border-radius: 15px;
-  cursor: pointer;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  transition: transform 0.2s;
-}
-
-.gallery img:hover, .movies img:hover {
-  transform: scale(1.03);
-}
-
-.cardWrap p {
-  margin-top: 8px;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-/* MUSIC & SPOTIFY ELEMENT */
-.music {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  align-items: center;
-}
-.music iframe {
-  border-radius: 12px;
-  border: none;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-}
-
-/* INTERACTIVE TYPING LETTER */
-.letter-box {
-  cursor: pointer;
-  min-height: 100px;
-}
-#text {
-  text-shadow: 0 0 8px rgba(255, 107, 129, 0.3);
-  white-space: pre-line;
-  text-align: left;
-}
-.cursor::after {
-  content: "|";
-  font-weight: bold;
-  color: #ff6b81;
-  animation: blink 1s infinite;
-}
-@keyframes blink { 50% { opacity: 0; } }
-
-/* LIGHTBOX VIEWER */
-#viewer {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.95);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 10000;
-}
-#viewer img {
-  max-width: 90%;
-  max-height: 85%;
-  border-radius: 10px;
-  box-shadow: 0 5px 25px rgba(0,0,0,0.5);
-}
-
-/* ENVIRONMENT PARTICLES */
-.heart {
-  position: fixed;
-  font-size: 20px;
-  user-select: none;
-  pointer-events: none;
-  z-index: 999;
-  bottom: -50px;
-  animation: float Up 4s linear forwards;
-}
-@keyframes floatUp {
-  0% { transform: translateY(0) scale(0.8); opacity: 1; }
-  100% { transform: translateY(-105vh) scale(1.2); opacity: 0; }
-}
-
-.tapHeart {
-  position: fixed;
-  font-size: 20px;
-  user-select: none;
-  pointer-events: none;
-  z-index: 9999;
-  animation: splashHeart 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-}
-@keyframes splashHeart {
-  0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
-  100% { transform: translate(var(--tx), var(--ty)) scale(1); opacity: 0; }
-}
-
-/* LOCKSCREEN ERROR SHAKE */
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  20%, 60% { transform: translateX(-8px); }
-  40%, 80% { transform: translateX(8px); }
+@keyframes blink{
+  50%{opacity:0;}
 }
 </style>
 </head>
+
 <body>
 
-<audio id="bgMusic" loop preload="auto">
-  <source src="song.mp3" type="audio/mpeg">
-</audio>
-
+<!-- 🔓 LOCK SCREEN -->
 <div id="lockScreen">
-  <div class="lockBox" id="lockContainer">
+  <div class="lockBox">
     <div id="typing"></div>
-    <input type="password" id="password" placeholder="Enter Secret Code ❤️" autofocus>
+    <input type="password" id="password" placeholder="Password ❤️">
     <br>
-    <button onclick="unlock()">Unlock Our World</button>
+    <button onclick="unlock()">Unlock</button>
   </div>
 </div>
 
-<div id="mainContent">
-  
-  <section class="visible">
-    <h1>💖 Our World 💖</h1>
-    <button class="theme-btn" onclick="toggleTheme()">Toggle Dark Mode</button>
-  </section>
+<section>
+<h1>💖 Our World 💖</h1>
+</section>
 
-  <section class="visible">
-    <h2>⏳ Time Together</h2>
-    <div class="card" id="time" style="text-align: center; font-size: 18px; font-weight: bold; color: #ff4d6d;"></div>
-  </section>
+<section>
+<h2>📸 Memories</h2>
+<div class="gallery">
+<img src="photo01.jpg" onclick="openViewer(this)">
+<img src="photo02.jpg" onclick="openViewer(this)">
+<img src="photo03.jpg" onclick="openViewer(this)">
+<img src="photo04.jpg" onclick="openViewer(this)">
+<img src="photo05.jpg" onclick="openViewer(this)">
+<img src="photo06.jpg" onclick="openViewer(this)">
+<img src="photo07.jpg" onclick="openViewer(this)">
+<img src="photo08.jpg" onclick="openViewer(this)">
+<img src="photo09.jpg" onclick="openViewer(this)">
+</div>
+</section>
 
-  <section class="visible">
-    <h2>📸 Memories</h2>
-    <div class="gallery">
-      <div class="cardWrap">
-        <img src="photo01.jpg" alt="Memory 1" onclick="openViewer(this)">
-        <p>Our first memory 💕</p>
-      </div>
-      <div class="cardWrap">
-        <img src="photo02.jpg" alt="Memory 2" onclick="openViewer(this)">
-        <p>Best day together ❤️</p>
-      </div>
-      <div class="cardWrap">
-        <img src="photo03.jpg" alt="Memory 3" onclick="openViewer(this)">
-        <p>Smiles forever 😍</p>
-      </div>
-    </div>
-  </section>
+<section>
+<h2>🎬 Movies</h2>
+<div class="movies">
+<img src="movie01.jpg" onclick="openViewer(this)">
+<img src="movie02.jpg" onclick="openViewer(this)">
+<img src="movie03.jpg" onclick="openViewer(this)">
+<img src="movie04.jpg" onclick="openViewer(this)">
+<img src="movie05.jpg" onclick="openViewer(this)">
+<img src="movie06.jpg" onclick="openViewer(this)">
+<img src="movie07.jpg" onclick="openViewer(this)">
+<img src="movie08.jpg" onclick="openViewer(this)">
+<img src="movie09.jpg" onclick="openViewer(this)">
+</div>
+</section>
 
-  <section class="visible">
-    <h2>🎬 Shared Movies</h2>
-    <div class="movies">
-      <div class="cardWrap">
-        <img src="movie01.jpg" alt="Movie 1" onclick="openViewer(this)">
-        <p>Our fav movie 🎬</p>
-      </div>
-      <div class="cardWrap">
-        <img src="movie02.jpg" alt="Movie 2" onclick="openViewer(this)">
-        <p>Late night watch 💖</p>
-      </div>
-    </div>
-  </section>
+<section>
+<h2>🎵 Songs</h2>
+<div class="music">
 
-  <section class="visible">
-    <h2>🎵 Our Soundtrack</h2>
-    <div class="music">
-      <iframe src="https://open.spotify.com/embed/track/4PTG3Z6ehGkBF3zI7YkR6C" width="100%" height="80" allow="encrypted-media"></iframe>
-      <iframe src="https://open.spotify.com/embed/track/7ouMYWpwJ422jRcDASZB7P" width="100%" height="80" allow="encrypted-media"></iframe>
-    </div>
-  </section>
+<iframe src="https://open.spotify.com/embed/track/3hB9lDLyAClYVZivMMl20N" width="300" height="80"></iframe>
 
-  <section class="visible">
-    <h2>📖 Our Journey Roadmap</h2>
-    <div class="card">
-      📌 <b>2023</b> 💕 — The moment our paths crossed.<br>
-      📌 <b>2024</b> ❤️ — Fell completely in love.<br>
-      📌 <b>2025</b> 💖 — Standing stronger than ever.<br>
-      📌 <b>2026</b> ✨ — Building our bright future every day.
-    </div>
-  </section>
+<iframe src="https://open.spotify.com/embed/track/7FwYs4qSJCJi2Hd6ZV8Q3M" width="300" height="80"></iframe>
 
-  <section class="visible">
-    <h2>📝 Future Checklists</h2>
-    <div class="card">
-      ⬜ Travel the globe together ✈️<br>
-      ⬜ Spontaneous late night city drives 🚗<br>
-      ⬜ Binge-watch all of One Piece together 🎬<br>
-      ⬜ Support each other's dreams & grow old forever<br>
-      ⬜ Tie the knot and get married! 💍
-    </div>
-  </section>
+<iframe src="https://open.spotify.com/embed/track/1nH2PkJL1XoUq8oE6tBZoU" width="300" height="80"></iframe>
 
-  <section class="visible">
-    <h2>💌 A Letter for Pavani</h2>
-    <div class="card letter-box" onclick="startLetter()">
-      <div id="text"><i>Tap here to open the letter... ✉️</i></div>
-      <span id="cursorElement"></span>
-    </div>
-  </section>
+<iframe src="https://open.spotify.com/embed/track/2VxeLyX666F8uXCJ0dZF8B" width="300" height="80"></iframe>
 
 </div>
+</section>
+
+<section>
+<h2>📝 Future Plans</h2>
+<div class="card">
+Travel together ✈️<br>
+Late night drives <br>
+Watch one piece together 🎬<br>
+Grow together forever<br>
+Get married 💕
+</div>
+</section>
+
+<!-- 💌 LETTER ADDED HERE -->
+<section>
+<h2>💌 A Letter for Pavani</h2>
+
+<div class="card" onclick="startLetter()">
+  <div id="text"></div><span class="cursor"></span>
+</div>
+
+</section>
+
+<section>
+<h2>⏳ Time</h2>
+<div class="card" id="time"></div>
+</section>
 
 <div id="viewer" onclick="this.style.display='none'">
-  <img id="viewerImg" src="" alt="Expanded View">
+<img id="viewerImg">
 </div>
 
 <script>
-// --- GLOBAL ENVIRONMENT CONTROLS ---
 
-// 1. Password Verification Control
-function unlock() {
-  const passwordInput = document.getElementById("password");
-  const lockScreenElement = document.getElementById("lockScreen");
-  const lockContainer = document.getElementById("lockContainer");
-  const mainContent = document.getElementById("mainContent");
-  const audioTrack = document.getElementById("bgMusic");
-
-  if (passwordInput.value === "pvniirishii") {
-    // Elegant transition exit
-    lockScreenElement.style.opacity = "0";
-    lockScreenElement.style.visibility = "hidden";
-    mainContent.style.display = "block";
-    
-    // Play Background Audio
-    audioTrack.play().catch(err => console.log("Audio playback waiting for direct physical interaction: ", err));
-    
-    // Initialize Scroll Animations
-    initializeScrollTriggers();
-  } else {
-    // Clear and error shake animation
-    passwordInput.value = "";
-    lockContainer.style.animation = "shake 0.4s ease";
-    setTimeout(() => { lockContainer.style.animation = ""; }, 400);
+/* unlock */
+function unlock(){
+  if(document.getElementById("password").value==="pvniirishii"){
+    document.getElementById("lockScreen").style.display="none";
+  }else{
+    alert("Wrong password 💔");
   }
 }
 
-// Allow Enter-Key submission for input
-document.getElementById("password").addEventListener("keydown", (e) => {
-  if (e.key === "Enter") unlock();
-});
-
-// 2. Lock Screen Automatic Intro Greeting
-const introStr = "Hehehe hie pavanii 😗";
-let introIdx = 0;
-function typeIntro() {
-  if (introIdx < introStr.length) {
-    document.getElementById("typing").innerHTML += introStr.charAt(introIdx);
-    introIdx++;
-    setTimeout(typeIntro, 80);
+/* typing intro */
+const text="Hehehe hie pavanii😗";
+let i=0;
+function type(){
+  if(i<text.length){
+    document.getElementById("typing").innerHTML+=text.charAt(i);
+    i++;
+    setTimeout(type,80);
   }
 }
-window.onload = typeIntro;
+type();
 
-// 3. Lightbox Engine
-function openViewer(imgElement) {
-  const viewer = document.getElementById("viewer");
-  const viewerImg = document.getElementById("viewerImg");
-  viewerImg.src = imgElement.src;
-  viewer.style.display = "flex";
+/* viewer */
+function openViewer(img){
+  document.getElementById("viewer").style.display="flex";
+  document.getElementById("viewerImg").src=img.src;
 }
 
-// 4. Dark/Light Interface Toggle
-function toggleTheme() {
-  document.body.classList.toggle("dark");
-}
+/* hearts */
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="💖";
+  h.style.left=Math.random()*100+"%";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),4000);
+},1000);
 
-// 5. Environmental Ambient Heart Spawner
-setInterval(() => {
-  // Only spawn if system is unlocked to keep memory load light
-  if (document.getElementById("mainContent").style.display === "block") {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerHTML = Math.random() > 0.5 ? "💖" : "❤️";
-    heart.style.left = Math.random() * 100 + "vw";
-    // Vary the speed slightly
-    heart.style.animationName = "floatUp";
-    heart.style.animationDuration = (Math.random() * 2 + 3) + "s";
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 5000);
-  }
-}, 1200);
+/* time */
+const start=new Date("2023-01-01");
+setInterval(()=>{
+  const d=Math.floor((new Date()-start)/(1000*60*60*24));
+  document.getElementById("time").innerText=d+" days 💖";
+},1000);
 
-// 6. Direct User Tap Heart Engine
-document.addEventListener("click", (e) => {
-  // Ignore clicks inside input fields or buttons to protect usability
-  if (e.target.tagName === 'INPUT' || e.target.tagName === 'BUTTON' || e.target.closest('iframe')) return;
+/* 💌 LETTER (ADDED SAFE - NO CONFLICTS) */
+const message = `My Love Pavani,
 
-  const particleCount = 4;
-  for (let i = 0; i < particleCount; i++) {
-    const heart = document.createElement("div");
-    heart.className = "tapHeart";
-    heart.innerHTML = "💖";
-    heart.style.left = e.clientX + "px";
-    heart.style.top = e.clientY + "px";
+I don’t really know how to express myself perfectly, but I want you to understand what I feel.
 
-    // Set target vector trajectories via CSS properties
-    const angle = Math.random() * Math.PI * 2;
-    const distance = Math.random() * 80 + 40;
-    const tx = Math.cos(angle) * distance + "px";
-    const ty = Math.sin(angle) * distance - 50 + "px"; // bias upwards
-    
-    heart.style.setProperty('--tx', tx);
-    heart.style.setProperty('--ty', ty);
+We’ve been together for so many years, and even after all this time, we’re still here—holding on to each other.
 
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 1200);
-  }
-});
+Please don’t overthink or stress too much. Take care of your health ❤️
 
-// 7. Live Elapsed Time Counter
-const startRelationshipDate = new Date("2023-01-01T00:00:00");
-setInterval(() => {
-  const diffTimeMs = new Date() - startRelationshipDate;
-  const totalDays = Math.floor(diffTimeMs / (1000 * 60 * 60 * 24));
-  const remainingHours = Math.floor((diffTimeMs / (1000 * 60 * 60)) % 24);
-  const remainingMinutes = Math.floor((diffTimeMs / (1000 * 60)) % 60);
-  const remainingSeconds = Math.floor((diffTimeMs / 1000) % 60);
+No matter what happens, I will always love you.
 
-  document.getElementById("time").innerText = 
-    `${totalDays} days, ${remainingHours} hrs, ${remainingMinutes} mins, ${remainingSeconds} secs together 💖`;
-}, 1000);
-
-// 8. Interactive Typewriter Letter Engine
-const loveLetterContent = `My Love Pavani,
-
-No matter what happens in life,
-I will always stand with you.
-
-You are my peace, my happiness,
-and my forever ❤️`;
+Always yours ❤️`;
 
 let letterIndex = 0;
-let letterStarted = false;
+let started = false;
 
-function startLetter() {
-  if (letterStarted) return;
-  letterStarted = true;
+function startLetter(){
+  if(started) return;
+  started = true;
 
-  const outputElement = document.getElementById("text");
-  const cursor = document.getElementById("cursorElement");
-  outputElement.innerHTML = ""; // Clear fallback instructional text
-  cursor.className = "cursor"; // Activate flashing cursor line
+  const el = document.getElementById("text");
+  el.innerHTML = "";
 
-  function typeLetter() {
-    if (letterIndex < loveLetterContent.length) {
-      const char = loveLetterContent.charAt(letterIndex);
-      outputElement.innerHTML += (char === "\n") ? "<br>" : char;
+  function typeLetter(){
+    if(letterIndex < message.length){
+      el.innerHTML += message.charAt(letterIndex) === "\n" ? "<br>" : message.charAt(letterIndex);
       letterIndex++;
-      setTimeout(typeLetter, 45);
-    } else {
-      cursor.className = ""; // Remove cursor once finished
+      setTimeout(typeLetter, 30);
     }
   }
 
   typeLetter();
-
-  // Integrated Voice Over Audio Output
-  if ('speechSynthesis' in window) {
-    const vocalUtterance = new SpeechSynthesisUtterance(loveLetterContent);
-    // Find an optimal smooth female/neutral local voice engine if available
-    const voices = speechSynthesis.getVoices();
-    if(voices.length > 0) {
-      vocalUtterance.voice = voices.find(v => v.lang.includes('en') && v.name.toLowerCase().includes('natural')) || voices[0];
-    }
-    vocalUtterance.rate = 0.95; 
-    speechSynthesis.speak(vocalUtterance);
-  }
 }
 
-// 9. Intersection Observer for Clean Scroll Inbound Fade Effects
-function initializeScrollTriggers() {
-  const individualSections = document.querySelectorAll("section");
-  const visualObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-      }
-    });
-  }, { threshold: 0.1 });
-
-  individualSections.forEach(sec => visualObserver.observe(sec));
-}
 </script>
 
 </body>
