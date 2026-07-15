@@ -13,8 +13,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <style>
 :root {
   --primary: #ff4d6d;
@@ -289,6 +287,8 @@ h2 {
   font-weight: 700;
   color: var(--text-main);
   cursor: pointer;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.4);
 }
 
 .movies {
@@ -479,9 +479,11 @@ h2 {
       <h2>🎞️ Instant Camera</h2>
       <div class="card ios-blur cam-wrapper">
         <video id="camFeed" autoplay playsinline></video>
-        <div class="cam-controls">
+        <div class="cam-controls" style="width: 100%;">
           <button type="button" class="ios-action-btn ios-blur" id="toggleCamBtn" onclick="toggleCameraDeviceStream()">Open Cam 🎥</button>
-          <button type="button" class="ios-action-btn ios-blur" id="snapBtn" onclick="takeInstantFlipbookSnapshot()" style="display:none; margin-top:10px; background:var(--primary); color:white;">Take Snap 📸</button>
+          <button type="button" class="ios-action-btn ios-blur" id="snapBtn" onclick="takeInstantFlipbookSnapshot()" style="display:none; margin-top:10px; background:var(--primary); color:white; border:none;">Take Snap 📸</button>
+          
+          <input type="file" id="cameraFallbackPicker" accept="image/*" style="display:none;" onchange="handleFallbackPhotoUpload(this)">
         </div>
       </div>
     </div>
@@ -638,23 +640,6 @@ h2 {
 </div>
 
 <script>
-// ⚠️ CONFIGURE YOUR PROJECT DATABASE ACCESS KEYS BELOW WHEN READY TO SYNC ⚠️
-const SUPABASE_URL = "https://YOUR_PROJECT_ID.supabase.co";
-const SUPABASE_KEY = "YOUR_ANON_PUBLIC_KEY";
-
-let supabaseClient = null;
-
-// Crash-proof initialization block fixed to avoid namespace masking
-try {
-  if (SUPABASE_URL && !SUPABASE_URL.includes("YOUR_PROJECT_ID")) {
-    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-  } else {
-    console.log("Supabase is unconfigured. App running smoothly in offline demo preview mode!");
-  }
-} catch (e) {
-  console.log("Database bridge bypassed. Local metrics context initialized.", e);
-}
-
 let currentAuthor = "Rishi";
 let currentParticleType = "standard";
 let localStream = null;
@@ -800,26 +785,20 @@ function renderWishlist() {
   `).join('');
 }
 
-/* 📸 SUPABASE PHOTO ENGINES */
+/* 📸 OFFLINE LOCAL STORAGE PHOTO ENGINES */
 function triggerNativePhotoUpload() {
   document.getElementById("nativePhotoPicker").click();
 }
 
 async function handleNativePhotoUpload(inputNode) {
-  if (!supabaseClient) {
-    alert("Supabase keys are unconfigured. The upload button runs in live cloud sync mode once keys are loaded! 📱");
-    return;
-  }
   if(inputNode.files && inputNode.files[0]) {
     const reader = new FileReader();
-    reader.onload = async function(e) {
+    reader.onload = function(e) {
       const base64Image = e.target.result;
-      const { error } = await supabaseClient.from('photos').insert([{ url: base64Image }]);
-      if (!error) {
-        fetchSharedPhotos();
-      } else {
-        alert("Upload failed 💔 check table schema configurations!");
-      }
+      let localPhotos = JSON.parse(localStorage.getItem("our_local_photos") || "[]");
+      localPhotos.unshift({ url: base64Image });
+      localStorage.setItem("our_local_photos", JSON.stringify(localPhotos));
+      fetchSharedPhotos();
     }
     reader.readAsDataURL(inputNode.files[0]);
   }
@@ -827,29 +806,23 @@ async function handleNativePhotoUpload(inputNode) {
 
 async function fetchSharedPhotos() {
   const gallery = document.getElementById("photoGallery");
-  if (!supabaseClient) {
-    gallery.innerHTML = `<p style="font-size:12px; grid-column: span 3; font-style:italic; color:var(--text-muted); text-align:center; padding: 20px 0;">Offline preview mode. Connect your cloud database to share live updates with Pavani! 📸</p>`;
+  gallery.innerHTML = ""; 
+  let localPhotos = JSON.parse(localStorage.getItem("our_local_photos") || "[]");
+  
+  if (localPhotos.length === 0) {
+    gallery.innerHTML = `<p style="font-size:12px; grid-column: span 3; font-style:italic; color:var(--text-muted); text-align:center; padding: 20px 0;">No shared photos yet. Tap upload to add your first click! 📸</p>`;
     return;
   }
-  try {
-    const { data, error } = await supabaseClient.from('photos').select('url').order('id', { ascending: false });
-    if (!error && data) {
-      gallery.innerHTML = ""; 
-      if (data.length === 0) {
-        gallery.innerHTML = `<p style="font-size:12px; grid-column: span 3; font-style:italic; color:var(--text-muted); text-align:center; padding: 20px 0;">No shared photos. Tap upload to add your first click! 📸</p>`;
-        return;
-      }
-      data.forEach(item => {
-        let img = document.createElement("img");
-        img.src = item.url;
-        img.onclick = function() { openLightbox(this); };
-        gallery.appendChild(img);
-      });
-    }
-  } catch (err) { console.log(err); }
+  
+  localPhotos.forEach(item => {
+    let img = document.createElement("img");
+    img.src = item.url;
+    img.onclick = function() { openLightbox(this); };
+    gallery.appendChild(img);
+  });
 }
 
-/* 🎞️ INTERFACES ACCESS SYSTEM */
+/* 🎞️ INTERFACES ACCESS SYSTEM + SECURE WEBVIEW FALLBACK ROUTING */
 async function toggleCameraDeviceStream() {
   const video = document.getElementById("camFeed");
   const toggleBtn = document.getElementById("toggleCamBtn");
@@ -869,18 +842,29 @@ async function toggleCameraDeviceStream() {
       snapBtn.style.display = "block";
       toggleBtn.innerText = "Close Cam ❌";
     } catch (err) {
-      alert("Camera streaming requires secure HTTPS execution protocols or local server routing blocks. 💔");
+      // If browser sandboxing blocks live camera API stream, redirect gracefully to local capture picker
+      document.getElementById("cameraFallbackPicker").click();
     }
+  }
+}
+
+function handleFallbackPhotoUpload(inputNode) {
+  if(inputNode.files && inputNode.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const base64Image = e.target.result;
+      let localPhotos = JSON.parse(localStorage.getItem("our_local_photos") || "[]");
+      localPhotos.unshift({ url: base64Image });
+      localStorage.setItem("our_local_photos", JSON.stringify(localPhotos));
+      fetchSharedPhotos();
+    }
+    reader.readAsDataURL(inputNode.files[0]);
   }
 }
 
 async function takeInstantFlipbookSnapshot() {
   const video = document.getElementById("camFeed");
   if (!localStream) return;
-  if (!supabaseClient) {
-    alert("Syncing instant camera snaps requires your cloud database keys! 📸");
-    return;
-  }
 
   const canvas = document.createElement("canvas");
   canvas.width = video.videoWidth || 640;
@@ -891,21 +875,16 @@ async function takeInstantFlipbookSnapshot() {
   ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
   const base64Image = canvas.toDataURL("image/jpeg");
-  const { error } = await supabaseClient.from('photos').insert([{ url: base64Image }]);
-  if (!error) {
-    fetchSharedPhotos();
-    toggleCameraDeviceStream();
-  } else {
-    alert("Snapshot deployment failure 💔");
-  }
+  let localPhotos = JSON.parse(localStorage.getItem("our_local_photos") || "[]");
+  localPhotos.unshift({ url: base64Image });
+  localStorage.setItem("our_local_photos", JSON.stringify(localPhotos));
+  
+  fetchSharedPhotos();
+  toggleCameraDeviceStream();
 }
 
 /* 🍿 WATCHLIST PIPELINES */
 async function addNewSharedMovie() {
-  if (!supabaseClient) {
-    alert("Connect your cloud database keys to store movie watchlists! 🎬");
-    return;
-  }
   const titleInput = document.getElementById("movieTitleInput");
   const posterInput = document.getElementById("moviePosterInput");
   const title = titleInput.value.trim();
@@ -915,31 +894,25 @@ async function addNewSharedMovie() {
     alert("Please fill out both fields! 🎬");
     return;
   }
-  const { error } = await supabaseClient.from('movies').insert([{ title: title, poster_url: posterUrl }]);
-  if (!error) {
-    titleInput.value = ""; posterInput.value = "";
-    fetchSharedMovies(); 
-  } else {
-    alert("Watchlist update error 💔");
-  }
+
+  let localMovies = JSON.parse(localStorage.getItem("our_local_movies") || "[]");
+  localMovies.unshift({ title: title, poster_url: posterUrl });
+  localStorage.setItem("our_local_movies", JSON.stringify(localMovies));
+
+  titleInput.value = ""; 
+  posterInput.value = "";
+  fetchSharedMovies(); 
 }
 
 async function fetchSharedMovies() {
   const carousel = document.getElementById("movieCarousel");
-  if (!supabaseClient) {
-    carousel.innerHTML = `<p style="font-size: 12px; font-style: italic; color: var(--text-muted); padding: 10px;">Offline template view. Set your cloud configurations to launch shared watchlists! 🍿</p>`;
+  let localMovies = JSON.parse(localStorage.getItem("our_local_movies") || "[]");
+  
+  if (localMovies.length === 0) {
+    carousel.innerHTML = `<p style="font-size: 12px; font-style: italic; color: var(--text-muted); padding: 10px;">Watchlist is currently empty. Add your comfort tracks down below!</p>`;
     return;
   }
-  try {
-    const { data, error } = await supabaseClient.from('movies').select('title, poster_url').order('id', { ascending: false });
-    if (!error && data) {
-      if (data.length === 0) {
-        carousel.innerHTML = `<p style="font-size: 12px; font-style: italic; color: var(--text-muted); padding: 10px;">Watchlist is currently empty. Add your comfort tracks down below!</p>`;
-        return;
-      }
-      carousel.innerHTML = data.map(movie => `<img src="${movie.poster_url}" alt="${movie.title}" title="${movie.title}" onclick="openLightbox(this)">`).join('');
-    }
-  } catch (err) { console.log(err); }
+  carousel.innerHTML = localMovies.map(movie => `<img src="${movie.poster_url}" alt="${movie.title}" title="${movie.title}" onclick="openLightbox(this)">`).join('');
 }
 
 /* 🫙 COMPLIMENT JAR PIPELINES */
@@ -1068,7 +1041,7 @@ const MY_LONGITUDE = 78.4867;
 
 function calculateRealDistance() {
   const distanceElement = document.getElementById("liveDistance");
-  if (!navigator.geolocation) {
+  if (!navigator.geolocation || !navigator.geolocation.getCurrentPosition) {
     distanceElement.innerText = "612.0 kms 💖";
     return;
   }
@@ -1083,7 +1056,7 @@ function calculateRealDistance() {
     distanceElement.innerHTML = `${(R * c).toFixed(1)} kms 💖`;
   }, () => {
     distanceElement.innerText = "612.0 kms 💖";
-  }, { enableHighAccuracy: true, timeout: 5000 });
+  }, { enableHighAccuracy: false, timeout: 4000 });
 }
 
 function deg2rad(deg) { return deg * (Math.PI/180); }
@@ -1108,7 +1081,7 @@ function runLiveCounter() {
 /* 💌 ACCORDION TYPEWRITER SHEET SYSTEM */
 let charIndex = 0;
 let letterStarted = false;
-const msg = `Pavaniii,\n\nidk how to say all this properly but I just wanted to tell you… you mean a lot to me. Like really a lot.\n\nWe’ve been through some tough things… misunderstandings, pain, and those moments where it felt heavy for both of us. But even then, my feelings for you never changed. If anything, it made me realize how much you matter in my life.\n\nI still think abt you all the time, still miss you even when we’re not talking, and honestly my day just feels better when it’s you.\n\nSometimes I remember those small moments… like when we used to talk for hours and laugh at the most random things. Those moments weren’t just time pass for me… they meant everything.\n\nI know we’re not perfect, but I’m willing to try more, understand you better, and handle things in a way that doesn’t hurt us again.\n\nI just want you to know I’m here… for you, for us, and for everything we’re building together ❤️\nI love you soo much 🫂`.trim();
+const msg = `Pavaniii,\n\nidk how to say all this properly but I just wanted to tell you… you mean a lot to me. Like really a lot.\n\nWe’ve been through some tough things… misunderstandings, pain, and those moments where it felt heavy for both of us. But even then, my feelings for you never changed. If anything, it made me realize how much you matter in my life.\n\nI still think abt you all the time, still miss you even when we’re not talking, and honestly my day just feels better when it’s you.\n\nSometimes I remember those small moments… like when we used to talk for hours and laugh at the most random things. Those moments weren’t just time pass for me… they meant everything.\n\nI know we’re not perfect, but I’m willing to try more, understand you better, and handle things in a way that doesn't hurt us again.\n\nI just want you to know I’m here… for you, for us, and for everything we’re building together ❤️\nI love you soo much 🫂`.trim();
 
 function startTypewriterLetterStream(){
   if (letterStarted) return;
@@ -1129,16 +1102,6 @@ function startTypewriterLetterStream(){
     }
   }
   setTimeout(type, 650); 
-}
-
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    const swBlob = new Blob([`
-      self.addEventListener('install', e => self.skipWaiting());
-      self.addEventListener('fetch', e => e.respondWith(fetch(e.request)));
-    `], { type: 'application/javascript' });
-    navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(err => console.log(err));
-  });
 }
 
 /* 💖 PARTICLE CLOUD CHANNELS */
