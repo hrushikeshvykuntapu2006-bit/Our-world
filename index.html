@@ -2,8 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Our World 💖</title>
+
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIk91ciBXb3JsZCIsCiAgInNob3J0X25hbWUiIjogIk91ciBXb3JsZCIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjZmZmMGYzIiwKICAidGhlbWVfY29sb3IiOiAiI2ZmNGQ2ZCIsCiAgIm9yaWVudGF0aW9uIjogInBvcnRyYWl0IiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiaHR0cHM6Ly9jZG4taWNvbnMtcG5nLmZsYXRpY29uLmNvbS81MTIvODMzLzgzMzQ3Mi5wbmciLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciLAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIKICAgIH0KICBdCn0=">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,27 +21,27 @@
   --bg-gradient: linear-gradient(135deg, #fff0f3, #f0e6ff, #e8f8ff);
   --text-main: #2b2d42;
   --text-muted: #6c757d;
-  --card-bg: rgba(255, 255, 255, 0.45);
-  --card-border: rgba(255, 255, 255, 0.6);
-  --shadow: 0 8px 32px 0 rgba(255, 77, 109, 0.06);
+  --card-bg: rgba(255, 255, 255, 0.55);
+  --card-border: rgba(255, 255, 255, 0.7);
+  --shadow: 0 8px 32px 0 rgba(255, 77, 109, 0.05);
+  --nav-bg: rgba(255, 255, 255, 0.8px);
 }
 
-/* Seamless Dark Mode Variables */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg-gradient: linear-gradient(135deg, #121216, #1a1525);
-    --text-main: #f8f9fa;
-    --text-muted: #adb5bd;
-    --card-bg: rgba(255, 255, 255, 0.04);
-    --card-border: rgba(255, 255, 255, 0.08);
-    --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-  }
+body.night-mode {
+  --bg-gradient: linear-gradient(135deg, #0f0c20, #15102a, #060409);
+  --text-main: #f8f9fa;
+  --text-muted: #a3a8cc;
+  --card-bg: rgba(20, 16, 38, 0.65);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  --nav-bg: rgba(20, 16, 38, 0.85);
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -44,15 +49,12 @@ body {
   background: var(--bg-gradient);
   background-attachment: fixed;
   color: var(--text-main);
-  text-align: center;
-  overflow-x: hidden;
+  overflow: hidden;
   min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
+  transition: background 1s ease, color 0.5s ease;
 }
 
-html { scroll-behavior: smooth; }
-
-/* 🌸 PREMIUM GATEWAY / LOCKSCREEN */
+/* 🌸 LOCKSCREEN */
 #lockScreen {
   position: fixed;
   inset: 0;
@@ -60,8 +62,7 @@ html { scroll-behavior: smooth; }
   justify-content: center;
   align-items: center;
   background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-  z-index: 9999;
-  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s;
+  z-index: 99999;
   padding: 20px;
 }
 
@@ -82,7 +83,6 @@ html { scroll-behavior: smooth; }
   margin-bottom: 20px;
   font-weight: 700;
   color: #fff;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   font-size: 26px;
 }
 
@@ -98,14 +98,6 @@ html { scroll-behavior: smooth; }
   outline: none;
   font-weight: 600;
   letter-spacing: 2px;
-  transition: all 0.3s;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-}
-
-.lockBox input:focus {
-  border-color: #ff6b81;
-  background: #fff;
-  box-shadow: 0 4px 20px rgba(255, 107, 129, 0.25);
 }
 
 .lockBox button {
@@ -119,57 +111,113 @@ html { scroll-behavior: smooth; }
   font-weight: 700;
   font-size: 16px;
   cursor: pointer;
-  box-shadow: 0 6px 20px rgba(255, 107, 129, 0.4);
-  transition: all 0.2s;
 }
 
-.lockBox button:hover {
-  background: #ff4d6d;
-  transform: translateY(-1px);
+/* 📖 INTRO LOVELY FLIPBOOK ANIMATION SCREEN */
+#flipbookIntroContainer {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, #fff0f3, #e0c3fc);
+  z-index: 99998;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  perspective: 1200px;
 }
 
-.lockBox button:active {
-  transform: translateY(1px);
+.book-shell {
+  width: 280px;
+  height: 380px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.5s;
 }
 
-/* 📱 MAIN SECURE LAYOUT */
+.book-page {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0; left: 0;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 4px 16px 16px 4px;
+  box-shadow: 5px 5px 20px rgba(0,0,0,0.1);
+}
+
+.cover-front {
+  background: linear-gradient(135deg, #ff4d6d, #ff758c);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+}
+
+.page-internal {
+  background: #fffdf9;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  z-index: 4;
+}
+
+/* Flip animations classes executed by JS */
+.book-shell.open .cover-front {
+  transform: rotateY(-140deg);
+}
+.book-shell.open .page-internal {
+  transform: rotateY(-130deg);
+}
+
+/* 📱 HORIZONTAL APP FRAMEWORK SLIDER */
 #mainContent {
   display: none;
-  padding: 40px 20px 80px;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  overflow: hidden;
+}
+
+.app-slider-track {
+  display: flex;
+  height: 100%;
+  width: 500vw; /* 5 screens total side-by-side */
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.app-screen {
+  width: 100vw;
+  height: 100%;
+  flex-shrink: 0;
+  padding: 20px 20px 100px 20px;
+  overflow-y: auto;
 }
 
 header h1 {
-  font-size: 32px;
-  font-weight: 700;
+  font-size: 26px;
+  font-weight: 800;
   letter-spacing: -0.5px;
   background: linear-gradient(45deg, var(--primary), #b76eff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  text-align: center;
 }
 
-/* CLEAN MODERN SECTIONS */
-section {
-  padding: 40px 0;
-  max-width: 680px;
-  margin: 0 auto;
-}
-
-section h2 {
-  font-size: 20px;
+h2 {
+  font-size: 18px;
   font-weight: 700;
   text-align: left;
-  margin-bottom: 16px;
-  padding-left: 5px;
-  letter-spacing: -0.3px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  margin: 20px 0 12px 5px;
 }
 
-/* PREMIUM MODERN GLASSMorphic CARDS */
 .card {
-  padding: 24px;
+  padding: 22px;
   border-radius: 24px;
   background: var(--card-bg);
   backdrop-filter: blur(24px);
@@ -177,170 +225,128 @@ section h2 {
   border: 1px solid var(--card-border);
   box-shadow: var(--shadow);
   text-align: left;
-  transition: transform 0.3s ease;
+  margin-bottom: 20px;
 }
 
-/* SYSTEMATIC HORIZONTAL CAROUSELS */
+/* 🗂️ APP BOTTOM DOCK NAVIGATION Bar */
+.app-nav-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 75px;
+  background: var(--nav-bg);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border-top: 1px solid var(--card-border);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 1000;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: none; border: none;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 11px;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.nav-item span.icon { font-size: 22px; transition: transform 0.2s; }
+.nav-item.active { color: var(--primary); }
+.nav-item.active span.icon { transform: scale(1.15); }
+
+/* HORIZONTAL GALLERIES */
 .gallery, .movies {
   display: flex;
   overflow-x: auto;
-  gap: 16px;
-  padding: 8px 4px 20px;
+  gap: 14px;
+  padding: 5px 2px 15px;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
-  -ms-overflow-style: none;
 }
-
-.gallery::-webkit-scrollbar, .movies::-webkit-scrollbar {
-  display: none;
-}
+.gallery::-webkit-scrollbar, .movies::-webkit-scrollbar { display: none; }
 
 .gallery img, .movies img {
-  width: 160px;
-  height: 240px;
+  width: 145px;
+  height: 215px;
   object-fit: cover;
-  border-radius: 20px;
+  border-radius: 18px;
   flex: 0 0 auto;
   scroll-snap-align: start;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s;
-  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
-.gallery img:hover, .movies img:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 16px 35px rgba(255, 77, 109, 0.15);
+/* CAM LAYOUT */
+.cam-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
 }
+#camFeed, #flipbookCanvas { width: 100%; max-width: 400px; height: 260px; border-radius: 20px; background: #000; }
+#camFeed { display: none; transform: scaleX(-1); object-fit: cover; }
+#flipbookCanvas { display: block; object-fit: contain; background: rgba(0,0,0,0.04); }
+body.night-mode #flipbookCanvas { background: rgba(0,0,0,0.3); }
 
-/* 🎵 SYSTEM TRACK GRID CONTAINER */
-.musicGrid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 14px;
-  width: 100%;
-}
+.cam-controls { display: flex; gap: 10px; width: 100%; }
+.cam-btn { flex: 1; padding: 12px; border: none; border-radius: 14px; background: rgba(255, 255, 255, 0.4); border: 1px solid var(--card-border); color: var(--text-main); font-weight: 700; font-size: 13px; cursor: pointer; text-align: center; }
+.cam-btn.snap { background: var(--primary); color: white; border-color: var(--primary); }
 
-.musicCard {
-  width: 100%;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
-  border: 1px solid var(--card-border);
-  background: #000;
-  transition: transform 0.3s;
-}
+/* MUSIC CONTAINER */
+.musicGrid { display: grid; grid-template-columns: 1fr; gap: 14px; width: 100%; }
+.musicCard { width: 100%; border-radius: 20px; overflow: hidden; background: #000; }
+.musicCard iframe { width: 100%; height: 80px; border: none; display: block; }
 
-.musicCard:hover {
-  transform: translateY(-2px);
-}
-
-.musicCard iframe {
-  width: 100%;
-  height: 80px;
-  border: none;
-  display: block;
-}
-
-/* 💌 ELEGANT ENVELOPE INTERACTION INTERFACE */
-.letter-box-container {
-  cursor: pointer;
-  text-align: center;
-}
-
-.envelope {
-  position: relative;
-  width: 180px;
-  height: 120px;
-  margin: 15px auto 20px;
-  perspective: 600px;
-}
-
-.envelope .body {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 80px;
-  background: #ffffff;
-  border-radius: 0 0 16px 16px;
-  border: 1px solid #ffe5ec;
-  z-index: 2;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.04);
-}
-
-.envelope .flap {
-  position: absolute;
-  top: 40px;
-  left: 0;
-  width: 0;
-  height: 0;
-  border-left: 90px solid transparent;
-  border-right: 90px solid transparent;
-  border-bottom: 60px solid #fff0f3;
-  transform-origin: bottom;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), z-index 0.2s ease 0.2s;
-  z-index: 3;
-}
-
-.envelope .seal {
-  position: absolute;
-  top: 25px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 26px;
-  z-index: 4;
-  transition: transform 0.4s ease, opacity 0.3s ease;
-}
-
-/* Active Open Animations */
-.envelope.open .flap {
-  transform: rotateX(180deg) translateY(78px);
-  z-index: 1;
-}
-
-.envelope.open .seal {
-  transform: translateX(-50%) scale(0);
-  opacity: 0;
-}
-
-#gift {
-  font-weight: 600;
-  color: var(--primary);
-  font-size: 15px;
-  margin-top: 10px;
-  letter-spacing: -0.2px;
-}
-
-#text {
-  text-align: left;
-  line-height: 1.7;
-  white-space: pre-line;
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--text-main);
-  padding: 5px;
-}
-
-/* TYPEWRITER BLINKING TIMING */
+/* ENVELOPE CONFIG */
+.letter-box-container { cursor: pointer; text-align: center; }
+.envelope { position: relative; width: 160px; height: 110px; margin: 15px auto; perspective: 600px; }
+.envelope .body { position: absolute; bottom: 0; width: 100%; height: 75px; background: #ffffff; border-radius: 0 0 16px 16px; border: 1px solid #ffe5ec; z-index: 2; }
+.envelope .flap { position: absolute; top: 35px; left: 0; width: 0; height: 0; border-left: 80px solid transparent; border-right: 80px solid transparent; border-bottom: 55px solid #fff0f3; transform-origin: bottom; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); z-index: 3; }
+.envelope .seal { position: absolute; top: 22px; left: 50%; transform: translateX(-50%); font-size: 24px; z-index: 4; transition: transform 0.4s ease, opacity 0.3s ease; }
+.envelope.open .flap { transform: rotateX(180deg) translateY(72px); z-index: 1; }
+.envelope.open .seal { transform: translateX(-50%) scale(0); opacity: 0; }
+#gift { font-weight: 600; color: var(--primary); font-size: 14px; margin-top: 8px; }
+#text { text-align: left; line-height: 1.7; white-space: pre-line; font-size: 15px; font-weight: 500; }
 .cursor::after { content: ""; }
-.cursor.active::after {
-  content: "|";
-  font-weight: 700;
-  color: var(--primary);
-  animation: blink 1s steps(2, start) infinite;
-}
+.cursor.active::after { content: "|"; font-weight: 700; color: var(--primary); animation: blink 1s steps(2, start) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 
-/* UNIQUE DYNAMIC HIGH-PERFORMANCE BACKGROUND FLOATING EMITTORS */
-.heart {
-  position: fixed;
-  font-size: 22px;
-  user-select: none;
-  pointer-events: none;
-  z-index: 1;
-  bottom: -50px;
-  opacity: 0;
-  animation: floatUp 5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-}
+/* STICKY BULLETIN BOARD */
+.board-input-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+.author-select, .mood-select-row { display: flex; gap: 10px; }
+.author-btn, .mood-btn { flex: 1; padding: 10px; border: 1px solid var(--card-border); background: rgba(255, 255, 255, 0.3); border-radius: 12px; font-weight: 600; cursor: pointer; color: var(--text-main); font-size: 13px; }
+.author-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+.message-input { width: 100%; padding: 14px; border-radius: 14px; border: 1px solid var(--card-border); background: rgba(255, 255, 255, 0.2); color: var(--text-main); font-family: inherit; font-size: 14px; resize: none; outline: none; }
+.send-note-btn { padding: 12px; border: none; border-radius: 14px; background: #ff6b81; color: white; font-weight: 700; cursor: pointer; }
+.notes-container { display: flex; flex-direction: column; gap: 12px; max-height: 250px; overflow-y: auto; }
+.note-card { padding: 14px; border-radius: 16px; background: rgba(255, 255, 255, 0.3); border-left: 4px solid var(--primary); }
+.note-card.pavani { border-left-color: #b76eff; }
+.note-header { display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; }
+.note-body { font-size: 14px; font-weight: 500; text-align: left; }
+.mood-btn.active { border-color: var(--primary); background: rgba(255, 77, 109, 0.15); }
+
+/* LOVE JAR COMPLIMENTS WIDGET */
+.jar-container { text-align: center; padding: 10px 0; }
+.love-jar { font-size: 60px; cursor: pointer; display: inline-block; transition: transform 0.2s; user-select: none; }
+.love-jar:active { transform: scale(0.9) rotate(-10deg); }
+.jar-bubble { margin-top: 15px; padding: 15px; border-radius: 16px; background: rgba(255, 255, 255, 0.25); border: 1px dashed var(--primary); font-weight: 500; font-size: 14px; display: none; animation: fadeIn 0.4s ease forwards; }
+
+/* JOURNEY ROADMAP CAPSULE */
+.timeline { display: flex; flex-direction: column; gap: 20px; position: relative; padding-left: 20px; }
+.timeline::before { content: ''; position: absolute; left: 5px; top: 5px; bottom: 5px; width: 2px; background: var(--card-border); }
+.timeline-node { position: relative; }
+.timeline-marker { position: absolute; left: -20px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: var(--primary); border: 2px solid white; }
+.timeline-title { font-weight: 700; font-size: 15px; margin-bottom: 2px; }
+.timeline-desc { font-size: 13px; color: var(--text-muted); }
+
+/* AMBIENT ENVIRONMENT PARTICLES */
+.heart { position: fixed; font-size: 22px; user-select: none; pointer-events: none; z-index: 1; bottom: -50px; opacity: 0; animation: floatUp 5s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
 @keyframes floatUp {
   0% { transform: translateY(0) scale(0.7) rotate(0deg); opacity: 0; }
   15% { opacity: 0.7; }
@@ -348,25 +354,9 @@ section h2 {
   100% { transform: translateY(-110vh) scale(1.1) rotate(25deg); opacity: 0; }
 }
 
-/* INDEPENDENT FULLSCREEN IMAGE LIGHTBOX VIEWER */
-#viewer {
-  position: fixed;
-  inset: 0;
-  background: rgba(10, 10, 12, 0.96);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 10000;
-  padding: 20px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-#viewer img {
-  max-width: 100%;
-  max-height: 85vh;
-  border-radius: 20px;
-  box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-}
+#viewer { position: fixed; inset: 0; background: rgba(10, 10, 12, 0.96); display: none; justify-content: center; align-items: center; z-index: 100000; padding: 20px; backdrop-filter: blur(10px); }
+#viewer img { max-width: 100%; max-height: 85vh; border-radius: 20px; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 </head>
 
@@ -376,77 +366,169 @@ section h2 {
   <div class="lockBox">
     <h2>💖 Our World</h2>
     <input type="password" id="password" placeholder="Enter Secret Date..." autofocus>
-    <button onclick="unlock()">Unlock</button>
+    <br>
+    <button onclick="unlockAppToFlipbook()">Unlock</button>
+  </div>
+</div>
+
+<div id="flipbookIntroContainer">
+  <div class="book-shell" id="loveBook">
+    <div class="book-page cover-front">
+      <h1 style="color: white; font-size: 24px;">Our Story 💖</h1>
+      <p style="font-size: 12px; opacity: 0.8; margin-top: 10px;">Opening memories...</p>
+    </div>
+    <div class="book-page page-internal">
+      <h3 style="color: #ff4d6d; font-size: 18px;">Rishi ❤️ Pavani</h3>
+      <p style="font-size: 13px; text-align: center; margin-top: 10px; font-style: italic;">"Every second with you is a treasure."</p>
+    </div>
   </div>
 </div>
 
 <div id="mainContent">
+  <div class="app-slider-track" id="appSliderTrack">
 
-  <header>
-    <h1>💖 Our World 💖</h1>
-  </header>
+    <div class="app-screen">
+      <header><h1>Our Dashboard</h1></header>
+      
+      <h2>⏳ Time Together</h2>
+      <div class="card" id="time" style="font-size: 22px; font-weight: 700; color: var(--primary); text-align: center; letter-spacing: -0.2px; line-height: 1.4;"></div>
 
-  <section>
-    <h2>📸 Fav Clicks</h2>
-    <div class="gallery">
-      <img src="photo01.jpg" alt="Memory 1" onclick="openLightbox(this)">
-      <img src="photo02.jpg" alt="Memory 2" onclick="openLightbox(this)">
-      <img src="photo03.jpg" alt="Memory 3" onclick="openLightbox(this)">
-      <img src="photo04.jpg" alt="Memory 4" onclick="openLightbox(this)">
-      <img src="photo05.jpg" alt="Memory 5" onclick="openLightbox(this)">
-      <img src="photo06.jpg" alt="Memory 6" onclick="openLightbox(this)">
-      <img src="photo07.jpg" alt="Memory 7" onclick="openLightbox(this)">
-      <img src="photo08.jpg" alt="Memory 8" onclick="openLightbox(this)">
-      <img src="photo09.jpg" alt="Memory 9" onclick="openLightbox(this)">
-    </div>
-  </section>
-
-  <section>
-    <h2>🎬 Comfort Movies</h2>
-    <div class="movies">
-      <img src="movie01.jpg" alt="Movie 1" onclick="openLightbox(this)">
-      <img src="movie02.jpg" alt="Movie 2" onclick="openLightbox(this)">
-      <img src="movie03.jpg" alt="Movie 3" onclick="openLightbox(this)">
-      <img src="movie04.jpg" alt="Movie 4" onclick="openLightbox(this)">
-      <img src="movie05.jpg" alt="Movie 5" onclick="openLightbox(this)">
-      <img src="movie06.jpg" alt="Movie 6" onclick="openLightbox(this)">
-      <img src="movie07.jpg" alt="Movie 7" onclick="openLightbox(this)">
-      <img src="movie08.jpg" alt="Movie 8" onclick="openLightbox(this)">
-      <img src="movie09.jpg" alt="Movie 9" onclick="openLightbox(this)">
-    </div>
-  </section>
-
-  <section>
-    <h2>🎵 Songs We Love</h2>
-    <div class="musicGrid" id="musicGrid"></div>
-  </section>
-
-  <section>
-    <h2>⏳ Days Together</h2>
-    <div class="card" id="time" style="font-size: 24px; font-weight: 700; color: var(--primary); text-align: center; letter-spacing: -0.5px;"></div>
-  </section>
-
-  <section>
-    <h2>💌 A Letter</h2>
-    <div class="card letter-box-container" onclick="startLetter()">
-      <div class="envelope" id="envelope">
-        <div class="flap"></div>
-        <div class="body"></div>
-        <div class="seal">💖</div>
+      <h2>📍 Proximity Tracker</h2>
+      <div class="card" style="display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 16px;">
+        <span id="liveDistance">Calculating distance... ⏳</span>
+        <span style="color: var(--text-muted); font-weight: 500;">hearts always close</span>
       </div>
-      <div id="gift">🎁 Tap to Open Letter</div>
-      <div id="text"></div>
-      <span id="cursorElement"></span>
-    </div>
-  </section>
 
-  <section>
-    <h2>📍 Distance Between Us</h2>
-    <div class="card" style="display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 16px;">
-      <span id="liveDistance">Calculating distance... ⏳</span>
-      <span style="color: var(--text-muted); font-weight: 500;">hearts always close</span>
+      <h2>🎭 Current Vibe Indicator</h2>
+      <div class="card">
+        <div class="mood-select-row">
+          <button class="mood-btn active" onclick="changeVibeStream('standard', this)">💖 Loving</button>
+          <button class="mood-btn" onclick="changeVibeStream('miss', this)">🥺 Miss You</button>
+          <button class="mood-btn" onclick="changeVibeStream('cozy', this)">✨ Cozy</button>
+          <button class="mood-btn" onclick="changeVibeStream('cute', this)">🥰 Playful</button>
+        </div>
+      </div>
     </div>
-  </section>
+
+    <div class="app-screen">
+      <header><h1>Memory Vault</h1></header>
+      
+      <h2>📸 Fav Clicks</h2>
+      <div class="gallery" id="photoGallery">
+        <img src="photo01.jpg" alt="Memory 1" onclick="openLightbox(this)">
+        <img src="photo02.jpg" alt="Memory 2" onclick="openLightbox(this)">
+        <img src="photo03.jpg" alt="Memory 3" onclick="openLightbox(this)">
+        <img src="photo04.jpg" alt="Memory 4" onclick="openLightbox(this)">
+        <img src="photo05.jpg" alt="Memory 5" onclick="openLightbox(this)">
+        <img src="photo06.jpg" alt="Memory 6" onclick="openLightbox(this)">
+        <img src="photo07.jpg" alt="Memory 7" onclick="openLightbox(this)">
+        <img src="photo08.jpg" alt="Memory 8" onclick="openLightbox(this)">
+        <img src="photo09.jpg" alt="Memory 9" onclick="openLightbox(this)">
+      </div>
+
+      <h2>🎬 Comfort Movies</h2>
+      <div class="movies">
+        <img src="movie01.jpg" alt="Movie 1" onclick="openLightbox(this)">
+        <img src="movie02.jpg" alt="Movie 2" onclick="openLightbox(this)">
+        <img src="movie03.jpg" alt="Movie 3" onclick="openLightbox(this)">
+        <img src="movie04.jpg" alt="Movie 4" onclick="openLightbox(this)">
+        <img src="movie05.jpg" alt="Movie 5" onclick="openLightbox(this)">
+        <img src="movie06.jpg" alt="Movie 6" onclick="openLightbox(this)">
+        <img src="movie07.jpg" alt="Movie 7" onclick="openLightbox(this)">
+        <img src="movie08.jpg" alt="Movie 8" onclick="openLightbox(this)">
+        <img src="movie09.jpg" alt="Movie 9" onclick="openLightbox(this)">
+      </div>
+
+      <h2>🎞️ Instant Snap Loop</h2>
+      <div class="card cam-wrapper">
+        <video id="camFeed" autoplay playsinline></video>
+        <div class="cam-controls">
+          <button type="button" class="cam-btn" id="toggleCamBtn" onclick="toggleCameraDeviceStream()">Open Cam 🎥</button>
+          <button type="button" class="cam-btn snap" id="snapBtn" onclick="takeInstantFlipbookSnapshot()" style="display:none;">Capture Snap 📸</button>
+        </div>
+      </div>
+      <div class="card flipbook-wrapper" style="margin-top: 15px;">
+        <img id="flipbookCanvas" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'><rect width='100%' height='100%' fill='%23fafafa'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='13' fill='%23999'>Snap 2+ live photos above to start flipbook</text></svg>" alt="Flipbook Player">
+        <div class="flipbook-controls" style="margin-top: 10px;">
+          <button type="button" class="cam-btn" id="playPauseFlipbookBtn" onclick="toggleFlipbookPlaybackState()">Pause ⏸️</button>
+          <button type="button" class="cam-btn" onclick="clearFlipbookMemoriesCache()" style="color: var(--primary);">Clear 🗑️</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="app-screen">
+      <header><h1>Our Soundtrack</h1></header>
+      <div class="musicGrid" id="musicGrid"></div>
+    </div>
+
+    <div class="app-screen">
+      <header><h1>Our Story</h1></header>
+      
+      <h2>💌 Sealed Message</h2>
+      <div class="card letter-box-container" onclick="startTypewriterLetterStream()">
+        <div class="envelope" id="envelope">
+          <div class="flap"></div>
+          <div class="body"></div>
+          <div class="seal">💖</div>
+        </div>
+        <div id="gift">🎁 Tap to Open Letter</div>
+        <div id="text"></div>
+        <span id="cursorElement"></span>
+      </div>
+
+      <h2>📖 Journey Milestones</h2>
+      <div class="card">
+        <div class="timeline">
+          <div class="timeline-node"><div class="timeline-marker"></div><div class="timeline-title">May 9, 2020 💕</div><div class="timeline-desc">The magic day our official journey began.</div></div>
+          <div class="timeline-node"><div class="timeline-marker"></div><div class="timeline-title">Growing Stronger ❤️</div><div class="timeline-desc">Fell completely into permanent comfort together.</div></div>
+          <div class="timeline-node"><div class="timeline-marker"></div><div class="timeline-title">Long Distance Victory ✈️</div><div class="timeline-desc">Proving that space means absolutely nothing next to true love.</div></div>
+          <div class="timeline-node"><div class="timeline-marker"></div><div class="timeline-title">Our Forever Blueprint 💍</div><div class="timeline-desc">Growing, planning future road trips, and building our dream home.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="app-screen">
+      <header><h1>Connection Space</h1></header>
+      
+      <h2>🎁 The Love Compliment Jar</h2>
+      <div class="jar-container card">
+        <div class="love-jar" onclick="drawComplimentJarMessage()">🫙</div>
+        <div class="jar-bubble" id="jarBubble"></div>
+      </div>
+
+      <h2>💭 When We Miss Each Other</h2>
+      <div class="card">
+        <div class="board-input-group">
+          <div class="author-select">
+            <button type="button" class="author-btn active" id="btnHru" onclick="switchNoteAuthor('Rishi')">Rishi</button>
+            <button type="button" class="author-btn" id="btnPav" onclick="switchNoteAuthor('Pavani')">Pavani</button>
+          </div>
+          <textarea id="noteInput" class="message-input" rows="2" placeholder="Leave a little note when you miss them..."></textarea>
+          <button type="button" class="send-note-btn" onclick="commitNoteToBoard()">Leave Note 💖</button>
+        </div>
+        <div class="notes-container" id="notesBoard"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <nav class="app-nav-bar">
+    <button class="nav-item active" onclick="slideToIndexScreen(0, this)">
+      <span class="icon">🏠</span><span>Home</span>
+    </button>
+    <button class="nav-item" onclick="slideToIndexScreen(1, this)">
+      <span class="icon">📸</span><span>Vault</span>
+    </button>
+    <button class="nav-item" onclick="slideToIndexScreen(2, this)">
+      <span class="icon">🎵</span><span>Tracks</span>
+    </button>
+    <button class="nav-item" onclick="slideToIndexScreen(3, this)">
+      <span class="icon">💌</span><span>Story</span>
+    </button>
+    <button class="nav-item" onclick="slideToIndexScreen(4, this)">
+      <span class="icon">💭</span><span>Connect</span>
+    </button>
+  </nav>
 
 </div>
 
@@ -455,106 +537,305 @@ section h2 {
 </div>
 
 <script>
-/* 🔓 ENTRY PASS CONTROLLER WITH SMOOTH CROSS-FADE */
-function unlock(){
+let currentAuthor = "Rishi";
+let currentParticleType = "standard";
+let localStream = null;
+
+// Flipbook matrix tracking
+let flipbookInterval = null;
+let flipbookIndex = 0;
+let flipbookDelay = 300; 
+let isFlipbookPlaying = true;
+
+const jarNotes = [
+  "You make the world a whole lot brighter just by being in it! ✨",
+  "Rishi loves you more than you can possibly compute! ❤️",
+  "Reminder: You have the prettiest smile in the entire universe. 🥰",
+  "No matter how many kilometers separate us, you're always right here in my heart. 📍",
+  "Sending you a giant, tight virtual hug right now! 🫂",
+  "Thank you for being my absolute peace and favorite person. 💖",
+  "I'm probably thinking about you right this exact second. 💭",
+  "You're my forever and always, pandu dhanaa! 👑"
+];
+
+/* 📖 NEW LOVELY FLIPBOOK SCREEN OPENING SCHEDULER SYSTEM */
+function unlockAppToFlipbook() {
   const inputPass = document.getElementById("password").value;
   if(inputPass === "22010503") {
-    const targetLock = document.getElementById("lockScreen");
-    targetLock.style.opacity = "0";
+    document.getElementById("lockScreen").style.display = "none";
+    
+    // Bring up physical book flip interface
+    const introShell = document.getElementById("flipbookIntroContainer");
+    const loveBook = document.getElementById("loveBook");
+    introShell.style.display = "flex";
+    
+    // Trigger sequential 3D page curl flips
+    setTimeout(() => { loveBook.classList.add("open"); }, 300);
+    
+    // Transition nicely into side-sliding main app views
     setTimeout(() => {
-      targetLock.style.display = "none";
-      document.getElementById("mainContent").style.display = "block";
-      
-      // Fire up background routines
-      runLiveCounter();
-      loadMusicWidgets();
-      startHeartRain();
-      calculateRealDistance();
-    }, 600);
+      introShell.style.opacity = "0";
+      setTimeout(() => {
+        introShell.style.display = "none";
+        document.getElementById("mainContent").style.display = "block";
+        
+        evaluateAdaptiveTimeSky();
+        runLiveCounter();
+        loadMusicWidgets();
+        startHeartRain();
+        calculateRealDistance();
+        renderNotes();
+        loadSavedSnapshots(); 
+        startFlipbookLoop();
+      }, 500);
+    }, 2200);
+
   } else {
     alert("Wrong Code 💔");
   }
 }
 
-// Keyboards access support
-document.getElementById("password").addEventListener("keydown", (e) => {
-  if (e.key === "Enter") unlock();
-});
+/* 🗂️ NEW SIDE-BY-SIDE SMOOTH ROUTER ENGINE */
+function slideToIndexScreen(pageIndex, navElement) {
+  // Move track by exactly 100vw increments horizontally
+  const track = document.getElementById("appSliderTrack");
+  track.style.transform = `translateX(-${pageIndex * 100}vw)`;
+  
+  // Clear active tab indicators
+  document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+  navElement.classList.add('active');
 
-/* 📍 REAL-TIME GEOLOCATION DISTANCE CALCULATOR */
-// Paste YOUR actual location data here (Example coordinates shown below)
+  // Kill phone camera if moving off Media page panel to conserve hardware assets
+  if (pageIndex !== 1 && localStream) {
+    toggleCameraDeviceStream();
+  }
+}
+
+/* 🌅 ADAPTIVE GRADIENT HOUR ENGINE */
+function evaluateAdaptiveTimeSky() {
+  const localHour = new Date().getHours();
+  if (localHour >= 18 || localHour < 6) {
+    document.body.classList.add("night-mode");
+  } else {
+    document.body.classList.remove("night-mode");
+  }
+}
+
+/* 📸 DYNAMIC DEVICE STREAM VIDEO MODULE */
+async function toggleCameraDeviceStream() {
+  const video = document.getElementById("camFeed");
+  const toggleBtn = document.getElementById("toggleCamBtn");
+  const snapBtn = document.getElementById("snapBtn");
+
+  if (localStream) {
+    localStream.getTracks().forEach(track => track.stop());
+    localStream = null;
+    video.style.display = "none";
+    snapBtn.style.display = "none";
+    toggleBtn.innerText = "Open Cam 🎥";
+  } else {
+    try {
+      localStream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "user" }, 
+        audio: false
+      });
+      video.srcObject = localStream;
+      video.style.display = "block";
+      snapBtn.style.display = "block";
+      toggleBtn.innerText = "Close Cam ❌";
+    } catch (err) {
+      alert("Camera access denied or unsupported on this protocol. 💔");
+    }
+  }
+}
+
+function takeInstantFlipbookSnapshot() {
+  const video = document.getElementById("camFeed");
+  if (!localStream) return;
+
+  const canvas = document.createElement("canvas");
+  canvas.width = video.videoWidth || 640;
+  canvas.height = video.videoHeight || 480;
+  
+  const ctx = canvas.getContext("2d");
+  ctx.translate(canvas.width, 0);
+  ctx.scale(-1, 1);
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+  const base64Image = canvas.toDataURL("image/jpeg");
+  
+  let snapshots = JSON.parse(localStorage.getItem("our_world_snapshots") || "[]");
+  snapshots.unshift(base64Image);
+  localStorage.setItem("our_world_snapshots", JSON.stringify(snapshots));
+
+  loadSavedSnapshots();
+  toggleCameraDeviceStream(); 
+  if (isFlipbookPlaying) startFlipbookLoop();
+}
+
+function loadSavedSnapshots() {
+  const gallery = document.getElementById("photoGallery");
+  let snapshots = JSON.parse(localStorage.getItem("our_world_snapshots") || "[]");
+  document.querySelectorAll(".live-snapshot").forEach(el => el.remove());
+  snapshots.forEach(imgData => {
+    let img = document.createElement("img");
+    img.src = imgData;
+    img.className = "live-snapshot";
+    img.onclick = function() { openLightbox(this); };
+    gallery.insertBefore(img, gallery.firstChild);
+  });
+}
+
+/* 🎞️ LOOPING FLIPBOOK LOOPER ANIMATION ENGINE */
+function startFlipbookLoop() {
+  clearInterval(flipbookInterval);
+  const viewerNode = document.getElementById("flipbookCanvas");
+  let snapshots = JSON.parse(localStorage.getItem("our_world_snapshots") || "[]");
+  if (snapshots.length < 2) return;
+  flipbookInterval = setInterval(() => {
+    if (flipbookIndex >= snapshots.length) flipbookIndex = 0;
+    viewerNode.src = snapshots[flipbookIndex];
+    flipbookIndex++;
+  }, flipbookDelay);
+}
+
+function toggleFlipbookPlaybackState() {
+  const btn = document.getElementById("playPauseFlipbookBtn");
+  if (isFlipbookPlaying) {
+    clearInterval(flipbookInterval);
+    isFlipbookPlaying = false;
+    btn.innerText = "Play ▶️";
+  } else {
+    isFlipbookPlaying = true;
+    btn.innerText = "Pause ⏸️";
+    startFlipbookLoop();
+  }
+}
+
+function clearFlipbookMemoriesCache() {
+  if (confirm("Clear snap loops? 🗑️")) {
+    localStorage.removeItem("our_world_snapshots");
+    document.querySelectorAll(".live-snapshot").forEach(el => el.remove());
+    document.getElementById("flipbookCanvas").src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'><rect width='100%' height='100%' fill='%23fafafa'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='13' fill='%23999'>Snap 2+ live photos above to start flipbook</text></svg>";
+    clearInterval(flipbookInterval);
+  }
+}
+
+/* 🎭 MOOD PARTICLES RING INTERACTION */
+function changeVibeStream(vibeType, btnElement) {
+  currentParticleType = vibeType;
+  document.querySelectorAll(".mood-btn").forEach(btn => btn.classList.remove("active"));
+  btnElement.classList.add("active");
+}
+
+/* 🍪 LOVE JAR EMITTOR COMPLIMENTS JAR */
+function drawComplimentJarMessage() {
+  const bubble = document.getElementById("jarBubble");
+  bubble.innerText = jarNotes[Math.floor(Math.random() * jarNotes.length)];
+  bubble.style.display = "block";
+  const jar = document.querySelector(".love-jar");
+  jar.style.transform = "scale(1.2) rotate(8deg)";
+  setTimeout(() => jar.style.transform = "", 200);
+}
+
+/* 📝 BULLETIN BOARD COMPONENT */
+function switchNoteAuthor(author) {
+  currentAuthor = author;
+  document.getElementById("btnHru").classList.toggle("active", author === "Rishi");
+  document.getElementById("btnPav").classList.toggle("active", author === "Pavani");
+  document.getElementById("noteInput").placeholder = `Leaving a note as ${author}...`;
+}
+
+function commitNoteToBoard() {
+  const input = document.getElementById("noteInput");
+  const text = input.value.trim();
+  if(!text) return;
+
+  let notes = JSON.parse(localStorage.getItem("our_miss_you_notes") || "[]");
+  const newNote = {
+    id: Date.now(),
+    author: currentAuthor,
+    content: text,
+    time: new Date().toLocaleString([], {month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'})
+  };
+
+  notes.unshift(newNote); 
+  localStorage.setItem("our_miss_you_notes", JSON.stringify(notes));
+  input.value = "";
+  renderNotes();
+}
+
+function renderNotes() {
+  const board = document.getElementById("notesBoard");
+  let notes = JSON.parse(localStorage.getItem("our_miss_you_notes") || "[]");
+  if(notes.length === 0) {
+    board.innerHTML = `<p style="color: var(--text-muted); font-size: 14px; text-align: center; font-style: italic; padding: 10px;">No notes left yet. Leave one when you're thinking of her! 💭</p>`;
+    return;
+  }
+  board.innerHTML = notes.map(note => `
+    <div class="note-card ${note.author === 'Pavani' ? 'pavani' : ''}">
+      <div class="note-header">
+        <span>${note.author === 'Pavani' ? '👩‍🦰 Pavani' : '👨 Rishi'}</span>
+        <span>${note.time}</span>
+      </div>
+      <div class="note-body">"${note.content}"</div>
+    </div>
+  `).join('');
+}
+
+/* 📍 REAL HAVERSINE GPS COORDINATES SYSTEM */
 const MY_LATITUDE = 17.3850;  
 const MY_LONGITUDE = 78.4867; 
 
 function calculateRealDistance() {
   const distanceElement = document.getElementById("liveDistance");
-
   if (!navigator.geolocation) {
     distanceElement.innerText = "612 kms 💖";
     return;
   }
-
-  navigator.geolocation.getCurrentPosition(
-    (position) => {
-      const partnerLat = position.coords.latitude;
-      const partnerLng = position.coords.longitude;
-
-      const R = 6371; // Earth radius in kilometers
-      const dLat = deg2rad(partnerLat - MY_LATITUDE);
-      const dLon = deg2rad(partnerLng - MY_LONGITUDE);
-      const a = 
-        Math.sin(dLat/2) * Math.sin(dLat/2) +
-        Math.cos(deg2rad(MY_LATITUDE)) * Math.cos(deg2rad(partnerLat)) * Math.sin(dLon/2) * Math.sin(dLon/2); 
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-      const distance = R * c; 
-
-      distanceElement.innerHTML = `${distance.toFixed(1)} kms 💖`;
-    },
-    (error) => {
-      console.warn("Location prompt skipped or rejected. Loading baseline projection.");
-      distanceElement.innerText = "612 kms 💖";
-    },
-    { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
-  );
+  navigator.geolocation.getCurrentPosition((pos) => {
+    const partnerLat = pos.coords.latitude;
+    const partnerLng = pos.coords.longitude;
+    const R = 6371;
+    const dLat = deg2rad(partnerLat - MY_LATITUDE);
+    const dLon = deg2rad(partnerLng - MY_LONGITUDE);
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(deg2rad(MY_LATITUDE)) * Math.cos(deg2rad(partnerLat)) * Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    distanceElement.innerHTML = `${(R * c).toFixed(1)} kms 💖`;
+  }, () => {
+    distanceElement.innerText = "612 kms 💖";
+  }, { enableHighAccuracy: true, timeout: 5000 });
 }
 
-function deg2rad(deg) {
-  return deg * (Math.PI/180);
-}
+function deg2rad(deg) { return deg * (Math.PI/180); }
 
-/* ⏳ DURATION METRIC COUNTER ENGINE */
+/* ⏳ TIME METRIC COUNTER ENGINE */
 function runLiveCounter() {
   const start = new Date("2020-05-09T00:00:00");
+  const timeContainer = document.getElementById("time");
   function updateCounter() {
-    let diff = new Date() - start;
-    let d = Math.floor(diff / (1000 * 60 * 60 * 24));
-    document.getElementById("time").innerText = d + " Days 💖";
+    const now = new Date();
+    const diff = now - start;
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+    timeContainer.innerText = `${days}d : ${hours}h : ${minutes}m : ${seconds}s together 💖`;
   }
   updateCounter();
-  setInterval(updateCounter, 60000); 
+  setInterval(updateCounter, 1000); 
 }
 
-/* 💌 INTERACTIVE ANCHOR TYPEWRITER STREAMER */
+/* 💌 TYPEWRITER DECK TEXT ENGINE */
 let charIndex = 0;
 let letterStarted = false;
+const msg = `hie pandu dhanaa,\n\nI don’t really know how to express myself perfectly, but I want you to understand what I feel.\n\nWe’ve been together for so long 💖\n\nTake care always 🫂\n\nI love you ❤️`;
 
-const msg = `hie pandu dhanaa,
-
-I don’t really know how to express myself perfectly, but I want you to understand what I feel.
-
-We’ve been together for so long 💖
-
-Take care always 🫂
-
-I love you ❤️`;
-
-function startLetter(){
+function startTypewriterLetterStream(){
   if (letterStarted) return;
   letterStarted = true;
-
   document.getElementById("envelope").classList.add("open");
   document.getElementById("gift").style.display = "none";
-  
   const el = document.getElementById("text");
   const cursor = document.getElementById("cursorElement");
   cursor.className = "cursor active";
@@ -571,31 +852,45 @@ function startLetter(){
   setTimeout(type, 650); 
 }
 
-/* 🎵 SECURE EMBED LAYOUT RECONSTRUCTION */
+/* 🎵 NATIVE CLEAN SPOTIFY TRACK EMBEDS */
 const tracks = [
-  "3vCzLB6kS2lGcIpm1OOUsy",
-  "6lanRgr6wXibZr8KgzXxBl",
-  "3hB9lDLyAClYVZivMMl20N",
-  "7FwYs4qSJCJi2Hd6ZV8Q3M",
-  "4QNSMIeCknaH5m0EM2yNTI"
+  "https://open.spotify.com/embed/track/3vCzLB6kS2lGcIpm1OOUsy",
+  "https://open.spotify.com/embed/track/6lanRgr6wXibZr8KgzXxBl",
+  "https://open.spotify.com/embed/track/3hB9lDLyAClYVZivMMl20N",
+  "https://open.spotify.com/embed/track/7FwYs4qSJCJi2Hd6ZV8Q3M",
+  "https://open.spotify.com/embed/track/4QNSMIeCknaH5m0EM2yNTI"
 ];
 
 function loadMusicWidgets(){
   const grid = document.getElementById("musicGrid");
-  tracks.forEach(id => {
+  tracks.forEach(url => {
     let card = document.createElement("div");
     card.className = "musicCard";
-    card.innerHTML = `<iframe src="https://open.spotify.com/embed/track/${id}?utm_source=generator&theme=0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+    card.innerHTML = `<iframe src="${url}?utm_source=generator&theme=0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
     grid.appendChild(card);
   });
 }
 
-/* 💖 LIGHTWEIGHT NATURAL BACKGROUND EMISSION PARTICLE CONTROLLER */
+// PWA Service Worker script injector block
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    const swBlob = new Blob([`
+      self.addEventListener('install', e => self.skipWaiting());
+      self.addEventListener('fetch', e => e.respondWith(fetch(e.request)));
+    `], { type: 'application/javascript' });
+    navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(err => console.log(err));
+  });
+}
+
+/* 💖 ENVIRONMENT EMITTORS RAIN SYSTEM */
 function startHeartRain() {
   setInterval(() => {
     const heart = document.createElement("div");
     heart.className = "heart";
-    heart.innerHTML = Math.random() > 0.5 ? "💖" : "❤️";
+    if(currentParticleType === "miss") heart.innerHTML = "🥺";
+    else if(currentParticleType === "cozy") heart.innerHTML = "✨";
+    else if(currentParticleType === "cute") heart.innerHTML = "🥰";
+    else heart.innerHTML = Math.random() > 0.5 ? "💖" : "❤️";
     heart.style.left = Math.random() * 100 + "vw";
     heart.style.animationDuration = (Math.random() * 2 + 4) + "s";
     document.body.appendChild(heart);
@@ -603,7 +898,7 @@ function startHeartRain() {
   }, 2000);
 }
 
-/* 🖼️ LIGHTBOX ENGINE CONTROL */
+/* 🖼️ LIGHTBOX PACK SYSTEM */
 function openLightbox(imgElement) {
   const viewer = document.getElementById("viewer");
   const viewerImg = document.getElementById("viewerImg");
