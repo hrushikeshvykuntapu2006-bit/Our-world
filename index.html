@@ -116,22 +116,20 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
 .mood-tag { padding: 8px 14px; border-radius: 40px; font-size: 13px; font-weight: 700; white-space: nowrap; cursor: pointer; border: 1px solid var(--card-border); transition: all 0.2s; }
 .mood-tag.active { background: var(--primary); color: white; border-color: var(--primary); }
 
+/* 📸 FEED & CLASSIC REEL VIEW CONFIGS */
+.gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 10px 2px; }
+.gallery img { width: 100%; aspect-ratio: 1 / 1.4; object-fit: cover; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); cursor: pointer; }
+.movies { display: flex; overflow-x: auto; gap: 14px; padding: 5px 2px 15px; scroll-snap-type: x mandatory; scrollbar-width: none; }
+.movies::-webkit-scrollbar { display: none; }
+.movies img { width: 145px; height: 215px; object-fit: cover; border-radius: 22px; flex: 0 0 auto; scroll-snap-align: start; cursor: pointer; }
+
 /* 📖 FLUID BOOK */
 .smooth-book { width: 100%; max-width: 340px; height: 430px; margin: 0 auto; position: relative; perspective: 1500px; transform-style: preserve-3d; }
 .book-cover-side { position: absolute; inset: 0; background: linear-gradient(135deg, #ff4d6d, #ff758c); color: white; border-radius: 4px 24px 24px 4px; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 15px 35px rgba(255, 77, 109, 0.25); transform-origin: left center; transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1); z-index: 2; backface-visibility: hidden; }
 .book-inner-side { position: absolute; inset: 0; border-radius: 4px 24px 24px 4px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 24px; text-align: center; z-index: 1; overflow-y: auto; }
 .smooth-book.opened .book-cover-side { transform: rotateY(-140deg); }
 
-/* 📸 FEED CONTAINER & MOVIE CONTAINERS */
-.feed-container { display: flex; flex-direction: column; gap: 16px; }
-.feed-card { border-radius: 24px; overflow: hidden; padding: 0; }
-.feed-img { width: 100%; aspect-ratio: 1; object-fit: cover; border-bottom: 1px solid var(--card-border); }
-.feed-caption-box { padding: 14px 18px 18px 18px; text-align: left; }
-.feed-user { font-weight: 800; font-size: 14px; color: var(--primary); margin-bottom: 4px; }
-.feed-text { font-size: 13px; font-weight: 500; line-height: 1.4; color: var(--text-main); }
-.upload-input-field { width: 100%; padding: 12px; border-radius: 14px; border: 1px solid var(--card-border); background: rgba(255,255,255,0.4); margin-bottom: 10px; outline: none; font-family: inherit; font-size: 13px; }
-
-/* 🎙️ AUDIO WAVE CAPSULE PILL */
+/* 🎙️ AUDIO CAPSULE WAVE FORM PILL */
 .audio-card { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-radius: 20px; background: rgba(255, 255, 255, 0.4); border: 1px solid var(--card-border); margin-top: 8px; }
 .audio-play-btn { width: 36px; height: 36px; border-radius: 50%; border: none; background: var(--primary); color: white; font-size: 14px; cursor: pointer; display: flex; justify-content: center; align-items: center; }
 .audio-wave-anim { flex: 1; height: 16px; display: flex; align-items: center; gap: 3px; }
@@ -142,23 +140,36 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
 .audio-card.playing .wave-bar:nth-child(4) { animation-delay: 0.45s; }
 @keyframes wavePulse { from { height: 20%; } to { height: 100%; } }
 
-/* 🎴 SCRATCH CONTAINER BOX */
+/* 🎴 SCRATCH PAD WIDGET */
 .scratch-box { width: 100%; max-width: 300px; height: 160px; position: relative; border-radius: 20px; overflow: hidden; margin: 0 auto; box-shadow: 0 8px 24px rgba(0,0,0,0.05); }
-.scratch-secret-content { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; background: white; padding: 20px; text-align: center; font-weight: 600; font-size: 14px; }
+.scratch-secret-content { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; background: white; padding: 20px; text-align: center; font-weight: 600; font-size: 14px; color: var(--primary); }
 .scratch-canvas-overlay { position: absolute; inset: 0; z-index: 5; cursor: pointer; }
 
-/* ⏱️ CURTAIN CAPSLOCK TIMER */
+/* ⏱️ CURTAIN DROP LOCKBOX */
 .curtain-box { text-align: center; padding: 20px; border-radius: 24px; }
 .countdown-clock { font-size: 24px; font-weight: 800; color: var(--primary); margin: 12px 0; letter-spacing: 1px; }
 
-/* 🗂️ NAVIGATION BAR DOCK */
+/* 💌 CLASSIC LETTER IN AN ENVELOPE STRUCT */
+.letter-box-container { cursor: pointer; text-align: center; margin-top: 15px; }
+.envelope { position: relative; width: 160px; height: 110px; margin: 15px auto; perspective: 600px; }
+.envelope .body { position: absolute; bottom: 0; width: 100%; height: 75px; background: #ffffff; border-radius: 0 0 16px 16px; border: 1px solid #ffe5ec; z-index: 2; }
+.envelope .flap { position: absolute; top: 35px; left: 0; width: 0; height: 0; border-left: 80px solid transparent; border-right: 80px solid transparent; border-bottom: 55px solid #fff0f3; transform-origin: bottom; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); z-index: 3; }
+.envelope .seal { position: absolute; top: 22px; left: 50%; transform: translateX(-50%); font-size: 24px; z-index: 4; transition: transform 0.4s ease, opacity 0.3s ease; }
+.envelope.open .flap { transform: rotateX(180deg) translateY(72px); z-index: 1; }
+.envelope.open .seal { transform: translateX(-50%) scale(0); opacity: 0; }
+#gift { font-weight: 600; color: var(--primary); font-size: 14px; margin-top: 8px; }
+#text { text-align: left; line-height: 1.7; white-space: pre-line; font-size: 14px; font-weight: 500; padding: 10px; color: var(--text-main); }
+.cursor.active::after { content: "|"; font-weight: 700; color: var(--primary); animation: blink 1s steps(2, start) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* 🗂️ NAVIGATION DOCK */
 .app-nav-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 85px; z-index: 1000; border-radius: 32px 32px 0 0; display: flex; justify-content: space-around; align-items: center; padding-bottom: env(safe-area-inset-bottom); }
 .nav-item { display: flex; flex-direction: column; align-items: center; background: none; border: none; color: var(--text-muted); font-family: inherit; font-weight: 600; font-size: 10px; gap: 4px; cursor: pointer; position: relative; }
 .nav-item span.icon { font-size: 22px; transition: transform 0.2s; }
 .nav-item.active { color: var(--primary); }
 .nav-item.active span.icon { transform: scale(1.15); }
 
-/* 🔏 REMAINDERS / MAP TRACK */
+/* 🔏 REMINDERS / TIMELINE */
 .reminders-list { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
 .reminder-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: rgba(255,255,255,0.4); border-radius: 14px; border: 1px solid var(--card-border); }
 .reminder-row.done span { text-decoration: line-through; opacity: 0.5; }
@@ -245,13 +256,11 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
 
     <div class="app-screen">
       <header><h1>Memory Vault</h1></header>
+      <h2>📸 Fav Clicks</h2>
+      <div class="gallery" id="photoGallery"></div>
       
-      <h2>📸 Shared Memories</h2>
-      <div class="feed-container" id="photoGallery"></div>
-
-      <div class="card ios-blur" style="margin-top:20px;">
-        <input type="text" id="photoCaptionInput" class="upload-input-field" placeholder="Write a memory caption...">
-        <button class="ios-action-btn ios-blur" onclick="triggerNativePhotoUpload()">➕ Post Image to Feed</button>
+      <div class="upload-btn-wrapper">
+        <button class="ios-action-btn ios-blur" onclick="triggerNativePhotoUpload()">➕ Upload Photo to Shared Gallery</button>
         <input type="file" id="nativePhotoPicker" accept="image/*" style="display:none;" onchange="handleLivePhotoUpload(this)">
       </div>
     </div>
@@ -259,12 +268,13 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
     <div class="app-screen">
       <header><h1>Entertainment</h1></header>
       
-      <h2>🎬 Comfort Movies Feed</h2>
-      <div class="feed-container" id="movieGalleryFeed"></div>
+      <h2>🎬 Comfort Movies</h2>
+      <div class="movies" id="movieCarousel"></div>
 
-      <div class="card ios-blur" style="margin-top: 20px;">
-        <input type="text" id="movieTitleInput" class="upload-input-field" placeholder="Movie Title...">
-        <button class="ios-action-btn ios-blur" onclick="triggerNativeMovieUpload()">➕ Post Movie from Gallery</button>
+      <div class="card ios-blur" style="margin-top: 10px;">
+        <p style="font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--text-muted);">Add a Comfort Movie together:</p>
+        <input type="text" id="movieTitleInput" class="message-input" placeholder="Movie Title..." style="margin-bottom: 8px;">
+        <button class="ios-action-btn ios-blur" onclick="triggerNativeMovieUpload()">🎬 Choose Movie Poster from Gallery</button>
         <input type="file" id="nativeMoviePicker" accept="image/*" style="display:none;" onchange="handleLiveMovieUpload(this)">
       </div>
 
@@ -278,27 +288,21 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
     <div class="app-screen">
       <header><h1>Feelings Space</h1></header>
       
-      <h2>📊 Daily Chemistry Poll</h2>
+      <h2>📊 Dynamic Chemistry Poll</h2>
       <div class="card ios-blur" id="dailyPollCardBox">
-        <p id="pollQuestionLabel" style="font-weight:700; font-size:14px; margin-bottom:12px; color:var(--text-main);"></p>
+        <p id="pollQuestionLabel" style="font-weight:700; font-size:14px; margin-bottom:12px; color:var(--text-main); line-height:1.4;"></p>
         <div id="pollOptionsBlock" style="display:flex; flex-direction:column; gap:8px;"></div>
         <div id="pollResultsBlock" style="display:none; font-size:13px; font-weight:600; line-height:1.5;"></div>
       </div>
 
-      <h2>🔏 "Open When" Scratch Card</h2>
+      <h2>🔏 Dynamic Scratch Card</h2>
       <div class="card ios-blur" style="text-align:center;">
-        <p style="font-size:13px; font-weight:700; color:var(--text-muted); margin-bottom:10px;" id="scratchLabelHead">Scratch to reveal message!</p>
+        <p style="font-size:13px; font-weight:700; color:var(--text-muted); margin-bottom:10px;" id="scratchLabelHead">Swipe to reveal secret message!</p>
         <div class="scratch-box" id="scratchCardFrame">
-          <div class="scratch-secret-content" id="scratchSecretText">I love you more than all the stars in the sky! ✨</div>
+          <div class="scratch-secret-content" id="scratchSecretText">Loading private surprise... ✨</div>
           <canvas class="scratch-canvas-overlay" id="scratchCanvasOverlay"></canvas>
         </div>
-      </div>
-
-      <h2>⏱️ Timed Capsule Lockbox</h2>
-      <div class="card ios-blur curtain-box">
-        <p style="font-size:13px; font-weight:700; color:var(--text-muted);" id="capsuleTitle">Next Surprise Unlocks In:</p>
-        <div class="countdown-clock" id="capsuleTimerDisplay">00h : 00m : 00s</div>
-        <div id="capsuleHiddenContent" style="display:none; font-size:14px; font-weight:600; color:var(--primary); padding-top:10px;">🎒 Rishi booked tickets to come see you! ✈️</div>
+        <button class="ios-action-btn ios-blur" style="margin-top:12px; padding:8px; font-size:12px;" onclick="reloadRandomScratchMessage()">Get Next Message 🪄</button>
       </div>
 
       <h2>💭 Leave a Message Board</h2>
@@ -308,12 +312,10 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
             <button type="button" class="author-btn active" id="btnHru" onclick="switchNoteAuthor('Rishi')">Rishi</button>
             <button type="button" class="author-btn ios-blur" id="btnPav" onclick="switchNoteAuthor('Pavani')">Pavani</button>
           </div>
-          
           <div style="display:flex; gap:10px; align-items:center;">
             <textarea id="noteInput" class="message-input" rows="2" placeholder="Type a message when you miss them..." style="flex:1;"></textarea>
             <button type="button" id="voiceRecordBtn" class="send-note-btn" style="background:#4cd964; padding:12px;" onclick="toggleVoiceAudioRecording()">🎙️</button>
           </div>
-          
           <button type="button" class="send-note-btn" onclick="commitNoteToBoard()">Leave Note 💖</button>
         </div>
         <div class="notes-container" id="notesBoard"></div>
@@ -326,7 +328,7 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
       <h2>⏳ Time Together</h2>
       <div class="card ios-blur" id="time" style="font-size: 20px; font-weight: 700; color: var(--primary); text-align: center; line-height: 1.4;"></div>
 
-      <h2>📍 Real-Time Tracking Status</h2>
+      <h2>📍 Real-Time Distance</h2>
       <div class="card ios-blur" style="text-align:center; padding:20px;">
         <h3 id="liveDistance" style="font-size:24px; font-weight:800; color:var(--primary);">Calculating Distance...</h3>
         <p style="font-size:12px; color:var(--text-muted); margin-top:5px;">Distance between both your hearts 💖</p>
@@ -335,7 +337,6 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
       <h2>🤝 Total Meetups Tracker</h2>
       <div class="card ios-blur" style="text-align:center;">
         <h3 id="meetCounterDisplay" style="font-size:26px; font-weight:800; color:var(--primary);">0 Times Met</h3>
-        <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">Updates when your dynamic paths align!</p>
       </div>
 
       <h2>💗 Love Booth (Attributed Tracker)</h2>
@@ -372,11 +373,25 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
     <div class="app-screen">
       <header><h1>Our Story</h1></header>
       
+      <h2>💌 Letter for Pavani</h2>
+      <div class="card ios-blur letter-box-container" onclick="startTypewriterLetterStream()">
+        <div class="envelope" id="envelope">
+          <div class="flap"></div>
+          <div class="body"></div>
+          <div class="seal">💖</div>
+        </div>
+        <div id="gift">🎁 Tap to Open Letter</div>
+        <div id="text"></div>
+        <span id="cursorElement"></span>
+      </div>
+
       <h2>📖 Journey Milestones</h2>
       <div class="card ios-blur">
         <div class="timeline">
           <div class="timeline-node"><div class="timeline-marker"></div><div class="timeline-title">May 9, 2020 💕</div><div class="timeline-desc">The magic day our official journey began.</div></div>
           <div class="timeline-node"><div class="timeline-marker"></div><div class="timeline-title">Growing Stronger ❤️</div><div class="timeline-desc">Fell completely into permanent comfort together.</div></div>
+          <div class="timeline-node"><div class="timeline-marker"></div><div class="timeline-title">Long Distance Victory ✈️</div><div class="timeline-desc">Proving that space means absolutely nothing next to true love.</div></div>
+          <div class="timeline-node"><div class="timeline-marker"></div><div class="timeline-title">Our Forever Blueprint 💍</div><div class="timeline-desc">Growing, fixing what we can, and choosing us every day.</div></div>
         </div>
       </div>
     </div>
@@ -439,7 +454,7 @@ function unlockAppWithFluidTransition() {
       setTimeout(() => {
         document.getElementById("mainContent").style.opacity = "1";
         document.getElementById("fluidBookElement").classList.add("opened");
-        runLiveCounter(); loadMusicWidgets(); startHeartRain(); initLiveSyncListeners(); initScratchCard(); initPollEngine(); runCapsuleCountdown(); triggerProximityDetection(); calculateRealDistance();
+        runLiveCounter(); loadMusicWidgets(); startHeartRain(); initLiveSyncListeners(); initScratchCard(); initPollEngine(); triggerProximityDetection(); calculateRealDistance();
       }, 50);
     }, 500);
   } else { alert("Wrong Code 💔"); }
@@ -463,43 +478,28 @@ function initLiveSyncListeners() {
     document.getElementById("partnerMoodDisplay").innerText = `${partner}'s current mood: ${moods[partner] || 'No mood set yet 🤍'}`;
   });
 
-  // MEMORY PHOTOS VAULT LISTENER
+  // CLASSIC GRID PHOTOS VAULT LISTENER
   db.ref('photos').on('value', snapshot => {
     const gallery = document.getElementById("photoGallery"); gallery.innerHTML = "";
     const data = snapshot.val();
     if (data) {
       Object.values(data).reverse().forEach(item => {
-        gallery.innerHTML += `
-          <div class="card ios-blur feed-card">
-            <img class="feed-img" src="${item.url}" onclick="openLightbox(this)">
-            <div class="feed-caption-box">
-              <div class="feed-user">${item.author || 'System'}</div>
-              <div class="feed-text">${item.caption || 'No caption shared.'}</div>
-            </div>
-          </div>`;
+        let img = document.createElement("img"); img.src = item.url; img.onclick = function() { openLightbox(this); }; gallery.appendChild(img);
       });
     }
     dispatchGlassUiToast("Memory Vault 📸", "The feed was updated with a new snapshot!", "📸");
   });
 
-  // 🎬 PROXIED GALLERY-DRIVEN WATCHLIST LISTENER
+  // CLASSIC HORIZONTAL CAROUSEL MOVIES LISTENER
   db.ref('movies').on('value', snapshot => {
-    const movieFeed = document.getElementById("movieGalleryFeed"); movieFeed.innerHTML = "";
+    const carousel = document.getElementById("movieCarousel"); carousel.innerHTML = "";
     const data = snapshot.val();
     if (data) {
-      Object.values(data).reverse().forEach(movie => {
-        movieFeed.innerHTML += `
-          <div class="card ios-blur feed-card">
-            <img class="feed-img" src="${movie.url}" onclick="openLightbox(this)">
-            <div class="feed-caption-box">
-              <div class="feed-user" style="color:#b76eff;">🍿 Watchlist Highlight</div>
-              <div class="feed-text" style="font-weight:700; font-size:15px;">${movie.title}</div>
-              <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">Added by ${movie.author || 'System'}</div>
-            </div>
-          </div>`;
+      Object.values(data).reverse().forEach(m => {
+        let img = document.createElement("img"); img.src = m.url; img.title = m.title; img.onclick = function() { openLightbox(this); }; carousel.appendChild(img);
       });
     }
-    dispatchGlassUiToast("Movie Watchlist 🎬", "Comfort Watchlist feed updated!", "🎬");
+    dispatchGlassUiToast("Movie Watchlist 🎬", "Comfort Watchlist updated!", "🎬");
   });
 
   db.ref('notes').on('value', snapshot => {
@@ -558,20 +558,19 @@ function initLiveSyncListeners() {
   setTimeout(() => { isFirstLoad = false; }, 2000);
 }
 
-// 📍 DYNAMIC GPS CALCULATION BACKUP HOOK
+// 📍 GPS SYSTEM DISTANCE HARNESS
 const MY_LATITUDE = 17.3850; const MY_LONGITUDE = 78.4867;
 function calculateRealDistance() {
   const el = document.getElementById("liveDistance"); if (!el) return;
   if (!navigator.geolocation || !navigator.geolocation.getCurrentPosition) { el.innerText = "612.0 kms 💖"; return; }
   navigator.geolocation.getCurrentPosition((pos) => {
     const r = 6371; 
-    const dLat = deg2rad(pos.coords.latitude - MY_LATITUDE); 
-    const dLon = deg2rad(pos.coords.longitude - MY_LONGITUDE);
-    const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(deg2rad(MY_LATITUDE)) * Math.cos(deg2rad(pos.coords.latitude)) * Math.sin(dLon/2) * Math.sin(dLon/2);
+    const dLat = (pos.coords.latitude - MY_LATITUDE) * Math.PI / 180; 
+    const dLon = (pos.coords.longitude - MY_LONGITUDE) * Math.PI / 180;
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(MY_LATITUDE * Math.PI / 180) * Math.cos(pos.coords.latitude * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
     el.innerHTML = `${(r * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)))).toFixed(1)} kms 💖`;
   }, () => { el.innerText = "612.0 kms 💖"; }, { enableHighAccuracy: false, timeout: 4000 });
 }
-function deg2rad(deg) { return deg * (Math.PI/180); }
 
 function triggerAttributedVaultAction(category) {
   db.ref(`metrics/${category}/${currentAuthor === 'Rishi' ? 'rishiCount' : 'pavaniCount'}`).transaction(c => (c || 0) + 1);
@@ -592,10 +591,10 @@ function triggerProximityDetection() {
   });
 }
 
-// 🍿 NEW: MOVIE FEED GALLERY DRIVEN SYSTEM
+// 🍿 REVERTED MOVIE CAROUSEL PIPELINE
 function triggerNativeMovieUpload() { document.getElementById("nativeMoviePicker").click(); }
 function handleLiveMovieUpload(inputNode) {
-  const title = document.getElementById("movieTitleInput").value.trim() || "Our Favorite Movie Watchlist Choice 🎬";
+  const title = document.getElementById("movieTitleInput").value.trim() || "Our Movie choice";
   if(inputNode.files && inputNode.files[0]) {
     const reader = new FileReader();
     reader.onload = function(e) {
@@ -606,7 +605,7 @@ function handleLiveMovieUpload(inputNode) {
   }
 }
 
-// 🎙️ MIC AUDIO CHANNEL RECORDING
+// 🎙️ MIC RECORD ENGINE
 async function toggleVoiceAudioRecording() {
   const btn = document.getElementById("voiceRecordBtn");
   if (mediaRecorder && mediaRecorder.state === "recording") {
@@ -617,12 +616,11 @@ async function toggleVoiceAudioRecording() {
       mediaRecorder = new MediaRecorder(stream); audioChunks = [];
       mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
       mediaRecorder.onstop = () => {
-        new FileReader().readAsDataURL(new Blob(audioChunks, { type: 'audio/mp3' }));
         const reader = new FileReader(); reader.readAsDataURL(new Blob(audioChunks, { type: 'audio/mp3' }));
         reader.onloadend = () => { window.lastCapturedVoiceBase64 = reader.result; };
       };
       mediaRecorder.start(); btn.innerText = "🛑"; btn.style.background = "#ff3b30";
-    } catch(err) { alert("Mic baseline initialization error."); }
+    } catch(err) { alert("Mic configuration error."); }
   }
 }
 function playbackVoiceCapsule(base64Data, element) {
@@ -633,10 +631,9 @@ function playbackVoiceCapsule(base64Data, element) {
 
 function triggerNativePhotoUpload() { document.getElementById("nativePhotoPicker").click(); }
 function handleLivePhotoUpload(inputNode) {
-  const caption = document.getElementById("photoCaptionInput").value.trim() || "Shared click memory 💖";
   if(inputNode.files && inputNode.files[0]) {
     const reader = new FileReader();
-    reader.onload = function(e) { db.ref('photos').push({ url: e.target.result, author: currentAuthor, caption: caption }); document.getElementById("photoCaptionInput").value = ""; }
+    reader.onload = function(e) { db.ref('photos').push({ url: e.target.result, author: currentAuthor }); }
     reader.readAsDataURL(inputNode.files[0]);
   }
 }
@@ -648,9 +645,11 @@ function addSharedReminderItem() {
 }
 function toggleReminderState(id, currentStatus) { db.ref(`reminders/${id}/status`).set(currentStatus === 'pending' ? 'done' : 'pending'); }
 
+// 📊 RELATIONSHIP TEASING & COGNITIVE RELATIONSHIP BUILDER POLL ENGINE
 const pollQuestions = [
-  { q: "Where are we traveling for our next major holiday destination?", o: ["Goa Beach Resort 🏖️", "Mountain Hideaway 🏔️", "Metropolitan Exploring 🌆"] },
-  { q: "Which comfort snack is mandatory for weekend movie binging?", o: ["Cheese Popcorn 🍿", "Spicy Ramen Noodles 🍜", "Ice Cream Sundae 🍦"] }
+  { q: "How many times do you think Rishi will kiss you the next exact second you both meet face to face? 😏", o: ["20 Kisses 💋", "30 Kisses 💋", "35+ Kisses (Non-Stop) 🔥"] },
+  { q: "Who is the biggest drama king/queen when we don't reply instantly to text messages? 🍿", o: ["Definitely Rishi 👨", "Unquestionably Pavani 👩‍🦰", "Both of us are equally dramatic! 😂"] },
+  { q: "What is our absolute favorite dynamic comfort routine together?", o: ["Talking hours into the night 📞", "Teasing each other till we laugh 😂", "Planning out our future blueprint 💍"] }
 ];
 function initPollEngine() {
   const todayIndex = new Date().getDate() % pollQuestions.length; const currentPoll = pollQuestions[todayIndex];
@@ -663,37 +662,57 @@ function initPollEngine() {
     if(votes.Rishi !== undefined && votes.Pavani !== undefined) {
       document.getElementById("pollOptionsBlock").style.display = "none";
       const results = document.getElementById("pollResultsBlock"); results.style.display = "block";
-      results.innerHTML = `<p style="color:var(--primary); font-weight:800; margin-bottom:6px;">Poll Synchronized! 🎉</p><p>👨 Rishi: <b>${currentPoll.o[votes.Rishi]}</b></p><p>👩‍🦰 Pavani: <b>${currentPoll.o[votes.Pavani]}</b></p>`;
+      results.innerHTML = `<p style="color:var(--primary); font-weight:800; margin-bottom:6px;">Poll Settled! 🎉</p><p>👨 Rishi picked: <b>${currentPoll.o[votes.Rishi]}</b></p><p>👩‍🦰 Pavani picked: <b>${currentPoll.o[votes.Pavani]}</b></p>`;
     }
   });
 }
 function submitPollVote(pollId, optionId) { db.ref(`polls/day_${pollId}/${currentAuthor}`).set(optionId); }
 
+// 🎴 HIGH VELOCITY RANDOM MULTI-SCRATCH SYSTEM
+const surpriseScratchMessages = [
+  "Rishi is currently missing you 100x more than you think! 🥺",
+  "Reminder: You possess the most breathtaking smile in the universe. 🥰",
+  "Rishi's favorite location in the entire world is right next to you. 🤍",
+  "You are his permanent piece of comfort and absolute home, Pavani. 👑",
+  "A massive, extra tight warm hug is being broadcast to you right now! 🫂"
+];
 function initScratchCard() {
+  reloadRandomScratchMessage();
+}
+function reloadRandomScratchMessage() {
   const canvas = document.getElementById("scratchCanvasOverlay"); const ctx = canvas.getContext("2d");
-  canvas.width = canvas.parentElement.offsetWidth; canvas.height = canvas.parentElement.offsetHeight;
-  ctx.fillStyle = "#cfd8dc"; ctx.fillRect(0,0,canvas.width,canvas.height);
-  ctx.fillStyle = "#78909c"; ctx.font = "bold 14px sans-serif"; ctx.textAlign = "center"; ctx.fillText("Swipe to Scratch 🪄", canvas.width/2, canvas.height/2);
+  const randText = surpriseScratchMessages[Math.floor(Math.random() * surpriseScratchMessages.length)];
+  document.getElementById("scratchSecretText").innerText = randText;
+  
+  canvas.width = canvas.parentElement.offsetWidth || 300; canvas.height = canvas.parentElement.offsetHeight || 160;
+  ctx.globalCompositeOperation = 'source-over'; ctx.fillStyle = "#cfd8dc"; ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle = "#78909c"; ctx.font = "bold 14px sans-serif"; ctx.textAlign = "center"; ctx.fillText("Swipe to Scratch Message 🪄", canvas.width/2, canvas.height/2);
+  
   let isDrawing = false;
   function scratch(e) {
     if(!isDrawing) return; const rect = canvas.getBoundingClientRect();
     const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left; const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
     ctx.globalCompositeOperation = 'destination-out'; ctx.beginPath(); ctx.arc(x, y, 22, 0, Math.PI*2); ctx.fill();
   }
-  canvas.addEventListener('mousedown', () => isDrawing = true); canvas.addEventListener('mouseup', () => isDrawing = false); canvas.addEventListener('mousemove', scratch);
-  canvas.addEventListener('touchstart', () => isDrawing = true); canvas.addEventListener('touchend', () => isDrawing = false); canvas.addEventListener('touchmove', scratch);
+  canvas.outerHTML = canvas.outerHTML; // Clean resets event list bindings
+  const newCanvas = document.getElementById("scratchCanvasOverlay");
+  newCanvas.addEventListener('mousedown', () => isDrawing = true); newCanvas.addEventListener('mouseup', () => isDrawing = false); newCanvas.addEventListener('mousemove', scratch);
+  newCanvas.addEventListener('touchstart', () => isDrawing = true); newCanvas.addEventListener('touchend', () => isDrawing = false); newCanvas.addEventListener('touchmove', scratch);
 }
 
-function runCapsuleCountdown() {
-  const targetUnlockTime = new Date().getTime() + (3 * 3600 * 1000 + 14 * 60 * 1000);
-  setInterval(() => {
-    const diff = targetUnlockTime - new Date().getTime();
-    if (diff <= 0) { document.getElementById("capsuleTimerDisplay").style.display = "none"; document.getElementById("capsuleHiddenContent").style.display = "block"; } 
-    else {
-      const h = Math.floor(diff / 3600000); const m = Math.floor((diff % 3600000) / 60000); const s = Math.floor((diff % 60000) / 1000);
-      document.getElementById("capsuleTimerDisplay").innerText = `${h}h : ${m}m : ${s}s`;
-    }
-  }, 1000);
+// 💌 REINSTATED IMMUTABLE RETROFIT LETTER CORE DATA
+let charIndex = 0; let letterStarted = false;
+const msg = `Pavaniii,\n\nidk how to say all this properly but I just wanted to tell you… you mean a lot to me. Like really a lot.\n\nWe’ve been through some tough things… misunderstandings, pain, and those moments where it felt heavy for both of us. But even then, my feelings for you never changed. If anything, it made me realize how much you matter in my life.\n\nI still think abt you all the time, still miss you even when we’re not talking, and honestly my day just feels better when it’s you.\n\nSometimes I remember those small moments… like when we used to talk for hours and laugh at the most random things. Those moments weren’t just time pass for me… they meant everything.\n\nI know we’re not perfect, but I’m willing to try more, understand you better, and handle things in a way that doesn’t hurt us again.\n\nI just want you to know I’m here… for you, for us, and for everything we’re building together ❤️\nI love you soo much 🫂`.trim();
+
+function startTypewriterLetterStream(){
+  if (letterStarted) return; letterStarted = true;
+  document.getElementById("envelope").classList.add("open"); document.getElementById("gift").style.display = "none";
+  const el = document.getElementById("text"); const cur = document.getElementById("cursorElement"); cur.className = "cursor active";
+  function type(){
+    if (charIndex < msg.length){ el.innerHTML += msg[charIndex] === "\n" ? "<br>" : msg[charIndex]; charIndex++; setTimeout(type, 40); }
+    else { cur.className = "cursor"; }
+  }
+  setTimeout(type, 650);
 }
 
 function slideToIndexScreen(pageIndex, navElement) {
@@ -705,7 +724,7 @@ function switchNoteAuthor(a) {
 }
 function commitNoteToBoard() {
   const input = document.getElementById("noteInput"); if(!input.value.trim() && !window.lastCapturedVoiceBase64) return;
-  db.ref('notes').push({ author: currentAuthor, content: input.value.trim() || "Voice capsule summary", time: new Date().toLocaleString([], {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'}), voiceData: window.lastCapturedVoiceBase64 || null });
+  db.ref('notes').push({ author: currentAuthor, content: input.value.trim() || "Voice capture item", time: new Date().toLocaleString([], {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'}), voiceData: window.lastCapturedVoiceBase64 || null });
   input.value = ""; window.lastCapturedVoiceBase64 = null;
 }
 function promptCustomSpotifyTrackId() {
