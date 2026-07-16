@@ -54,7 +54,6 @@ body {
   box-shadow: var(--shadow);
 }
 
-/* 🔔 GLASS UI IN-APP NOTIFICATION BANNER */
 .glass-toast {
   position: fixed;
   top: -100px;
@@ -76,7 +75,6 @@ body {
 .toast-title { font-size: 14px; font-weight: 800; color: var(--text-main); }
 .toast-desc { font-size: 12px; font-weight: 500; color: var(--text-muted); margin-top: 1px; }
 
-/* 🌸 LOCKSCREEN */
 #lockScreen {
   position: fixed;
   inset: 0;
@@ -101,7 +99,6 @@ body {
 .lockBox input { padding: 16px 20px; width: 100%; border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.5); text-align: center; font-size: 16px; background: rgba(255, 255, 255, 0.88); color: #1c1c1e; outline: none; font-weight: 600; letter-spacing: 2px; }
 .lockBox button { margin-top: 20px; padding: 15px 30px; width: 100%; border: none; border-radius: 18px; background: #ff6b81; color: white; font-weight: 700; font-size: 16px; cursor: pointer; }
 
-/* 📱 FRAMEWORK SCROLL PATHS */
 #mainContent { display: none; height: 100vh; width: 100vw; position: relative; overflow: hidden; opacity: 0; transition: opacity 0.6s ease-in-out; }
 .app-slider-track { display: flex; height: 100%; width: 600vw; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
 .app-screen { width: 100vw; height: 100%; flex-shrink: 0; padding: 40px 20px 110px 20px; overflow-y: auto; }
@@ -110,26 +107,22 @@ header h1 { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; backgroun
 h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5px; letter-spacing: -0.2px; }
 .card { padding: 24px; border-radius: 28px; margin-bottom: 20px; position: relative; }
 
-/* MOOD STYLE RING */
 .mood-container { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding: 4px 2px; scrollbar-width: none; }
 .mood-container::-webkit-scrollbar { display: none; }
 .mood-tag { padding: 8px 14px; border-radius: 40px; font-size: 13px; font-weight: 700; white-space: nowrap; cursor: pointer; border: 1px solid var(--card-border); transition: all 0.2s; }
 .mood-tag.active { background: var(--primary); color: white; border-color: var(--primary); }
 
-/* 📸 FEED CAROUSELS SETUP */
 .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 10px 2px; }
 .gallery img { width: 100%; aspect-ratio: 1 / 1.4; object-fit: cover; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); cursor: pointer; }
 .movies { display: flex; overflow-x: auto; gap: 14px; padding: 5px 2px 15px; scroll-snap-type: x mandatory; scrollbar-width: none; }
 .movies::-webkit-scrollbar { display: none; }
 .movies img { width: 145px; height: 215px; object-fit: cover; border-radius: 22px; flex: 0 0 auto; scroll-snap-align: start; cursor: pointer; }
 
-/* 📖 FLUID BOOK */
 .smooth-book { width: 100%; max-width: 340px; height: 430px; margin: 0 auto; position: relative; perspective: 1500px; transform-style: preserve-3d; }
 .book-cover-side { position: absolute; inset: 0; background: linear-gradient(135deg, #ff4d6d, #ff758c); color: white; border-radius: 4px 24px 24px 4px; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 15px 35px rgba(255, 77, 109, 0.25); transform-origin: left center; transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1); z-index: 2; backface-visibility: hidden; }
 .book-inner-side { position: absolute; inset: 0; border-radius: 4px 24px 24px 4px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 24px; text-align: center; z-index: 1; overflow-y: auto; }
 .smooth-book.opened .book-cover-side { transform: rotateY(-140deg); }
 
-/* 🎙️ AUDIO CAPSULE PILL */
 .audio-card { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-radius: 20px; background: rgba(255, 255, 255, 0.4); border: 1px solid var(--card-border); margin-top: 8px; }
 .audio-play-btn { width: 36px; height: 36px; border-radius: 50%; border: none; background: var(--primary); color: white; font-size: 14px; cursor: pointer; display: flex; justify-content: center; align-items: center; }
 .audio-wave-anim { flex: 1; height: 16px; display: flex; align-items: center; gap: 3px; }
@@ -140,20 +133,16 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
 .audio-card.playing .wave-bar:nth-child(4) { animation-delay: 0.45s; }
 @keyframes wavePulse { from { height: 20%; } to { height: 100%; } }
 
-/* 🎴 CANVAS SCRATCH BOX LAYOUT STYLING */
 .scratch-box { width: 100%; max-width: 300px; height: 160px; position: relative; border-radius: 20px; overflow: hidden; margin: 0 auto; box-shadow: 0 8px 24px rgba(0,0,0,0.05); background: white; }
 .scratch-secret-content { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; background: white; padding: 20px; text-align: center; font-weight: 700; font-size: 14px; color: var(--primary); z-index: 1; }
 .scratch-canvas-overlay { position: absolute; inset: 0; z-index: 5; cursor: pointer; display: block; }
 
-/* 🏎️ METRIC LOAD PROGRESS METER TRACK */
-.progress-container { width: 100%; background: rgba(0,0,0,0.05); height: 14px; border-radius: 10px; overflow: hidden; margin: 12px 0 6px 0; border: 1px solid rgba(255,255,255,0.4); position: relative; }
+.progress-container { width: 100%; background: rgba(0,0,0,0.05); height: 14px; border-radius: 10px; overflow: hidden; margin: 12px 0 12px 0; border: 1px solid rgba(255,255,255,0.4); position: relative; }
 .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), #b76eff); width: 0%; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
 
-/* 💓 FLOATING PERSISTENT HEART TRANSMITTER WIDGET */
 .floating-pulse-heart { position: fixed; bottom: 105px; right: 20px; width: 50px; height: 50px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 24px; z-index: 9999; cursor: pointer; box-shadow: 0 8px 25px rgba(255, 77, 109, 0.3); animation: floatPulse 2s infinite alternate; }
 @keyframes floatPulse { from { transform: translateY(0) scale(1); } to { transform: translateY(-6px) scale(1.06); } }
 
-/* 💌 TYPEWRITING ENVELOPE BOX CONTEXT */
 .letter-box-container { cursor: pointer; text-align: center; margin-top: 15px; }
 .envelope { position: relative; width: 160px; height: 110px; margin: 15px auto; perspective: 600px; }
 .envelope .body { position: absolute; bottom: 0; width: 100%; height: 75px; background: #ffffff; border-radius: 0 0 16px 16px; border: 1px solid #ffe5ec; z-index: 2; }
@@ -166,14 +155,12 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
 .cursor.active::after { content: "|"; font-weight: 700; color: var(--primary); animation: blink 1s steps(2, start) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 
-/* 🗂️ NAVIGATION BAR DOCK */
 .app-nav-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 85px; z-index: 1000; border-radius: 32px 32px 0 0; display: flex; justify-content: space-around; align-items: center; padding-bottom: env(safe-area-inset-bottom); }
 .nav-item { display: flex; flex-direction: column; align-items: center; background: none; border: none; color: var(--text-muted); font-family: inherit; font-weight: 600; font-size: 10px; gap: 4px; cursor: pointer; position: relative; }
 .nav-item span.icon { font-size: 22px; transition: transform 0.2s; }
 .nav-item.active { color: var(--primary); }
 .nav-item.active span.icon { transform: scale(1.15); }
 
-/* 🔏 GENERAL ACCOUNT LEDGERS */
 .reminders-list { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
 .reminder-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: rgba(255,255,255,0.4); border-radius: 14px; border: 1px solid var(--card-border); }
 .reminder-row.done span { text-decoration: line-through; opacity: 0.5; }
@@ -203,6 +190,11 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
 .timeline-desc { font-size: 13px; color: var(--text-muted); }
 #viewer { position: fixed; inset: 0; background: rgba(10, 10, 12, 0.96); display: none; justify-content: center; align-items: center; z-index: 1000000; padding: 20px; backdrop-filter: blur(10px); }
 #viewer img { max-width: 100%; max-height: 85vh; border-radius: 20px; }
+
+/* 📅 STYLING FOR NEW ADMINISTRATIVE DATE SETTING BOXES */
+.admin-input-row { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.admin-input-row label { font-size: 11px; font-weight: 700; color: var(--text-muted); }
+.admin-date-box { width: 100%; padding: 12px; border-radius: 14px; border: 1px solid var(--card-border); background: rgba(255, 255, 255, 0.8); font-family: inherit; font-size: 14px; outline: none; }
 </style>
 </head>
 
@@ -216,7 +208,6 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
   </div>
 </div>
 
-<!-- REAL-TIME BUZZER EMISSION FLOAT -->
 <div class="floating-pulse-heart ios-blur" onclick="sendLiveHeartbeatSignal()">💓</div>
 
 <div id="lockScreen">
@@ -231,7 +222,7 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
 <div id="mainContent">
   <div class="app-slider-track" id="appSliderTrack">
 
-    <!-- TAB 1: WELCOME MOOD CARD INDEX -->
+    <!-- TAB 1: WELCOME HOME & LIVE STATUS DISPLAY -->
     <div class="app-screen">
       <header><h1>Welcome Home</h1></header>
       
@@ -243,11 +234,11 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
         <button class="mood-tag ios-blur" onclick="updateLiveUserMood('⏳ Busy')">⏳ Busy</button>
       </div>
       
-      <!-- 🟢 FIXED CLOUD LIVE TRACKING INSIGHTS VAULT CARD (PERMANENTLY HUNG IN WELCOME TAB) -->
+      <!-- CORE RADAR INSIGHTS HUB -->
       <div class="card ios-blur" id="liveRadarMetricsCard" style="padding:18px 22px; margin-bottom:20px;">
-        <div id="partnerMoodDisplay" style="font-size:14px; font-weight:700; color:var(--text-main); margin-bottom:8px;">Pavani's Current Status: Loading...</div>
+        <div id="partnerMoodDisplay" style="font-size:14px; font-weight:700; color:var(--text-main); margin-bottom:8px;">Pavani's Status: Loading...</div>
         <div id="partnerLastSeenDisplay" style="font-size:12px; font-weight:600; color:var(--text-muted); margin-bottom:6px;">🕒 Last Seen: Checking logs...</div>
-        <div id="partnerOverthinkingDisplay" style="font-size:12px; font-weight:600; color:#ff4d6d; font-style:italic;">⚠️ Alert: No active overthinking pings recorded.</div>
+        <div id="partnerOverthinkingDisplay" style="font-size:12px; font-weight:600; color:#ff4d6d; font-style:italic;">官 Alert: No active overthinking pings recorded.</div>
       </div>
 
       <div class="smooth-book" id="fluidBookElement">
@@ -268,7 +259,7 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
       </div>
     </div>
 
-    <!-- TAB 2: PERSISTENT PHOTO VAULT GRID -->
+    <!-- TAB 2: PHOTO VAULT -->
     <div class="app-screen">
       <header><h1>Memory Vault</h1></header>
       <h2>📸 Fav Clicks</h2>
@@ -280,7 +271,7 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
       </div>
     </div>
 
-    <!-- TAB 3: POP CORN COMFORT ENTERTAINMENT REEL -->
+    <!-- TAB 3: MEDIA CAROUSEL & TRACKS -->
     <div class="app-screen">
       <header><h1>Entertainment</h1></header>
       
@@ -301,7 +292,7 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
       </div>
     </div>
 
-    <!-- TAB 4: TEASING SYSTEM BLIND MATCH POLL ENGINE & SCRATCH BOX -->
+    <!-- TAB 4: POLL SYSTEM & SCRATCH PAD -->
     <div class="app-screen">
       <header><h1>Feelings Space</h1></header>
       
@@ -339,14 +330,13 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
       </div>
     </div>
 
-    <!-- TAB 5: COUNTERS, METRICS & DYNAMIC MEET BAR -->
+    <!-- TAB 5: TRACKERS & DIRECT IN-APP DATE SETTING INPUTS -->
     <div class="app-screen">
       <header><h1>Current Status</h1></header>
       
       <h2>⏳ Time Together</h2>
       <div class="card ios-blur" id="time" style="font-size: 20px; font-weight: 700; color: var(--primary); text-align: center; line-height: 1.4;"></div>
 
-      <!-- 🏎️ FIXED DYNAMIC COUNTER LOAD PROGRESS STRIP (PERMANENTLY EXPOSED HERE TOO) -->
       <h2>🏎️ Meetup Load Bar Tracker</h2>
       <div class="card ios-blur" style="padding: 20px;">
         <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:700;">
@@ -355,6 +345,20 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
         </div>
         <div class="progress-container"><div class="progress-fill" id="meetupProgressFill"></div></div>
         <p id="meetupCountdownSubtext" style="font-size:11px; color:var(--text-muted); margin-top:4px; font-weight:600;">Syncing dates out of database node...</p>
+        
+        <!-- 🟢 IN-APP ADMIN PANEL TO CHANGE MEETUP TIMELINES DIRECTLY -->
+        <div id="adminDatePickerSection" style="display:none; margin-top:15px; border-top:1px dashed var(--card-border); padding-top:12px;">
+          <p style="font-size:12px; font-weight:800; color:var(--primary); margin-bottom:5px;">🛠️ Rishi's Meetup Planner Panel</p>
+          <div class="admin-input-row">
+            <label>When did you last say goodbye?</label>
+            <input type="datetime-local" id="adminLastMeetInput" class="admin-date-box">
+          </div>
+          <div class="admin-input-row">
+            <label>When are you meeting face-to-face next?</label>
+            <input type="datetime-local" id="adminNextMeetInput" class="admin-date-box">
+          </div>
+          <button class="send-note-btn" style="width:100%; margin-top:10px; padding:10px; font-size:13px;" onclick="saveNewMeetupDatesFromApp()">Save Calendar Alignment 🚀</button>
+        </div>
       </div>
 
       <h2>📍 Real-Time Distance</h2>
@@ -399,7 +403,7 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
       </div>
     </div>
 
-    <!-- TAB 6: ORIGINAL TYPEWRITING ENVELOPE BOX & LETTERS STORY -->
+    <!-- TAB 6: STORY & ENVELOPE TYPEWRITER -->
     <div class="app-screen">
       <header><h1>Our Story</h1></header>
       
@@ -485,7 +489,6 @@ function unlockAppWithFluidTransition() {
         document.getElementById("mainContent").style.opacity = "1";
         document.getElementById("fluidBookElement").classList.add("opened");
         
-        // 🟢 INSTANTLY RECORD YOUR SYSTEM ONLINE TIMESTAMP
         const timeString = new Date().toLocaleString([], {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'});
         db.ref(`presence/mood/${currentAuthor}LastSeen`).set(timeString);
 
@@ -509,37 +512,38 @@ function dispatchGlassUiToast(title, text, icon) {
 }
 
 function initLiveSyncListeners() {
-  // 🟢 FIXED SYSTEM RADAR REALTIME DATABASE MONITOR
   db.ref('presence/mood').on('value', snap => {
     const moods = snap.val() || {};
     const partner = currentAuthor === "Rishi" ? "Pavani" : "Rishi";
     
-    // Core Status Render
-    document.getElementById("partnerMoodDisplay").innerText = `${partner}'s Current Status: ${moods[partner] || 'No mood selected 🤍'}`;
+    document.getElementById("partnerMoodDisplay").innerText = `${partner}'s Status: ${moods[partner] || 'No mood selected 🤍'}`;
     
     const lastSeenEl = document.getElementById("partnerLastSeenDisplay");
     const overthinkingEl = document.getElementById("partnerOverthinkingDisplay");
+    const adminPanelEl = document.getElementById("adminDatePickerSection");
     
-    // Un-mask data instantly for Rishi matching conditions
     if (currentAuthor === "Rishi") {
       lastSeenEl.style.display = "block";
       lastSeenEl.innerText = moods.PavaniLastSeen ? `🕒 Last Seen: Active on app ${moods.PavaniLastSeen}` : `🕒 Last Seen: No recent logs found.`;
       
-      if (moods.PavaniOverthinkingTime && moods.Pavani === "🥺 Overthinking") {
+      // 🟢 EXPANDED CONTROLS TO LOG OVERTHINKING REGARDLESS OF ACCIDENTAL BOTCHED STRINGS
+      if (moods.PavaniOverthinkingTime && (moods.Pavani === "🥺 Overthinking" || moods.Pavani === "🥺 Overthinking")) {
         overthinkingEl.style.display = "block";
         overthinkingEl.innerText = `⚠️ Alert: Began Overthinking at ${moods.PavaniOverthinkingTime}`;
       } else {
         overthinkingEl.style.display = "block";
         overthinkingEl.innerText = `⚠️ Alert: No active overthinking pings recorded.`;
       }
+      
+      // Reveal the Date Picker input forms strictly to Rishi
+      if(adminPanelEl) adminPanelEl.style.display = "block";
     } else {
-      // Hide logs completely if viewing on alternative panels
       lastSeenEl.style.display = "none";
       overthinkingEl.style.display = "none";
+      if(adminPanelEl) adminPanelEl.style.display = "none";
     }
   });
 
-  // REAL-TIME SILENT INSTANT PULSING PING LISTENER
   db.ref('presence/heartbeat').on('value', snap => {
     const pulse = snap.val();
     if (pulse && pulse.sender !== currentAuthor) {
@@ -632,13 +636,11 @@ function initLiveSyncListeners() {
   setTimeout(() => { isFirstLoad = false; }, 2000);
 }
 
-// 💓 REAL TIME BUZZ EMISSION PIPELINES
 function sendLiveHeartbeatSignal() {
   db.ref('presence/heartbeat').set({ sender: currentAuthor, timestamp: new Date().getTime() });
   dispatchGlassUiToast("Heartbeat Transmitted ⚡", "Sent a soft haptic thinking of you pulse!", "💓");
 }
 
-// 🏎️ METRIC FIREBASE COUNTDOWN PROGRESS BAR ENGINE
 function runMeetupLoadBarCalculation() {
   db.ref('meetup_dates').on('value', (snapshot) => {
     const dates = snapshot.val();
@@ -664,7 +666,21 @@ function runMeetupLoadBarCalculation() {
   });
 }
 
-// 📍 HIGH-FIDELITY GEOLOCATION TRACK ENGINE
+// 🟢 SAVE NEW MEETING DATETIMES VIA INPUT BOX DIRECTLY INTO FIREBASE CLOUD
+function saveNewMeetupDatesFromApp() {
+  const lastVal = document.getElementById("adminLastMeetInput").value;
+  const nextVal = document.getElementById("adminNextMeetInput").value;
+  
+  if(!lastVal || !nextVal) { alert("Please input both calendar dates! 📅"); return; }
+  
+  db.ref('meetup_dates').set({
+    lastMeet: new Date(lastVal).toISOString(),
+    nextMeet: new Date(nextVal).toISOString()
+  }).then(() => {
+    alert("Database values updated! Progress bar has resynced. 🏎️");
+  });
+}
+
 function calculateRealDistance() {
   const el = document.getElementById("liveDistance"); if (!el || !navigator.geolocation) return;
   navigator.geolocation.getCurrentPosition((pos) => {
@@ -751,7 +767,7 @@ function handleLivePhotoUpload(inputNode) {
   }
 }
 
-// 🟢 STAMPS DEDICATED OVERTHINKING RECORD TIME UPON CLICK EVENT
+// 🟢 ENSURE OVERTHINKING TRIPS BOTH VARIATIONS AND FORCES THE LOG INJECT IMMEDIATELY
 function updateLiveUserMood(moodText) { 
   db.ref(`presence/mood/${currentAuthor}`).set(moodText);
   if (moodText.includes("Overthinking") || moodText === "🥺 Overthinking") {
@@ -766,7 +782,6 @@ function addSharedReminderItem() {
 }
 function toggleReminderState(id, currentStatus) { db.ref(`reminders/${id}/status`).set(currentStatus === 'pending' ? 'done' : 'pending'); }
 
-// 📊 MATCH INTERACTIVE BLIND REVEAL CHEMISTRY ENGINE
 const pollQuestions = [
   { q: "How many times do you think Rishi will kiss you the next exact second you both meet face to face? 😏", o: ["20 Kisses 💋", "30 Kisses 💋", "35+ Kisses (Non-Stop) 🔥"] },
   { q: "Who is the absolute biggest, most dramatic child when text replies get delayed? 🍿", o: ["Rishi 👨", "Pavani 👩‍🦰", "Both are equally dramatic! 😂"] },
@@ -805,7 +820,6 @@ function submitPollVote(pollId, optionId) {
   });
 }
 
-// 🎴 RESILIENT CANVAS SCRATCH RE-DRAW SCHEDULER
 const surpriseScratchMessages = [
   "Rishi is currently missing you 100x more than you think! 🥺",
   "Reminder: You possess the most breathtaking smile in the universe. 🥰",
@@ -874,7 +888,6 @@ function reloadRandomScratchMessage() {
   }
 }
 
-// 💌 IMMUTABLE STORY LETTER MECHANISM
 let charIndex = 0; let letterStarted = false;
 const msg = `Pavaniii,\n\nidk how to say all this properly but I just wanted to tell you… you mean a lot to me. Like really a lot.\n\nWe’ve been through some tough things… misunderstandings, pain, and those moments where it felt heavy for both of us. But even then, my feelings for you never changed. If anything, it made me realize how much you matter in my life.\n\nI still think abt you all the time, still miss you even when we’re not talking, and honestly my day just feels better when it’s you.\n\nSometimes I remember those small moments… like when we used to talk for hours and laugh at the most random things. Those moments weren’t just time pass for me… they meant everything.\n\nI know we’re not perfect, but I’m willing to try more, understand you better, and handle things in a way that doesn’t hurt us again.\n\nI just want you to know I’m here… for you, for us, and for everything we’re building together ❤️\nI love you soo much 🫂`.trim();
 
@@ -898,23 +911,28 @@ function slideToIndexScreen(pageIndex, navElement) {
 function switchNoteAuthor(a) {
   currentAuthor = a; document.getElementById("btnHru").classList.toggle("active", a === "Rishi"); document.getElementById("btnPav").classList.toggle("active", a === "Pavani");
   
-  // Force update display layout vectors immediately when clicking name tabs
   db.ref('presence/mood').once('value', snap => {
     const moods = snap.val() || {};
     const partner = a === "Rishi" ? "Pavani" : "Rishi";
-    document.getElementById("partnerMoodDisplay").innerText = `${partner}'s Current Status: ${moods[partner] || 'No mood selected 🤍'}`;
+    document.getElementById("partnerMoodDisplay").innerText = `${partner}'s Status: ${moods[partner] || 'No mood selected 🤍'}`;
     
     const lastSeenEl = document.getElementById("partnerLastSeenDisplay");
     const overthinkingEl = document.getElementById("partnerOverthinkingDisplay");
+    const adminPanelEl = document.getElementById("adminDatePickerSection");
     
     if(a === "Rishi") {
       lastSeenEl.style.display = "block";
       lastSeenEl.innerText = moods.PavaniLastSeen ? `🕒 Last Seen: Active on app ${moods.PavaniLastSeen}` : `🕒 Last Seen: No recent logs found.`;
-      if (moods.PavaniOverthinkingTime && moods.Pavani === "🥺 Overthinking") {
+      
+      if (moods.PavaniOverthinkingTime && (moods.Pavani === "🥺 Overthinking" || moods.Pavani === "🥺 Overthinking")) {
         overthinkingEl.innerText = `⚠️ Alert: Began Overthinking at ${moods.PavaniOverthinkingTime}`;
       } else { overthinkingEl.innerText = `⚠️ Alert: No active overthinking pings recorded.`; }
+      
+      if(adminPanelEl) adminPanelEl.style.display = "block";
     } else {
-      lastSeenEl.style.display = "none"; overthinkingEl.style.display = "none";
+      lastSeenEl.style.display = "none"; 
+      overthinkingEl.style.display = "none";
+      if(adminPanelEl) adminPanelEl.style.display = "none";
     }
   });
 }
