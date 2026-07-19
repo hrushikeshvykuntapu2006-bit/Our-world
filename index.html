@@ -191,7 +191,6 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
 #viewer { position: fixed; inset: 0; background: rgba(10, 10, 12, 0.96); display: none; justify-content: center; align-items: center; z-index: 1000000; padding: 20px; backdrop-filter: blur(10px); }
 #viewer img { max-width: 100%; max-height: 85vh; border-radius: 20px; }
 
-/* 📅 STYLING FOR NEW ADMINISTRATIVE DATE SETTING BOXES */
 .admin-input-row { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
 .admin-input-row label { font-size: 11px; font-weight: 700; color: var(--text-muted); }
 .admin-date-box { width: 100%; padding: 12px; border-radius: 14px; border: 1px solid var(--card-border); background: rgba(255, 255, 255, 0.8); font-family: inherit; font-size: 14px; outline: none; }
@@ -222,23 +221,23 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
 <div id="mainContent">
   <div class="app-slider-track" id="appSliderTrack">
 
-    <!-- TAB 1: WELCOME HOME & LIVE STATUS DISPLAY -->
+    <!-- TAB 1: WELCOME HOME & DETAILED METRICS -->
     <div class="app-screen">
       <header><h1>Welcome Home</h1></header>
       
       <h2>🎭 Current Mood</h2>
+      <!-- 🟢 REMOVED ALL EXTRA BUTTONS, ONLY KEEPING OVERTHINKING -->
       <div class="mood-container" id="moodRowWidget">
-        <button class="mood-tag ios-blur" onclick="updateLiveUserMood('🥺 Missing You')">🥺 Missing You</button>
-        <button class="mood-tag ios-blur" onclick="updateLiveUserMood('🥳 Happy')">🥳 Happy</button>
         <button class="mood-tag ios-blur" onclick="updateLiveUserMood('🥺 Overthinking')">🥺 Overthinking</button>
-        <button class="mood-tag ios-blur" onclick="updateLiveUserMood('⏳ Busy')">⏳ Busy</button>
       </div>
       
-      <!-- CORE RADAR INSIGHTS HUB -->
+      <!-- INSIGHTS HUB (PERMANENTLY EXPOSED) -->
       <div class="card ios-blur" id="liveRadarMetricsCard" style="padding:18px 22px; margin-bottom:20px;">
         <div id="partnerMoodDisplay" style="font-size:14px; font-weight:700; color:var(--text-main); margin-bottom:8px;">Pavani's Status: Loading...</div>
         <div id="partnerLastSeenDisplay" style="font-size:12px; font-weight:600; color:var(--text-muted); margin-bottom:6px;">🕒 Last Seen: Checking logs...</div>
-        <div id="partnerOverthinkingDisplay" style="font-size:12px; font-weight:600; color:#ff4d6d; font-style:italic;">官 Alert: No active overthinking pings recorded.</div>
+        <div id="partnerOverthinkingDisplay" style="font-size:12px; font-weight:600; color:#ff4d6d; font-style:italic; margin-bottom:6px;">⚠️ Alert: No active overthinking pings recorded.</div>
+        <!-- Rishi clear alert button -->
+        <button id="clearOverthinkingBtn" class="ios-action-btn ios-blur" style="display:none; padding:6px 12px; font-size:11px; margin-top:4px; width:auto;" onclick="clearOverthinkingAlert()">Clear Alert ✔️</button>
       </div>
 
       <div class="smooth-book" id="fluidBookElement">
@@ -271,7 +270,7 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
       </div>
     </div>
 
-    <!-- TAB 3: MEDIA CAROUSEL & TRACKS -->
+    <!-- TAB 3: MEDIA WATCHLIST -->
     <div class="app-screen">
       <header><h1>Entertainment</h1></header>
       
@@ -292,7 +291,7 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
       </div>
     </div>
 
-    <!-- TAB 4: POLL SYSTEM & SCRATCH PAD -->
+    <!-- TAB 4: POLL SYSTEM & SCRATCH DECK -->
     <div class="app-screen">
       <header><h1>Feelings Space</h1></header>
       
@@ -330,7 +329,7 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
       </div>
     </div>
 
-    <!-- TAB 5: TRACKERS & DIRECT IN-APP DATE SETTING INPUTS -->
+    <!-- TAB 5: COUNTERS & DIRECT MEET ALIGNMENT PLANNER -->
     <div class="app-screen">
       <header><h1>Current Status</h1></header>
       
@@ -346,7 +345,7 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
         <div class="progress-container"><div class="progress-fill" id="meetupProgressFill"></div></div>
         <p id="meetupCountdownSubtext" style="font-size:11px; color:var(--text-muted); margin-top:4px; font-weight:600;">Syncing dates out of database node...</p>
         
-        <!-- 🟢 IN-APP ADMIN PANEL TO CHANGE MEETUP TIMELINES DIRECTLY -->
+        <!-- ADMIN DATETIME PICKER PANEL -->
         <div id="adminDatePickerSection" style="display:none; margin-top:15px; border-top:1px dashed var(--card-border); padding-top:12px;">
           <p style="font-size:12px; font-weight:800; color:var(--primary); margin-bottom:5px;">🛠️ Rishi's Meetup Planner Panel</p>
           <div class="admin-input-row">
@@ -403,7 +402,7 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
       </div>
     </div>
 
-    <!-- TAB 6: STORY & ENVELOPE TYPEWRITER -->
+    <!-- TAB 6: STORY TIMELINE -->
     <div class="app-screen">
       <header><h1>Our Story</h1></header>
       
@@ -489,8 +488,9 @@ function unlockAppWithFluidTransition() {
         document.getElementById("mainContent").style.opacity = "1";
         document.getElementById("fluidBookElement").classList.add("opened");
         
+        // 🟢 RESTURCTURED LAST SEEN TIME LOGGER LOGIC
         const timeString = new Date().toLocaleString([], {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'});
-        db.ref(`presence/mood/${currentAuthor}LastSeen`).set(timeString);
+        db.ref(`presence/last_seen/${currentAuthor}`).set(timeString);
 
         runLiveCounter(); loadMusicWidgets(); startHeartRain(); initLiveSyncListeners(); 
         initPollEngine(); triggerProximityDetection(); calculateRealDistance(); runMeetupLoadBarCalculation();
@@ -512,34 +512,46 @@ function dispatchGlassUiToast(title, text, icon) {
 }
 
 function initLiveSyncListeners() {
-  db.ref('presence/mood').on('value', snap => {
-    const moods = snap.val() || {};
+  // 🟢 RADAR LOG LISTENER (MONITORS STATUS, REAL-TIME LOGINS, AND FIXED ALERTS)
+  db.ref('presence').on('value', snap => {
+    const data = snap.val() || {};
+    const moods = data.mood || {};
+    const lastSeen = data.last_seen || {};
+    const overthinking = data.overthinking || {};
+    
     const partner = currentAuthor === "Rishi" ? "Pavani" : "Rishi";
     
-    document.getElementById("partnerMoodDisplay").innerText = `${partner}'s Status: ${moods[partner] || 'No mood selected 🤍'}`;
+    // Status text update
+    if (overthinking.status === "active" && partner === "Pavani") {
+      document.getElementById("partnerMoodDisplay").innerText = "Pavani's Status: 🥺 Overthinking";
+    } else {
+      document.getElementById("partnerMoodDisplay").innerText = `${partner}'s Status: ${moods[partner] || 'Calm / Peaceful 🤍'}`;
+    }
     
     const lastSeenEl = document.getElementById("partnerLastSeenDisplay");
     const overthinkingEl = document.getElementById("partnerOverthinkingDisplay");
     const adminPanelEl = document.getElementById("adminDatePickerSection");
+    const clearBtn = document.getElementById("clearOverthinkingBtn");
     
     if (currentAuthor === "Rishi") {
       lastSeenEl.style.display = "block";
-      lastSeenEl.innerText = moods.PavaniLastSeen ? `🕒 Last Seen: Active on app ${moods.PavaniLastSeen}` : `🕒 Last Seen: No recent logs found.`;
+      lastSeenEl.innerText = lastSeen.Pavani ? `🕒 Last Seen: Active on app ${lastSeen.Pavani}` : `🕒 Last Seen: No recent logs found.`;
       
-      // 🟢 EXPANDED CONTROLS TO LOG OVERTHINKING REGARDLESS OF ACCIDENTAL BOTCHED STRINGS
-      if (moods.PavaniOverthinkingTime && (moods.Pavani === "🥺 Overthinking" || moods.Pavani === "🥺 Overthinking")) {
+      if (overthinking.status === "active") {
         overthinkingEl.style.display = "block";
-        overthinkingEl.innerText = `⚠️ Alert: Began Overthinking at ${moods.PavaniOverthinkingTime}`;
+        overthinkingEl.innerText = `⚠️ Alert: Began Overthinking at ${overthinking.time}`;
+        clearBtn.style.display = "inline-block";
       } else {
         overthinkingEl.style.display = "block";
         overthinkingEl.innerText = `⚠️ Alert: No active overthinking pings recorded.`;
+        clearBtn.style.display = "none";
       }
       
-      // Reveal the Date Picker input forms strictly to Rishi
       if(adminPanelEl) adminPanelEl.style.display = "block";
     } else {
       lastSeenEl.style.display = "none";
       overthinkingEl.style.display = "none";
+      clearBtn.style.display = "none";
       if(adminPanelEl) adminPanelEl.style.display = "none";
     }
   });
@@ -566,7 +578,6 @@ function initLiveSyncListeners() {
         let img = document.createElement("img"); img.src = item.url; img.onclick = function() { openLightbox(this); }; gallery.appendChild(img);
       });
     }
-    dispatchGlassUiToast("Memory Vault 📸", "The feed was updated with a new snapshot!", "📸");
   });
 
   db.ref('movies').on('value', snapshot => {
@@ -577,7 +588,6 @@ function initLiveSyncListeners() {
         let img = document.createElement("img"); img.src = m.url; img.title = m.title; img.onclick = function() { openLightbox(this); }; carousel.appendChild(img);
       });
     }
-    dispatchGlassUiToast("Movie Watchlist 🎬", "Comfort Watchlist updated!", "🎬");
   });
 
   db.ref('notes').on('value', snapshot => {
@@ -666,19 +676,14 @@ function runMeetupLoadBarCalculation() {
   });
 }
 
-// 🟢 SAVE NEW MEETING DATETIMES VIA INPUT BOX DIRECTLY INTO FIREBASE CLOUD
 function saveNewMeetupDatesFromApp() {
   const lastVal = document.getElementById("adminLastMeetInput").value;
   const nextVal = document.getElementById("adminNextMeetInput").value;
-  
   if(!lastVal || !nextVal) { alert("Please input both calendar dates! 📅"); return; }
-  
   db.ref('meetup_dates').set({
     lastMeet: new Date(lastVal).toISOString(),
     nextMeet: new Date(nextVal).toISOString()
-  }).then(() => {
-    alert("Database values updated! Progress bar has resynced. 🏎️");
-  });
+  }).then(() => { alert("Database values updated! Progress bar has resynced. 🏎️"); });
 }
 
 function calculateRealDistance() {
@@ -767,13 +772,34 @@ function handleLivePhotoUpload(inputNode) {
   }
 }
 
-// 🟢 ENSURE OVERTHINKING TRIPS BOTH VARIATIONS AND FORCES THE LOG INJECT IMMEDIATELY
+// 🟢 ENHANCED OVERTHINKING ENGINE & 5 REASSURING Pool MESSAGES
+const comfortPoolMessages = [
+  "Hey Pavani... take a deep breath. Rishi is right here with you, always. You're safe. ❤️",
+  "Don't let the thoughts feel too heavy, okay? You mean the absolute world to Rishi. 🫂",
+  "In this exact second, just know that Rishi loves you endlessly and you're doing amazing. ✨",
+  "Everything is going to be perfectly fine. Close your eyes for a moment, Rishi is holding your hand. 💖",
+  "Your comfort is his highest priority. You're never dealing with anything alone, Pavani. 👑"
+];
+
 function updateLiveUserMood(moodText) { 
   db.ref(`presence/mood/${currentAuthor}`).set(moodText);
-  if (moodText.includes("Overthinking") || moodText === "🥺 Overthinking") {
+  
+  if (moodText.includes("Overthinking")) {
     const clickTime = new Date().toLocaleString([], {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'});
-    db.ref(`presence/mood/${currentAuthor}OverthinkingTime`).set(clickTime);
+    // Persist timestamp structural state safely to database
+    db.ref('presence/overthinking').set({ status: "active", time: clickTime });
+    
+    // Provide a random comforting toast notification if she clicks it
+    if(currentAuthor === "Pavani") {
+      const pickRandomComfort = comfortPoolMessages[Math.floor(Math.random() * comfortPoolMessages.length)];
+      alert(pickRandomComfort);
+    }
   }
+}
+
+function clearOverthinkingAlert() {
+  db.ref('presence/overthinking/status').set("resolved");
+  db.ref('presence/mood/Pavani').set("Calm 🤍");
 }
 
 function addSharedReminderItem() {
@@ -795,11 +821,9 @@ function initPollEngine() {
   
   db.ref(`polls/day_${todayIndex}`).on('value', snap => {
     const votes = snap.val() || {};
-    
     db.ref('polls/streak_counter').on('value', countSnap => {
       document.getElementById("streakIndicatorDisplay").innerText = `🔥 ${countSnap.val() || 0} Days`;
     });
-
     if(votes.Rishi !== undefined && votes.Pavani !== undefined) {
       document.getElementById("pollOptionsBlock").style.display = "none";
       const results = document.getElementById("pollResultsBlock"); results.style.display = "block";
@@ -820,6 +844,7 @@ function submitPollVote(pollId, optionId) {
   });
 }
 
+// 🎴 FIXED SCRATCH CARD ENGINE (SHUFFLES TEXT INSTANTLY ON INITIAL LOAD TO AVOID DUPES)
 const surpriseScratchMessages = [
   "Rishi is currently missing you 100x more than you think! 🥺",
   "Reminder: You possess the most breathtaking smile in the universe. 🥰",
@@ -829,6 +854,10 @@ const surpriseScratchMessages = [
 ];
 
 function initScratchCard() {
+  // Grab unique non-cached string right on build load execution
+  const freshText = surpriseScratchMessages[Math.floor(Math.random() * surpriseScratchMessages.length)];
+  document.getElementById("scratchSecretText").innerText = freshText;
+
   setTimeout(() => {
     const canvas = document.getElementById("scratchCanvasOverlay"); 
     if(!canvas) return;
@@ -910,31 +939,8 @@ function slideToIndexScreen(pageIndex, navElement) {
 
 function switchNoteAuthor(a) {
   currentAuthor = a; document.getElementById("btnHru").classList.toggle("active", a === "Rishi"); document.getElementById("btnPav").classList.toggle("active", a === "Pavani");
-  
-  db.ref('presence/mood').once('value', snap => {
-    const moods = snap.val() || {};
-    const partner = a === "Rishi" ? "Pavani" : "Rishi";
-    document.getElementById("partnerMoodDisplay").innerText = `${partner}'s Status: ${moods[partner] || 'No mood selected 🤍'}`;
-    
-    const lastSeenEl = document.getElementById("partnerLastSeenDisplay");
-    const overthinkingEl = document.getElementById("partnerOverthinkingDisplay");
-    const adminPanelEl = document.getElementById("adminDatePickerSection");
-    
-    if(a === "Rishi") {
-      lastSeenEl.style.display = "block";
-      lastSeenEl.innerText = moods.PavaniLastSeen ? `🕒 Last Seen: Active on app ${moods.PavaniLastSeen}` : `🕒 Last Seen: No recent logs found.`;
-      
-      if (moods.PavaniOverthinkingTime && (moods.Pavani === "🥺 Overthinking" || moods.Pavani === "🥺 Overthinking")) {
-        overthinkingEl.innerText = `⚠️ Alert: Began Overthinking at ${moods.PavaniOverthinkingTime}`;
-      } else { overthinkingEl.innerText = `⚠️ Alert: No active overthinking pings recorded.`; }
-      
-      if(adminPanelEl) adminPanelEl.style.display = "block";
-    } else {
-      lastSeenEl.style.display = "none"; 
-      overthinkingEl.style.display = "none";
-      if(adminPanelEl) adminPanelEl.style.display = "none";
-    }
-  });
+  // Trigger interface reload values instantly
+  db.ref('presence/mood').setValue(null);
 }
 
 function commitNoteToBoard() {
