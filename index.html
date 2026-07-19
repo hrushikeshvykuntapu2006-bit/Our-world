@@ -221,22 +221,21 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
 <div id="mainContent">
   <div class="app-slider-track" id="appSliderTrack">
 
-    <!-- TAB 1: WELCOME HOME & DETAILED METRICS -->
+    <!-- TAB 1: WELCOME HOME & LIVE REAL-TIME LOGS -->
     <div class="app-screen">
       <header><h1>Welcome Home</h1></header>
       
       <h2>🎭 Current Mood</h2>
-      <!-- 🟢 REMOVED ALL EXTRA BUTTONS, ONLY KEEPING OVERTHINKING -->
       <div class="mood-container" id="moodRowWidget">
-        <button class="mood-tag ios-blur" onclick="updateLiveUserMood('🥺 Overthinking')">🥺 Overthinking</button>
+        <!-- 🟢 UPDATED EXCLUSIVE BUTTON PROMPT TEXT -->
+        <button class="mood-tag ios-blur" onclick="updateLiveUserMood('🥺 Overthinking')">click me if u're overthinking !!</button>
       </div>
       
-      <!-- INSIGHTS HUB (PERMANENTLY EXPOSED) -->
+      <!-- RADAR LOG INSIGHTS PANEL -->
       <div class="card ios-blur" id="liveRadarMetricsCard" style="padding:18px 22px; margin-bottom:20px;">
         <div id="partnerMoodDisplay" style="font-size:14px; font-weight:700; color:var(--text-main); margin-bottom:8px;">Pavani's Status: Loading...</div>
         <div id="partnerLastSeenDisplay" style="font-size:12px; font-weight:600; color:var(--text-muted); margin-bottom:6px;">🕒 Last Seen: Checking logs...</div>
         <div id="partnerOverthinkingDisplay" style="font-size:12px; font-weight:600; color:#ff4d6d; font-style:italic; margin-bottom:6px;">⚠️ Alert: No active overthinking pings recorded.</div>
-        <!-- Rishi clear alert button -->
         <button id="clearOverthinkingBtn" class="ios-action-btn ios-blur" style="display:none; padding:6px 12px; font-size:11px; margin-top:4px; width:auto;" onclick="clearOverthinkingAlert()">Clear Alert ✔️</button>
       </div>
 
@@ -329,7 +328,7 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
       </div>
     </div>
 
-    <!-- TAB 5: COUNTERS & DIRECT MEET ALIGNMENT PLANNER -->
+    <!-- TAB 5: COUNTERS & MEET INTERVAL ALIGNMENT PLANNER -->
     <div class="app-screen">
       <header><h1>Current Status</h1></header>
       
@@ -345,7 +344,6 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
         <div class="progress-container"><div class="progress-fill" id="meetupProgressFill"></div></div>
         <p id="meetupCountdownSubtext" style="font-size:11px; color:var(--text-muted); margin-top:4px; font-weight:600;">Syncing dates out of database node...</p>
         
-        <!-- ADMIN DATETIME PICKER PANEL -->
         <div id="adminDatePickerSection" style="display:none; margin-top:15px; border-top:1px dashed var(--card-border); padding-top:12px;">
           <p style="font-size:12px; font-weight:800; color:var(--primary); margin-bottom:5px;">🛠️ Rishi's Meetup Planner Panel</p>
           <div class="admin-input-row">
@@ -488,7 +486,6 @@ function unlockAppWithFluidTransition() {
         document.getElementById("mainContent").style.opacity = "1";
         document.getElementById("fluidBookElement").classList.add("opened");
         
-        // 🟢 RESTURCTURED LAST SEEN TIME LOGGER LOGIC
         const timeString = new Date().toLocaleString([], {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'});
         db.ref(`presence/last_seen/${currentAuthor}`).set(timeString);
 
@@ -512,7 +509,6 @@ function dispatchGlassUiToast(title, text, icon) {
 }
 
 function initLiveSyncListeners() {
-  // 🟢 RADAR LOG LISTENER (MONITORS STATUS, REAL-TIME LOGINS, AND FIXED ALERTS)
   db.ref('presence').on('value', snap => {
     const data = snap.val() || {};
     const moods = data.mood || {};
@@ -521,7 +517,6 @@ function initLiveSyncListeners() {
     
     const partner = currentAuthor === "Rishi" ? "Pavani" : "Rishi";
     
-    // Status text update
     if (overthinking.status === "active" && partner === "Pavani") {
       document.getElementById("partnerMoodDisplay").innerText = "Pavani's Status: 🥺 Overthinking";
     } else {
@@ -772,7 +767,6 @@ function handleLivePhotoUpload(inputNode) {
   }
 }
 
-// 🟢 ENHANCED OVERTHINKING ENGINE & 5 REASSURING Pool MESSAGES
 const comfortPoolMessages = [
   "Hey Pavani... take a deep breath. Rishi is right here with you, always. You're safe. ❤️",
   "Don't let the thoughts feel too heavy, okay? You mean the absolute world to Rishi. 🫂",
@@ -786,10 +780,8 @@ function updateLiveUserMood(moodText) {
   
   if (moodText.includes("Overthinking")) {
     const clickTime = new Date().toLocaleString([], {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'});
-    // Persist timestamp structural state safely to database
     db.ref('presence/overthinking').set({ status: "active", time: clickTime });
     
-    // Provide a random comforting toast notification if she clicks it
     if(currentAuthor === "Pavani") {
       const pickRandomComfort = comfortPoolMessages[Math.floor(Math.random() * comfortPoolMessages.length)];
       alert(pickRandomComfort);
@@ -844,7 +836,6 @@ function submitPollVote(pollId, optionId) {
   });
 }
 
-// 🎴 FIXED SCRATCH CARD ENGINE (SHUFFLES TEXT INSTANTLY ON INITIAL LOAD TO AVOID DUPES)
 const surpriseScratchMessages = [
   "Rishi is currently missing you 100x more than you think! 🥺",
   "Reminder: You possess the most breathtaking smile in the universe. 🥰",
@@ -854,7 +845,6 @@ const surpriseScratchMessages = [
 ];
 
 function initScratchCard() {
-  // Grab unique non-cached string right on build load execution
   const freshText = surpriseScratchMessages[Math.floor(Math.random() * surpriseScratchMessages.length)];
   document.getElementById("scratchSecretText").innerText = freshText;
 
@@ -939,7 +929,6 @@ function slideToIndexScreen(pageIndex, navElement) {
 
 function switchNoteAuthor(a) {
   currentAuthor = a; document.getElementById("btnHru").classList.toggle("active", a === "Rishi"); document.getElementById("btnPav").classList.toggle("active", a === "Pavani");
-  // Trigger interface reload values instantly
   db.ref('presence/mood').setValue(null);
 }
 
