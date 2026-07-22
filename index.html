@@ -72,7 +72,7 @@ html { scroll-behavior: smooth; }
   transition: background 0.5s ease, border-color 0.5s ease;
 }
 
-/* 🌸 LOCKSCREEN */
+/* 🌸 LOCKSCREEN (Clean Pastel Gradient - No Text/Images) */
 #lockScreen {
   position: fixed;
   inset: 0;
@@ -653,10 +653,10 @@ function evaluateAdaptiveTimeSky() {
   }
 }
 
-/* 🔓 UNLOCK SYSTEM */
+/* 🔓 UNLOCK SYSTEM (UPDATED CODE: 050301) */
 function unlockAppWithFluidTransition() {
   const inputPass = document.getElementById("password").value;
-  if(inputPass === "22010503") {
+  if(inputPass === "050301") {
     const lock = document.getElementById("lockScreen");
     lock.style.opacity = "0";
     
@@ -756,7 +756,6 @@ async function shareDoodleToGallery() {
 
 /* 💥 FLOATING EMOJI EXPLOSIONS */
 function triggerGlobalEmojiExplosion(e) {
-  // Avoid bursting when tapping inputs or buttons
   if (["INPUT", "BUTTON", "TEXTAREA", "CANVAS"].includes(e.target.tagName)) return;
   
   const emojis = ["💖", "✨", "🥺", "💋", "🌸", "👑"];
@@ -779,7 +778,6 @@ function triggerGlobalEmojiExplosion(e) {
 
 /* 🗓️ SECRET CALENDAR COUNTDOWN */
 function runMilestoneCountdown() {
-  // Set your next special target date here (e.g. Next Meetup / Anniversary)
   const targetDate = new Date("2026-12-31T00:00:00");
   const display = document.getElementById("countdownDisplay");
 
