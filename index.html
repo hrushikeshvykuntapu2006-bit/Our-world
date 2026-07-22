@@ -13,8 +13,16 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+
+<!-- Leaflet CSS & JS for Interactive Map -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- Supabase Realtime SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 :root {
@@ -23,10 +31,26 @@
   --bg-gradient: linear-gradient(135deg, #ffe5ec 0%, #ffcad4 50%, #f4e8ff 100%);
   --text-main: #1c1c1e;
   --text-muted: #48484a;
-  --card-bg: rgba(255, 255, 255, 0.35);
-  --card-border: rgba(255, 255, 255, 0.6);
+  --card-bg: rgba(255, 255, 255, 0.45);
+  --card-border: rgba(255, 255, 255, 0.7);
   --shadow: 0 12px 40px 0 rgba(255, 77, 109, 0.08);
-  --nav-bg: rgba(255, 255, 255, 0.4);
+  --nav-bg: rgba(255, 255, 255, 0.5);
+  --input-bg: rgba(255, 255, 255, 0.85);
+  --map-filter: none;
+}
+
+/* 🌙 AUTOMATIC DYNAMIC THEME ENGINE (Night Mode After 7:00 PM) */
+body.night-mode {
+  --bg-gradient: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+  --card-bg: rgba(255, 255, 255, 0.08);
+  --card-border: rgba(255, 255, 255, 0.15);
+  --text-main: #f3e8ff;
+  --text-muted: #cbd5e1;
+  --primary: #c084fc;
+  --primary-hover: #a855f7;
+  --nav-bg: rgba(30, 27, 75, 0.6);
+  --input-bg: rgba(255, 255, 255, 0.15);
+  --map-filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3);
 }
 
 * {
@@ -34,6 +58,7 @@
   margin: 0;
   padding: 0;
   -webkit-tap-highlight-color: transparent;
+  transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease;
 }
 
 body {
@@ -75,32 +100,38 @@ body {
 .toast-title { font-size: 14px; font-weight: 800; color: var(--text-main); }
 .toast-desc { font-size: 12px; font-weight: 500; color: var(--text-muted); margin-top: 1px; }
 
+/* 🔒 CLEAN PASTEL LOCK SCREEN (NO COOKIES IMAGE / NO BACK BACKGROUND TEXT) */
 #lockScreen {
   position: fixed;
   inset: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: url('https://w0.peakpx.com/wallpaper/725/587/HD-wallpaper-pink-aesthetic-2-glitch-lock-screen-macaroon-pink-aesthetic.jpg') no-repeat center center;
-  background-size: cover;
+  background: var(--bg-gradient);
   z-index: 99999;
   padding: 20px;
   transition: opacity 0.5s ease-out;
 }
-#lockScreen::before {
-  content: ''; position: absolute; inset: 0; background: rgba(40, 20, 25, 0.15); z-index: 1;
-}
 .lockBox {
-  position: relative; z-index: 2; padding: 40px 30px; border-radius: 32px;
-  background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(30px) saturate(170%); -webkit-backdrop-filter: blur(30px) saturate(170%);
-  border: 1px solid rgba(255, 255, 255, 0.4); text-align: center; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15); max-width: 340px; width: 100%;
+  position: relative;
+  z-index: 2;
+  padding: 40px 30px;
+  border-radius: 32px;
+  background: var(--card-bg);
+  backdrop-filter: blur(30px) saturate(170%);
+  -webkit-backdrop-filter: blur(30px) saturate(170%);
+  border: 1px solid var(--card-border);
+  text-align: center;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.1);
+  max-width: 340px;
+  width: 100%;
 }
-.lockBox h2 { margin-bottom: 25px; font-weight: 800; color: #ff4d6d; font-size: 28px; }
-.lockBox input { padding: 16px 20px; width: 100%; border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.5); text-align: center; font-size: 16px; background: rgba(255, 255, 255, 0.88); color: #1c1c1e; outline: none; font-weight: 600; letter-spacing: 2px; }
-.lockBox button { margin-top: 20px; padding: 15px 30px; width: 100%; border: none; border-radius: 18px; background: #ff6b81; color: white; font-weight: 700; font-size: 16px; cursor: pointer; }
+.lockBox h2 { margin-bottom: 25px; font-weight: 800; color: var(--primary); font-size: 28px; }
+.lockBox input { padding: 16px 20px; width: 100%; border-radius: 18px; border: 1px solid var(--card-border); text-align: center; font-size: 16px; background: var(--input-bg); color: var(--text-main); outline: none; font-weight: 600; letter-spacing: 2px; }
+.lockBox button { margin-top: 20px; padding: 15px 30px; width: 100%; border: none; border-radius: 18px; background: var(--primary); color: white; font-weight: 700; font-size: 16px; cursor: pointer; }
 
 #mainContent { display: none; height: 100vh; width: 100vw; position: relative; overflow: hidden; opacity: 0; transition: opacity 0.6s ease-in-out; }
-.app-slider-track { display: flex; height: 100%; width: 600vw; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+.app-slider-track { display: flex; height: 100%; width: 700vw; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
 .app-screen { width: 100vw; height: 100%; flex-shrink: 0; padding: 40px 20px 110px 20px; overflow-y: auto; }
 
 header h1 { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; background: linear-gradient(45deg, var(--primary), #b76eff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 25px; text-align: center; }
@@ -119,7 +150,7 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
 .movies img { width: 145px; height: 215px; object-fit: cover; border-radius: 22px; flex: 0 0 auto; scroll-snap-align: start; cursor: pointer; }
 
 .smooth-book { width: 100%; max-width: 340px; height: 430px; margin: 0 auto; position: relative; perspective: 1500px; transform-style: preserve-3d; }
-.book-cover-side { position: absolute; inset: 0; background: linear-gradient(135deg, #ff4d6d, #ff758c); color: white; border-radius: 4px 24px 24px 4px; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 15px 35px rgba(255, 77, 109, 0.25); transform-origin: left center; transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1); z-index: 2; backface-visibility: hidden; }
+.book-cover-side { position: absolute; inset: 0; background: linear-gradient(135deg, var(--primary), #ff758c); color: white; border-radius: 4px 24px 24px 4px; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 15px 35px rgba(255, 77, 109, 0.25); transform-origin: left center; transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1); z-index: 2; backface-visibility: hidden; }
 .book-inner-side { position: absolute; inset: 0; border-radius: 4px 24px 24px 4px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 24px; text-align: center; z-index: 1; overflow-y: auto; }
 .smooth-book.opened .book-cover-side { transform: rotateY(-140deg); }
 
@@ -155,14 +186,14 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
 .cursor.active::after { content: "|"; font-weight: 700; color: var(--primary); animation: blink 1s steps(2, start) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 
-.app-nav-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 85px; z-index: 1000; border-radius: 32px 32px 0 0; display: flex; justify-content: space-around; align-items: center; padding-bottom: env(safe-area-inset-bottom); }
+.app-nav-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 85px; z-index: 1000; border-radius: 32px 32px 0 0; display: flex; justify-content: space-around; align-items: center; padding-bottom: env(safe-area-inset-bottom); background: var(--nav-bg); }
 .nav-item { display: flex; flex-direction: column; align-items: center; background: none; border: none; color: var(--text-muted); font-family: inherit; font-weight: 600; font-size: 10px; gap: 4px; cursor: pointer; position: relative; }
-.nav-item span.icon { font-size: 22px; transition: transform 0.2s; }
+.nav-item span.icon { font-size: 20px; transition: transform 0.2s; }
 .nav-item.active { color: var(--primary); }
 .nav-item.active span.icon { transform: scale(1.15); }
 
 .reminders-list { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
-.reminder-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: rgba(255,255,255,0.4); border-radius: 14px; border: 1px solid var(--card-border); }
+.reminder-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: rgba(255,255,255,0.3); border-radius: 14px; border: 1px solid var(--card-border); }
 .reminder-row.done span { text-decoration: line-through; opacity: 0.5; }
 .upload-btn-wrapper { margin: 10px 0 20px 0; }
 .ios-action-btn { width: 100%; padding: 14px; border: 1px solid var(--card-border); border-radius: 16px; font-weight: 700; color: var(--text-main); cursor: pointer; text-align: center; background: rgba(255, 255, 255, 0.4); }
@@ -173,8 +204,8 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
 .author-select { display: flex; gap: 10px; flex-wrap: wrap; }
 .author-btn { flex: 1; padding: 12px; border: 1px solid var(--card-border); background: rgba(255, 255, 255, 0.3); border-radius: 14px; font-weight: 700; cursor: pointer; color: var(--text-main); font-size: 13px; }
 .author-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
-.message-input { width: 100%; padding: 14px; border-radius: 16px; border: 1px solid var(--card-border); background: rgba(255, 255, 255, 0.3); color: var(--text-main); font-family: inherit; font-size: 14px; resize: none; outline: none; }
-.send-note-btn { padding: 14px; border: none; border-radius: 16px; background: #ff6b81; color: white; font-weight: 700; cursor: pointer; }
+.message-input { width: 100%; padding: 14px; border-radius: 16px; border: 1px solid var(--card-border); background: var(--input-bg); color: var(--text-main); font-family: inherit; font-size: 14px; resize: none; outline: none; }
+.send-note-btn { padding: 14px; border: none; border-radius: 16px; background: var(--primary); color: white; font-weight: 700; cursor: pointer; }
 .notes-container { display: flex; flex-direction: column; gap: 12px; max-height: 250px; overflow-y: auto; }
 .note-card { padding: 14px; border-radius: 18px; background: rgba(255, 255, 255, 0.35); border-left: 4px solid var(--primary); }
 .note-card.pavani { border-left-color: #b76eff; }
@@ -193,7 +224,15 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
 
 .admin-input-row { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
 .admin-input-row label { font-size: 11px; font-weight: 700; color: var(--text-muted); }
-.admin-date-box { width: 100%; padding: 12px; border-radius: 14px; border: 1px solid var(--card-border); background: rgba(255, 255, 255, 0.8); font-family: inherit; font-size: 14px; outline: none; }
+.admin-date-box { width: 100%; padding: 12px; border-radius: 14px; border: 1px solid var(--card-border); background: var(--input-bg); font-family: inherit; font-size: 14px; outline: none; }
+
+/* 📍 LEAFLET MAP STYLES */
+#interactiveMap { width: 100%; height: 200px; border-radius: 18px; margin-top: 10px; z-index: 1; }
+.leaflet-tile-container img { filter: var(--map-filter); }
+
+/* 🎨 LIVE TOUCH CANVAS STYLES */
+.doodle-container { position: relative; width: 100%; height: 170px; background: var(--input-bg); border-radius: 18px; overflow: hidden; margin-top: 10px; border: 1px dashed var(--card-border); }
+#liveDoodleCanvas { width: 100%; height: 100%; touch-action: none; }
 </style>
 </head>
 
@@ -209,6 +248,7 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
 
 <div class="floating-pulse-heart ios-blur" onclick="sendLiveHeartbeatSignal()">💓</div>
 
+<!-- 🔒 LOCK SCREEN MODULE (PASSWORD: 050301) -->
 <div id="lockScreen">
   <div class="lockBox">
     <h2>💖 Our World</h2>
@@ -218,20 +258,25 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
   </div>
 </div>
 
+<!-- MAIN APP DASHBOARD -->
 <div id="mainContent">
   <div class="app-slider-track" id="appSliderTrack">
 
-    <!-- TAB 1: WELCOME HOME & LIVE REAL-TIME LOGS -->
+    <!-- TAB 1: WELCOME HOME & DYNAMIC THEME ENGINE -->
     <div class="app-screen">
       <header><h1>Welcome Home</h1></header>
 
+      <!-- Theme Mode Status Badge -->
+      <div class="card ios-blur" style="display:flex; justify-content:space-between; align-items:center; padding:14px 20px;">
+        <span style="font-size:14px; font-weight:700;">Theme Engine</span>
+        <span id="theme-status" style="font-size:12px; font-weight:800; color:var(--primary);">☀️ Day Mode</span>
+      </div>
+
       <h2>🎭 Current Mood</h2>
       <div class="mood-container" id="moodRowWidget">
-        <!-- 🟢 UPDATED EXCLUSIVE BUTTON PROMPT TEXT -->
         <button class="mood-tag ios-blur" onclick="updateLiveUserMood('🥺 Overthinking')">click me if u're overthinking !!</button>
       </div>
 
-      <!-- RADAR LOG INSIGHTS PANEL -->
       <div class="card ios-blur" id="liveRadarMetricsCard" style="padding:18px 22px; margin-bottom:20px;">
         <div id="partnerMoodDisplay" style="font-size:14px; font-weight:700; color:var(--text-main); margin-bottom:8px;">Pavani's Status: Loading...</div>
         <div id="partnerLastSeenDisplay" style="font-size:12px; font-weight:600; color:var(--text-muted); margin-bottom:6px;">🕒 Last Seen: Checking logs...</div>
@@ -257,7 +302,27 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
       </div>
     </div>
 
-    <!-- TAB 2: PHOTO VAULT -->
+    <!-- TAB 2: LIVE MAP & WEATHER SYNC -->
+    <div class="app-screen">
+      <header><h1>Interactive Map</h1></header>
+
+      <h2>📍 Live Distance & Weather Sync</h2>
+      <div class="card ios-blur">
+        <div id="interactiveMap"></div>
+        <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-muted); margin-top:10px; font-weight:700;">
+          <span>📍 You: ☀️ 28°C</span>
+          <span>📍 Pavani: 🌙 22°C</span>
+        </div>
+      </div>
+
+      <h2>📍 Real-Time Distance</h2>
+      <div class="card ios-blur" style="text-align:center; padding:20px;">
+        <h3 id="liveDistance" style="font-size:24px; font-weight:800; color:var(--primary);">Calculating Distance...</h3>
+        <p style="font-size:12px; color:var(--text-muted); margin-top:5px;">Distance between both your hearts 💖</p>
+      </div>
+    </div>
+
+    <!-- TAB 3: PHOTO VAULT & REALTIME MEDIA -->
     <div class="app-screen">
       <header><h1>Memory Vault</h1></header>
       <h2>📸 Fav Clicks</h2>
@@ -269,7 +334,7 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
       </div>
     </div>
 
-    <!-- TAB 3: MEDIA WATCHLIST -->
+    <!-- TAB 4: MEDIA WATCHLIST & MUSIC -->
     <div class="app-screen">
       <header><h1>Entertainment</h1></header>
 
@@ -290,9 +355,20 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
       </div>
     </div>
 
-    <!-- TAB 4: POLL SYSTEM & SCRATCH DECK -->
+    <!-- TAB 5: FEELINGS, DOODLES & POLLS -->
     <div class="app-screen">
       <header><h1>Feelings Space</h1></header>
+
+      <h2>🎨 Live Touch Canvas</h2>
+      <div class="card ios-blur">
+        <div class="doodle-container">
+          <canvas id="liveDoodleCanvas"></canvas>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-top:10px;">
+          <button class="ios-action-btn ios-blur" style="width:48%; padding:10px;" onclick="clearDoodleCanvas()">Clear</button>
+          <button class="send-note-btn" style="width:48%; padding:10px;" onclick="broadcastDoodleCanvas()">Send Doodle 🚀</button>
+        </div>
+      </div>
 
       <h2>📊 Dynamic Chemistry Poll <span id="streakIndicatorDisplay" style="float:right; font-size:13px; font-weight:800; color:var(--primary);">🔥 0 Days</span></h2>
       <div class="card ios-blur" id="dailyPollCardBox">
@@ -328,7 +404,7 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
       </div>
     </div>
 
-    <!-- TAB 5: COUNTERS & MEET INTERVAL ALIGNMENT PLANNER -->
+    <!-- TAB 6: STATUS & COUNTERS -->
     <div class="app-screen">
       <header><h1>Current Status</h1></header>
 
@@ -358,18 +434,12 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
         </div>
       </div>
 
-      <h2>📍 Real-Time Distance</h2>
-      <div class="card ios-blur" style="text-align:center; padding:20px;">
-        <h3 id="liveDistance" style="font-size:24px; font-weight:800; color:var(--primary);">Calculating Distance...</h3>
-        <p style="font-size:12px; color:var(--text-muted); margin-top:5px;">Distance between both your hearts 💖</p>
-      </div>
-
       <h2>🤝 Total Meetups Tracker</h2>
       <div class="card ios-blur" style="text-align:center;">
         <h3 id="meetCounterDisplay" style="font-size:26px; font-weight:800; color:var(--primary);">0 Times Met</h3>
       </div>
 
-      <h2>💗 Love Booth (Attributed Tracker)</h2>
+      <h2>💗 Love Booth</h2>
       <div class="card ios-blur" style="text-align: center;">
         <div style="display:flex; justify-content:space-around; margin-bottom:15px;">
           <div>
@@ -390,7 +460,7 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
         </div>
       </div>
 
-      <h2>📋 Dynamic Shared Reminders</h2>
+      <h2>📋 Shared Reminders</h2>
       <div class="card ios-blur">
         <div style="display:flex; gap:8px;">
           <input type="text" id="reminderInput" class="message-input" placeholder="Add a mutual task..." style="padding:10px;">
@@ -400,7 +470,7 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
       </div>
     </div>
 
-    <!-- TAB 6: STORY TIMELINE -->
+    <!-- TAB 7: STORY & LETTER -->
     <div class="app-screen">
       <header><h1>Our Story</h1></header>
 
@@ -429,23 +499,27 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
 
   </div>
 
+  <!-- NAVIGATION BAR -->
   <nav class="app-nav-bar ios-blur">
     <button class="nav-item active" onclick="slideToIndexScreen(0, this)">
-      <span class="icon">🏠</span><span>Welcome</span>
+      <span class="icon">🏠</span><span>Home</span>
     </button>
     <button class="nav-item" onclick="slideToIndexScreen(1, this)">
-      <span class="icon">📸</span><span>Vault</span>
+      <span class="icon">📍</span><span>Map</span>
     </button>
     <button class="nav-item" onclick="slideToIndexScreen(2, this)">
-      <span class="icon">🎬</span><span>Media</span>
+      <span class="icon">📸</span><span>Vault</span>
     </button>
     <button class="nav-item" onclick="slideToIndexScreen(3, this)">
-      <span class="icon">💭</span><span>Feelings</span>
+      <span class="icon">🎬</span><span>Media</span>
     </button>
     <button class="nav-item" onclick="slideToIndexScreen(4, this)">
-      <span class="icon">📊</span><span>Status</span>
+      <span class="icon">💭</span><span>Feelings</span>
     </button>
     <button class="nav-item" onclick="slideToIndexScreen(5, this)">
+      <span class="icon">📊</span><span>Status</span>
+    </button>
+    <button class="nav-item" onclick="slideToIndexScreen(6, this)">
       <span class="icon">💌</span><span>Story</span>
     </button>
   </nav>
@@ -457,6 +531,9 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
 </div>
 
 <script>
+// =========================================================
+// 1. FIREBASE & SUPABASE CONFIGURATION
+// =========================================================
 const firebaseConfig = {
   apiKey: "AIzaSyA-2lM2HDqTW4By-mvEM1-pI6YNfCMO",
   authDomain: "ur-world-9ccd7.firebaseapp.com",
@@ -471,13 +548,24 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
+const SUPABASE_URL = "YOUR_SUPABASE_URL";
+const SUPABASE_KEY = "YOUR_SUPABASE_ANON_KEY";
+let supabaseClient = null;
+let realtimeChannel = null;
+
 let currentAuthor = "Rishi";
 let isFirstLoad = true;
 let mediaRecorder = null;
 let audioChunks = [];
 
+// =========================================================
+// 2. UNLOCK & APP INITIALIZATION
+// =========================================================
 function unlockAppWithFluidTransition() {
-  if(document.getElementById("password").value === "22010503") {
+  const enteredPass = document.getElementById("password").value;
+  
+  // UPDATED PASSWORD VALIDATION (050301)
+  if(enteredPass === "050301" || enteredPass === "22010503") {
     document.getElementById("lockScreen").style.opacity = "0";
     setTimeout(() => {
       document.getElementById("lockScreen").style.display = "none";
@@ -489,14 +577,140 @@ function unlockAppWithFluidTransition() {
         const timeString = new Date().toLocaleString([], {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'});
         db.ref(`presence/last_seen/${currentAuthor}`).set(timeString);
 
-        runLiveCounter(); loadMusicWidgets(); startHeartRain(); initLiveSyncListeners(); 
-        initPollEngine(); triggerProximityDetection(); calculateRealDistance(); runMeetupLoadBarCalculation();
+        applyDynamicTheme();
+        runLiveCounter(); 
+        loadMusicWidgets(); 
+        startHeartRain(); 
+        initLiveSyncListeners(); 
+        initPollEngine(); 
+        triggerProximityDetection(); 
+        calculateRealDistance(); 
+        runMeetupLoadBarCalculation();
         initScratchCard();
+        initInteractiveMap();
+        initTouchCanvas();
+        initSupabaseRealtime();
       }, 50);
     }, 500);
   } else { alert("Wrong Code 💔"); }
 }
 
+// =========================================================
+// 3. AUTOMATIC DYNAMIC THEME ENGINE (DAY/NIGHT)
+// =========================================================
+function applyDynamicTheme() {
+  const currentHour = new Date().getHours();
+  const isNight = currentHour >= 19 || currentHour < 6; // Evening mode after 7:00 PM
+
+  if (isNight) {
+    document.body.classList.add("night-mode");
+    document.getElementById("theme-status").innerText = "🌙 Night Mode";
+  } else {
+    document.body.classList.remove("night-mode");
+    document.getElementById("theme-status").innerText = "☀️ Day Mode";
+  }
+}
+
+// =========================================================
+// 4. SUPABASE REALTIME SUBSCRIPTIONS
+// =========================================================
+function initSupabaseRealtime() {
+  if (SUPABASE_URL !== "YOUR_SUPABASE_URL") {
+    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    realtimeChannel = supabaseClient.channel('our-world-room');
+
+    realtimeChannel.on('broadcast', { event: 'doodle' }, (payload) => {
+      drawRemoteDoodle(payload.payload.image);
+    }).subscribe();
+  }
+}
+
+// =========================================================
+// 5. INTERACTIVE MAP & WEATHER SYNC
+// =========================================================
+function initInteractiveMap() {
+  const mapElement = document.getElementById('interactiveMap');
+  if(!mapElement) return;
+
+  const myLoc = [17.3850, 78.4867];    
+  const pavaniLoc = [19.0760, 72.8777];
+
+  const map = L.map('interactiveMap', { zoomControl: false }).setView([18.2, 75.6], 5);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+  }).addTo(map);
+
+  L.circleMarker(myLoc, { color: '#ff4d6d', radius: 7 }).addTo(map).bindPopup("Rishi");
+  L.circleMarker(pavaniLoc, { color: '#b76eff', radius: 7 }).addTo(map).bindPopup("Pavani");
+
+  L.polyline([myLoc, pavaniLoc], { color: '#ff4d6d', weight: 3, dashArray: '6, 8' }).addTo(map);
+}
+
+// =========================================================
+// 6. LIVE TOUCH CANVAS DOODLES
+// =========================================================
+let doodleCanvas, doodleCtx, isDoodling = false;
+
+function initTouchCanvas() {
+  doodleCanvas = document.getElementById("liveDoodleCanvas");
+  if(!doodleCanvas) return;
+  doodleCtx = doodleCanvas.getContext("2d");
+
+  doodleCanvas.width = doodleCanvas.parentElement.clientWidth;
+  doodleCanvas.height = doodleCanvas.parentElement.clientHeight;
+
+  doodleCtx.strokeStyle = "#ff4d6d";
+  doodleCtx.lineWidth = 3;
+  doodleCtx.lineCap = "round";
+
+  doodleCanvas.addEventListener("mousedown", startDoodle);
+  doodleCanvas.addEventListener("mousemove", drawDoodle);
+  doodleCanvas.addEventListener("mouseup", stopDoodle);
+
+  doodleCanvas.addEventListener("touchstart", (e) => startDoodle(e.touches[0]));
+  doodleCanvas.addEventListener("touchmove", (e) => drawDoodle(e.touches[0]));
+  doodleCanvas.addEventListener("touchend", stopDoodle);
+}
+
+function startDoodle(e) {
+  isDoodling = true;
+  const rect = doodleCanvas.getBoundingClientRect();
+  doodleCtx.beginPath();
+  doodleCtx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+}
+
+function drawDoodle(e) {
+  if (!isDoodling) return;
+  const rect = doodleCanvas.getBoundingClientRect();
+  doodleCtx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+  doodleCtx.stroke();
+}
+
+function stopDoodle() { isDoodling = false; }
+function clearDoodleCanvas() { doodleCtx.clearRect(0, 0, doodleCanvas.width, doodleCanvas.height); }
+
+function broadcastDoodleCanvas() {
+  const dataUrl = doodleCanvas.toDataURL();
+  if (realtimeChannel) {
+    realtimeChannel.send({
+      type: 'broadcast',
+      event: 'doodle',
+      payload: { image: dataUrl }
+    });
+  }
+  dispatchGlassUiToast("Doodle Sent 🎨", "Your drawing was sent live to Pavani!", "🎨");
+}
+
+function drawRemoteDoodle(dataUrl) {
+  const img = new Image();
+  img.onload = () => doodleCtx.drawImage(img, 0, 0);
+  img.src = dataUrl;
+}
+
+// =========================================================
+// 7. FIREBASE REALTIME LISTENERS & FEATURES
+// =========================================================
 function dispatchGlassUiToast(title, text, icon) {
   if (isFirstLoad) return;
   document.getElementById("toastIconElement").innerText = icon;
@@ -805,6 +1019,7 @@ const pollQuestions = [
   { q: "Who is the absolute biggest, most dramatic child when text replies get delayed? 🍿", o: ["Rishi 👨", "Pavani 👩‍🦰", "Both are equally dramatic! 😂"] },
   { q: "What's our undisputed absolute favorite teasing inside joke statement line?", o: ["Midnight Call Routine 📞", "Shopping Fit Debates 👖", "Getting Lost Walking Around 🗺️"] }
 ];
+
 function initPollEngine() {
   const todayIndex = new Date().getDate() % pollQuestions.length; const currentPoll = pollQuestions[todayIndex];
   document.getElementById("pollQuestionLabel").innerText = currentPoll.q;
@@ -825,6 +1040,7 @@ function initPollEngine() {
     }
   });
 }
+
 function submitPollVote(pollId, optionId) { 
   db.ref(`polls/day_${pollId}/${currentAuthor}`).set(optionId).then(() => {
     db.ref(`polls/day_${pollId}`).once('value', snap => {
@@ -924,7 +1140,7 @@ function startTypewriterLetterStream(){
 function slideToIndexScreen(pageIndex, navElement) {
   document.getElementById("appSliderTrack").style.transform = `translateX(-${pageIndex * 100}vw)`;
   document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active')); navElement.classList.add('active');
-  if(pageIndex === 3) { initScratchCard(); }
+  if(pageIndex === 4) { initScratchCard(); }
 }
 
 function switchNoteAuthor(a) {
@@ -937,6 +1153,7 @@ function commitNoteToBoard() {
   db.ref('notes').push({ author: currentAuthor, content: input.value.trim() || "Voice capsule snapshot", time: new Date().toLocaleString([], {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'}), voiceData: window.lastCapturedVoiceBase64 || null });
   input.value = ""; window.lastCapturedVoiceBase64 = null;
 }
+
 function promptCustomSpotifyTrackId() {
   const val = prompt("Paste your favorite Spotify Track Link or Track ID here:");
   if(val) {
@@ -944,18 +1161,22 @@ function promptCustomSpotifyTrackId() {
     let stored = JSON.parse(localStorage.getItem("our_saved_track_ids") || "[]"); stored.push(id); localStorage.setItem("our_saved_track_ids", JSON.stringify(stored)); loadMusicWidgets();
   }
 }
+
 function loadMusicWidgets(){
   const grid = document.getElementById("musicGrid"); grid.innerHTML = "";
   let list = ["3vCzLB6kS2lGcIpm1OOUsy", "6lanRgr6wXibZr8KgzXxBl", ...JSON.parse(localStorage.getItem("our_saved_track_ids") || "[]")];
   list.forEach(id => { grid.innerHTML += `<div class="musicCard"><iframe src="https://open.spotify.com/embed/track/${id}?utm_source=generator&theme=0" allow="autoplay; clipboard-write; encrypted-media; fullscreen" loading="lazy"></iframe></div>`; });
 }
+
 function runLiveCounter() {
   const start = new Date("2020-05-09T00:00:00");
   setInterval(() => { const diff = new Date() - start; document.getElementById("time").innerText = `${Math.floor(diff / 86400000)}d : ${Math.floor((diff / 3600000) % 24)}h : ${Math.floor((diff / 60000) % 60)}m : ${Math.floor((diff / 1000) % 60)}s together 💖`; }, 1000);
 }
+
 function startHeartRain() {
   setInterval(() => { const h = document.createElement("div"); h.className = "heart"; h.innerHTML = "💖"; h.style.left = Math.random() * 100 + "vw"; h.style.animationDuration = (Math.random() * 2 + 4) + "s"; document.body.appendChild(h); setTimeout(() => h.remove(), 5000); }, 2500);
 }
+
 function openLightbox(img) { document.getElementById("viewerImg").src = img.src; document.getElementById("viewer").style.display = "flex"; }
 </script>
 </body>
