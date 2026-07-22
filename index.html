@@ -617,10 +617,10 @@ h2 {
 const SUPABASE_URL = "https://YOUR_PROJECT_ID.supabase.co";
 const SUPABASE_KEY = "YOUR_ANON_PUBLIC_KEY";
 
-let supabase = null;
-if (typeof supabase !== 'undefined' && SUPABASE_URL && !SUPABASE_URL.includes("YOUR_PROJECT_ID")) {
+let supabaseClient = null;
+if (window.supabase && SUPABASE_URL && !SUPABASE_URL.includes("YOUR_PROJECT_ID")) {
   try {
-    supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   } catch (e) { console.log("Local fallback mode active.", e); }
 }
 
@@ -653,7 +653,7 @@ function evaluateAdaptiveTimeSky() {
   }
 }
 
-/* 🔓 UNLOCK SYSTEM (UPDATED CODE: 050301) */
+/* 🔓 UNLOCK SYSTEM (CODE: 050301) */
 function unlockAppWithFluidTransition() {
   const inputPass = document.getElementById("password").value;
   if(inputPass === "050301") {
@@ -692,16 +692,16 @@ function unlockAppWithFluidTransition() {
 
 /* ⚡ REALTIME DATABASE LISTENERS (SUPABASE) */
 function setupRealtimeSubscriptions() {
-  if (!supabase) return;
+  if (!supabaseClient) return;
 
   // Listen live for photos & doodles
-  supabase.channel('public:photos')
+  supabaseClient.channel('public:photos')
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'photos' }, () => {
       fetchSharedPhotos();
     }).subscribe();
 
   // Listen live for movies
-  supabase.channel('public:movies')
+  supabaseClient.channel('public:movies')
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'movies' }, () => {
       fetchSharedMovies();
     }).subscribe();
@@ -745,8 +745,8 @@ function clearDoodle() {
 async function shareDoodleToGallery() {
   if (!canvas) return;
   const doodleData = canvas.toDataURL("image/png");
-  if (supabase) {
-    await supabase.from('photos').insert([{ url: doodleData }]);
+  if (supabaseClient) {
+    await supabaseClient.from('photos').insert([{ url: doodleData }]);
     fetchSharedPhotos();
   } else {
     alert("Doodle saved to view! Connect database keys to sync live. 💖");
@@ -862,11 +862,11 @@ function renderWishlist() {
 function triggerNativePhotoUpload() { document.getElementById("nativePhotoPicker").click(); }
 
 async function handleNativePhotoUpload(inputNode) {
-  if (!supabase) { alert("Connect database keys to upload! 📸"); return; }
+  if (!supabaseClient) { alert("Connect database keys to upload! 📸"); return; }
   if(inputNode.files && inputNode.files[0]) {
     const reader = new FileReader();
     reader.onload = async function(e) {
-      await supabase.from('photos').insert([{ url: e.target.result }]);
+      await supabaseClient.from('photos').insert([{ url: e.target.result }]);
       fetchSharedPhotos();
     }
     reader.readAsDataURL(inputNode.files[0]);
@@ -875,9 +875,9 @@ async function handleNativePhotoUpload(inputNode) {
 
 async function fetchSharedPhotos() {
   const gallery = document.getElementById("photoGallery");
-  if (!supabase) { gallery.innerHTML = `<p style="font-size:12px; grid-column: span 5; font-style:italic; color:var(--text-muted); text-align:center; padding: 20px 0;">Offline preview mode. Connect cloud keys to share live! 📸</p>`; return; }
+  if (!supabaseClient) { gallery.innerHTML = `<p style="font-size:12px; grid-column: span 5; font-style:italic; color:var(--text-muted); text-align:center; padding: 20px 0;">Offline preview mode. Connect cloud keys to share live! 📸</p>`; return; }
   try {
-    const { data, error } = await supabase.from('photos').select('url').order('id', { ascending: false });
+    const { data, error } = await supabaseClient.from('photos').select('url').order('id', { ascending: false });
     if (!error && data) {
       gallery.innerHTML = data.length === 0 ? `<p style="font-size:12px; grid-column: span 5; font-style:italic; color:var(--text-muted); text-align:center;">No photos yet.</p>` : '';
       data.forEach(item => {
@@ -913,23 +913,23 @@ async function toggleCameraDeviceStream() {
 
 async function takeInstantFlipbookSnapshot() {
   const video = document.getElementById("camFeed");
-  if (!localStream || !supabase) return;
+  if (!localStream || !supabaseClient) return;
   const canvas = document.createElement("canvas");
   canvas.width = video.videoWidth || 640; canvas.height = video.videoHeight || 480;
   const ctx = canvas.getContext("2d");
   ctx.translate(canvas.width, 0); ctx.scale(-1, 1);
   ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-  await supabase.from('photos').insert([{ url: canvas.toDataURL("image/jpeg") }]);
+  await supabaseClient.from('photos').insert([{ url: canvas.toDataURL("image/jpeg") }]);
   fetchSharedPhotos(); toggleCameraDeviceStream();
 }
 
 /* 🍿 MOVIES */
 async function addNewSharedMovie() {
-  if (!supabase) return;
+  if (!supabaseClient) return;
   const title = document.getElementById("movieTitleInput").value.trim();
   const posterUrl = document.getElementById("moviePosterInput").value.trim();
   if (!title || !posterUrl) return;
-  await supabase.from('movies').insert([{ title: title, poster_url: posterUrl }]);
+  await supabaseClient.from('movies').insert([{ title: title, poster_url: posterUrl }]);
   document.getElementById("movieTitleInput").value = "";
   document.getElementById("moviePosterInput").value = "";
   fetchSharedMovies();
@@ -937,9 +937,9 @@ async function addNewSharedMovie() {
 
 async function fetchSharedMovies() {
   const carousel = document.getElementById("movieCarousel");
-  if (!supabase) { carousel.innerHTML = `<p style="font-size: 12px; font-style: italic; color: var(--text-muted); padding: 10px;">Offline view. Set cloud keys to sync watchlists! 🍿</p>`; return; }
+  if (!supabaseClient) { carousel.innerHTML = `<p style="font-size: 12px; font-style: italic; color: var(--text-muted); padding: 10px;">Offline view. Set cloud keys to sync watchlists! 🍿</p>`; return; }
   try {
-    const { data, error } = await supabase.from('movies').select('title, poster_url').order('id', { ascending: false });
+    const { data, error } = await supabaseClient.from('movies').select('title, poster_url').order('id', { ascending: false });
     if (!error && data) {
       carousel.innerHTML = data.length === 0 ? `<p style="font-size: 12px; font-style: italic; color: var(--text-muted);">Watchlist empty.</p>` : '';
       carousel.innerHTML = data.map(m => `<img src="${m.poster_url}" alt="${m.title}" title="${m.title}" onclick="openLightbox(this)">`).join('');
