@@ -5,16 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Our World 💖</title>
 
+<!-- 📱 Web App Manifest for Fullscreen PWA Mode -->
+<link rel="manifest" href="data:application/manifest+json;base64,ewogICJuYW1lIjogIk91ciBXb3JsZCIsCiAgInNob3J0X25hbWUiIjogIk91ciBXb3JsZCIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjZmZlNWVjIiwKICAidGhlbWVfY29sb3IiOiAiI2ZmNGQ2ZCIsCiAgImljb25zIjogW3sKICAgICJzcmMiOiAiaHR0cHM6Ly9jZG4taWNvbnMtcG5nLmZsYXRpY29uLmNvbS81MTIvODMzLzgzMzQ3Mi5wbmciLAogICAgInNpemVzIjogIjUxMng1MTIiLAogICAgInR5cGUiOiAiaW1hZ2UvcG5nIgogIH1dCn0=">
+
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#ffe5ec" id="themeColorMeta">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+<!-- 🔌 Supabase Realtime Client SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 :root {
@@ -23,10 +27,20 @@
   --bg-gradient: linear-gradient(135deg, #ffe5ec 0%, #ffcad4 50%, #f4e8ff 100%);
   --text-main: #1c1c1e;
   --text-muted: #48484a;
-  --card-bg: rgba(255, 255, 255, 0.35);
+  --card-bg: rgba(255, 255, 255, 0.32);
   --card-border: rgba(255, 255, 255, 0.6);
   --shadow: 0 12px 40px 0 rgba(255, 77, 109, 0.08);
   --nav-bg: rgba(255, 255, 255, 0.4);
+}
+
+/* 🌙 Dynamic Automatic Night Mode Theme */
+body.night-mode {
+  --bg-gradient: linear-gradient(135deg, #1f1124 0%, #2b1233 50%, #150a1c 100%);
+  --text-main: #f3e8ff;
+  --text-muted: #c0a8d8;
+  --card-bg: rgba(45, 25, 55, 0.45);
+  --card-border: rgba(255, 255, 255, 0.15);
+  --shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4);
 }
 
 * {
@@ -44,7 +58,10 @@ body {
   overflow: hidden;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  transition: background 1s ease, color 0.5s ease;
 }
+
+html { scroll-behavior: smooth; }
 
 .ios-blur {
   backdrop-filter: blur(40px) saturate(220%);
@@ -52,162 +69,325 @@ body {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   box-shadow: var(--shadow);
+  transition: background 0.5s ease, border-color 0.5s ease;
 }
 
-.glass-toast {
-  position: fixed;
-  top: -100px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 90%;
-  max-width: 350px;
-  padding: 16px 20px;
-  border-radius: 24px;
-  z-index: 2000000;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  transition: top 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-.glass-toast.show { top: 20px; }
-.toast-icon { font-size: 24px; }
-.toast-body { flex: 1; }
-.toast-title { font-size: 14px; font-weight: 800; color: var(--text-main); }
-.toast-desc { font-size: 12px; font-weight: 500; color: var(--text-muted); margin-top: 1px; }
-
+/* 🌸 LOCKSCREEN */
 #lockScreen {
   position: fixed;
   inset: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: url('https://w0.peakpx.com/wallpaper/725/587/HD-wallpaper-pink-aesthetic-2-glitch-lock-screen-macaroon-pink-aesthetic.jpg') no-repeat center center;
-  background-size: cover;
+  background: var(--bg-gradient);
   z-index: 99999;
   padding: 20px;
   transition: opacity 0.5s ease-out;
 }
-#lockScreen::before {
-  content: ''; position: absolute; inset: 0; background: rgba(40, 20, 25, 0.15); z-index: 1;
-}
+
 .lockBox {
-  position: relative; z-index: 2; padding: 40px 30px; border-radius: 32px;
-  background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(30px) saturate(170%); -webkit-backdrop-filter: blur(30px) saturate(170%);
-  border: 1px solid rgba(255, 255, 255, 0.4); text-align: center; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15); max-width: 340px; width: 100%;
+  position: relative;
+  z-index: 2;
+  padding: 40px 30px;
+  border-radius: 32px;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(30px) saturate(170%);
+  -webkit-backdrop-filter: blur(30px) saturate(170%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  text-align: center;
+  box-shadow: var(--shadow);
+  max-width: 340px;
+  width: 100%;
 }
-.lockBox h2 { margin-bottom: 25px; font-weight: 800; color: #ff4d6d; font-size: 28px; }
-.lockBox input { padding: 16px 20px; width: 100%; border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.5); text-align: center; font-size: 16px; background: rgba(255, 255, 255, 0.88); color: #1c1c1e; outline: none; font-weight: 600; letter-spacing: 2px; }
-.lockBox button { margin-top: 20px; padding: 15px 30px; width: 100%; border: none; border-radius: 18px; background: #ff6b81; color: white; font-weight: 700; font-size: 16px; cursor: pointer; }
 
-#mainContent { display: none; height: 100vh; width: 100vw; position: relative; overflow: hidden; opacity: 0; transition: opacity 0.6s ease-in-out; }
-.app-slider-track { display: flex; height: 100%; width: 600vw; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
-.app-screen { width: 100vw; height: 100%; flex-shrink: 0; padding: 40px 20px 110px 20px; overflow-y: auto; }
+.lockBox h2 {
+  margin-bottom: 25px;
+  font-weight: 800;
+  color: var(--primary);
+  font-size: 28px;
+}
 
-header h1 { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; background: linear-gradient(45deg, var(--primary), #b76eff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 25px; text-align: center; }
-h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5px; letter-spacing: -0.2px; }
-.card { padding: 24px; border-radius: 28px; margin-bottom: 20px; position: relative; }
+.lockBox input {
+  padding: 16px 20px;
+  width: 100%;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  text-align: center;
+  font-size: 16px;
+  background: rgba(255, 255, 255, 0.88);
+  color: #1c1c1e;
+  outline: none;
+  font-weight: 600;
+  letter-spacing: 2px;
+}
 
-.mood-container { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding: 4px 2px; scrollbar-width: none; }
-.mood-container::-webkit-scrollbar { display: none; }
-.mood-tag { padding: 8px 14px; border-radius: 40px; font-size: 13px; font-weight: 700; white-space: nowrap; cursor: pointer; border: 1px solid var(--card-border); transition: all 0.2s; }
-.mood-tag.active { background: var(--primary); color: white; border-color: var(--primary); }
+.lockBox button {
+  margin-top: 20px;
+  padding: 15px 30px;
+  width: 100%;
+  border: none;
+  border-radius: 18px;
+  background: #ff6b81;
+  color: white;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+}
 
-.gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 10px 2px; }
-.gallery img { width: 100%; aspect-ratio: 1 / 1.4; object-fit: cover; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); cursor: pointer; }
-.movies { display: flex; overflow-x: auto; gap: 14px; padding: 5px 2px 15px; scroll-snap-type: x mandatory; scrollbar-width: none; }
-.movies::-webkit-scrollbar { display: none; }
-.movies img { width: 145px; height: 215px; object-fit: cover; border-radius: 22px; flex: 0 0 auto; scroll-snap-align: start; cursor: pointer; }
+/* 📱 APP LAYOUT */
+#mainContent {
+  display: none;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+}
 
-.smooth-book { width: 100%; max-width: 340px; height: 430px; margin: 0 auto; position: relative; perspective: 1500px; transform-style: preserve-3d; }
-.book-cover-side { position: absolute; inset: 0; background: linear-gradient(135deg, #ff4d6d, #ff758c); color: white; border-radius: 4px 24px 24px 4px; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 15px 35px rgba(255, 77, 109, 0.25); transform-origin: left center; transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1); z-index: 2; backface-visibility: hidden; }
-.book-inner-side { position: absolute; inset: 0; border-radius: 4px 24px 24px 4px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 24px; text-align: center; z-index: 1; overflow-y: auto; }
-.smooth-book.opened .book-cover-side { transform: rotateY(-140deg); }
+.app-slider-track {
+  display: flex;
+  height: 100%;
+  width: 600vw; 
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
 
-.audio-card { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-radius: 20px; background: rgba(255, 255, 255, 0.4); border: 1px solid var(--card-border); margin-top: 8px; }
-.audio-play-btn { width: 36px; height: 36px; border-radius: 50%; border: none; background: var(--primary); color: white; font-size: 14px; cursor: pointer; display: flex; justify-content: center; align-items: center; }
-.audio-wave-anim { flex: 1; height: 16px; display: flex; align-items: center; gap: 3px; }
-.wave-bar { flex: 1; height: 40%; background: rgba(255, 77, 109, 0.3); border-radius: 2px; }
-.audio-card.playing .wave-bar { animation: wavePulse 1s ease-in-out infinite alternate; }
-.audio-card.playing .wave-bar:nth-child(2) { animation-delay: 0.15s; }
-.audio-card.playing .wave-bar:nth-child(3) { animation-delay: 0.3s; }
-.audio-card.playing .wave-bar:nth-child(4) { animation-delay: 0.45s; }
-@keyframes wavePulse { from { height: 20%; } to { height: 100%; } }
+.app-screen {
+  width: 100vw;
+  height: 100%;
+  flex-shrink: 0;
+  padding: 40px 20px 110px 20px;
+  overflow-y: auto;
+}
 
-.scratch-box { width: 100%; max-width: 300px; height: 160px; position: relative; border-radius: 20px; overflow: hidden; margin: 0 auto; box-shadow: 0 8px 24px rgba(0,0,0,0.05); background: white; }
-.scratch-secret-content { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; background: white; padding: 20px; text-align: center; font-weight: 700; font-size: 14px; color: var(--primary); z-index: 1; }
-.scratch-canvas-overlay { position: absolute; inset: 0; z-index: 5; cursor: pointer; display: block; }
+header h1 {
+  font-size: 28px;
+  font-weight: 800;
+  background: linear-gradient(45deg, var(--primary), #b76eff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 25px;
+  text-align: center;
+}
 
-.progress-container { width: 100%; background: rgba(0,0,0,0.05); height: 14px; border-radius: 10px; overflow: hidden; margin: 12px 0 12px 0; border: 1px solid rgba(255,255,255,0.4); position: relative; }
-.progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), #b76eff); width: 0%; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
+h2 {
+  font-size: 17px;
+  font-weight: 700;
+  text-align: left;
+  margin: 25px 0 14px 5px;
+}
 
-.floating-pulse-heart { position: fixed; bottom: 105px; right: 20px; width: 50px; height: 50px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 24px; z-index: 9999; cursor: pointer; box-shadow: 0 8px 25px rgba(255, 77, 109, 0.3); animation: floatPulse 2s infinite alternate; }
-@keyframes floatPulse { from { transform: translateY(0) scale(1); } to { transform: translateY(-6px) scale(1.06); } }
+.card {
+  padding: 24px;
+  border-radius: 28px;
+  margin-bottom: 20px;
+  position: relative;
+  cursor: pointer;
+}
 
-.letter-box-container { cursor: pointer; text-align: center; margin-top: 15px; }
-.envelope { position: relative; width: 160px; height: 110px; margin: 15px auto; perspective: 600px; }
-.envelope .body { position: absolute; bottom: 0; width: 100%; height: 75px; background: #ffffff; border-radius: 0 0 16px 16px; border: 1px solid #ffe5ec; z-index: 2; }
-.envelope .flap { position: absolute; top: 35px; left: 0; width: 0; height: 0; border-left: 80px solid transparent; border-right: 80px solid transparent; border-bottom: 55px solid #fff0f3; transform-origin: bottom; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); z-index: 3; }
-.envelope .seal { position: absolute; top: 22px; left: 50%; transform: translateX(-50%); font-size: 24px; z-index: 4; transition: transform 0.4s ease, opacity 0.3s ease; }
-.envelope.open .flap { transform: rotateX(180deg) translateY(72px); z-index: 1; }
-.envelope.open .seal { transform: translateX(-50%) scale(0); opacity: 0; }
-#gift { font-weight: 600; color: var(--primary); font-size: 14px; margin-top: 8px; }
-#text { text-align: left; line-height: 1.7; white-space: pre-line; font-size: 14px; font-weight: 500; padding: 10px; color: var(--text-main); }
-.cursor.active::after { content: "|"; font-weight: 700; color: var(--primary); animation: blink 1s steps(2, start) infinite; }
-@keyframes blink { 50% { opacity: 0; } }
+/* 📖 FLUID BOOK */
+.smooth-book {
+  width: 100%;
+  max-width: 340px;
+  height: 450px;
+  margin: 0 auto;
+  position: relative;
+  perspective: 1500px;
+  transform-style: preserve-3d;
+}
 
-.app-nav-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 85px; z-index: 1000; border-radius: 32px 32px 0 0; display: flex; justify-content: space-around; align-items: center; padding-bottom: env(safe-area-inset-bottom); }
-.nav-item { display: flex; flex-direction: column; align-items: center; background: none; border: none; color: var(--text-muted); font-family: inherit; font-weight: 600; font-size: 10px; gap: 4px; cursor: pointer; position: relative; }
+.book-cover-side {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #ff4d6d, #ff758c);
+  color: white;
+  border-radius: 4px 24px 24px 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 15px 35px rgba(255, 77, 109, 0.25);
+  transform-origin: left center;
+  transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+  z-index: 2;
+  backface-visibility: hidden;
+}
+
+.book-inner-side {
+  position: absolute;
+  inset: 0;
+  border-radius: 4px 24px 24px 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  text-align: center;
+  z-index: 1;
+  overflow-y: auto;
+}
+
+.smooth-book.opened .book-cover-side {
+  transform: rotateY(-140deg);
+}
+
+/* 📍 ANIMATED FLIGHT PATH MAP */
+.cartoon-map-container {
+  width: 100%; height: 180px; border-radius: 24px;
+  background: linear-gradient(to bottom, #d4fc79, #96e6a1);
+  position: relative; overflow: hidden; border: 2px solid white;
+}
+.map-grid { position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,0.4) 1px, transparent 1px); background-size: 20px 20px; }
+
+.map-pin {
+  position: absolute;
+  width: 18px; height: 18px;
+  background: #ff4d6d;
+  border: 3px solid white;
+  border-radius: 50%;
+  box-shadow: 0 0 12px rgba(255,77,109,0.8);
+  animation: pulsePin 2s infinite ease-in-out;
+}
+@keyframes pulsePin {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+}
+
+.map-pin::after {
+  content: attr(data-name);
+  position: absolute;
+  top: -24px; left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.9); color: #1c1c1e;
+  font-size: 10px; font-weight: 800;
+  padding: 2px 6px; border-radius: 8px;
+}
+.map-line {
+  position: absolute; top: 45%; left: 22%; right: 22%; height: 2px;
+  border-top: 3px dashed white; z-index: 1;
+  animation: dashMove 20s linear infinite;
+}
+@keyframes dashMove {
+  to { background-position: 100% 0; }
+}
+
+/* 🎨 TOUCH DOODLE PAD */
+.doodle-box {
+  width: 100%; height: 180px;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 18px;
+  border: 2px dashed var(--primary);
+  touch-action: none;
+  cursor: crosshair;
+}
+
+/* 🗂️ NAVIGATION DOCK */
+.app-nav-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: 85px; z-index: 1000;
+  border-radius: 32px 32px 0 0;
+  display: flex; justify-content: space-around; align-items: center;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.nav-item {
+  display: flex; flex-direction: column; align-items: center;
+  background: none; border: none; color: var(--text-muted);
+  font-family: inherit; font-weight: 600; font-size: 10px; gap: 4px; cursor: pointer;
+}
+
 .nav-item span.icon { font-size: 22px; transition: transform 0.2s; }
 .nav-item.active { color: var(--primary); }
 .nav-item.active span.icon { transform: scale(1.15); }
 
-.reminders-list { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
-.reminder-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: rgba(255,255,255,0.4); border-radius: 14px; border: 1px solid var(--card-border); }
-.reminder-row.done span { text-decoration: line-through; opacity: 0.5; }
-.upload-btn-wrapper { margin: 10px 0 20px 0; }
-.ios-action-btn { width: 100%; padding: 14px; border: 1px solid var(--card-border); border-radius: 16px; font-weight: 700; color: var(--text-main); cursor: pointer; text-align: center; background: rgba(255, 255, 255, 0.4); }
+/* 📸 GALLERY GRID */
+.gallery {
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  gap: 8px; padding: 10px 2px;
+}
+
+.gallery img {
+  width: 100%; aspect-ratio: 1 / 1.4; object-fit: cover;
+  border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); cursor: pointer;
+}
+
+.movies { display: flex; overflow-x: auto; gap: 14px; padding: 5px 2px 15px; scrollbar-width: none; }
+.movies img { width: 145px; height: 215px; object-fit: cover; border-radius: 22px; flex: 0 0 auto; }
+
+.upload-btn-wrapper { margin-top: 10px; width: 100%; }
+.ios-action-btn {
+  width: 100%; padding: 14px; border: none; border-radius: 18px;
+  background: rgba(255, 255, 255, 0.35); color: var(--primary);
+  font-weight: 700; font-size: 15px; cursor: pointer;
+  display: flex; justify-content: center; align-items: center; gap: 8px;
+  border: 1px solid var(--card-border);
+}
+
+.jar-container { text-align: center; padding: 10px 0; }
+.love-jar { font-size: 65px; cursor: pointer; display: inline-block; user-select: none; transition: transform 0.2s; }
+.love-jar.shake { animation: jarShake 0.4s ease-in-out; }
+@keyframes jarShake { 0%, 100% { transform: scale(1) rotate(0deg); } 25% { transform: scale(1.15) rotate(-10deg); } 75% { transform: scale(1.15) rotate(10deg); } }
+.jar-bubble { margin-top: 15px; padding: 18px; border-radius: 20px; display: none; font-weight: 600; text-align: center; }
+
+.confetti-particle { position: absolute; width: 8px; height: 8px; border-radius: 50%; z-index: 5; pointer-events: none; animation: explosionBlast 0.6s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; }
+@keyframes explosionBlast { 0% { transform: translate(0, 0) scale(1); opacity: 1; } 100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; } }
+
+.cam-wrapper { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+#camFeed { width: 100%; max-width: 400px; height: 260px; border-radius: 22px; background: #000; display: none; transform: scaleX(-1); object-fit: cover; }
+
 .musicGrid { display: grid; grid-template-columns: 1fr; gap: 14px; width: 100%; }
 .musicCard { width: 100%; border-radius: 20px; overflow: hidden; background: #000; border: 1px solid var(--card-border); }
 .musicCard iframe { width: 100%; height: 80px; border: none; display: block; }
+
+.letter-box-container { cursor: pointer; text-align: center; }
+.envelope { position: relative; width: 160px; height: 110px; margin: 15px auto; perspective: 600px; }
+.envelope .body { position: absolute; bottom: 0; width: 100%; height: 75px; background: #ffffff; border-radius: 0 0 16px 16px; border: 1px solid #ffe5ec; z-index: 2; }
+.envelope .flap { position: absolute; top: 35px; left: 0; width: 0; height: 0; border-left: 80px solid transparent; border-right: 80px solid transparent; border-bottom: 55px solid #fff0f3; transform-origin: bottom; transition: transform 0.6s; z-index: 3; }
+.envelope .seal { position: absolute; top: 22px; left: 50%; transform: translateX(-50%); font-size: 24px; z-index: 4; }
+.envelope.open .flap { transform: rotateX(180deg) translateY(72px); z-index: 1; }
+#gift { font-weight: 600; color: var(--primary); font-size: 14px; margin-top: 8px; }
+#text { text-align: left; line-height: 1.7; white-space: pre-line; font-size: 15px; font-weight: 500; }
+
 .board-input-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
-.author-select { display: flex; gap: 10px; flex-wrap: wrap; }
-.author-btn { flex: 1; padding: 12px; border: 1px solid var(--card-border); background: rgba(255, 255, 255, 0.3); border-radius: 14px; font-weight: 700; cursor: pointer; color: var(--text-main); font-size: 13px; }
-.author-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
-.message-input { width: 100%; padding: 14px; border-radius: 16px; border: 1px solid var(--card-border); background: rgba(255, 255, 255, 0.3); color: var(--text-main); font-family: inherit; font-size: 14px; resize: none; outline: none; }
+.author-select, .mood-select-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.author-btn, .mood-btn { flex: 1; padding: 12px; border: 1px solid var(--card-border); background: rgba(255, 255, 255, 0.3); border-radius: 14px; font-weight: 700; cursor: pointer; color: var(--text-main); font-size: 13px; }
+.author-btn.active, .mood-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+.message-input { width: 100%; padding: 14px; border-radius: 16px; border: 1px solid var(--card-border); background: rgba(255, 255, 255, 0.3); color: var(--text-main); font-family: inherit; font-size: 14px; outline: none; }
 .send-note-btn { padding: 14px; border: none; border-radius: 16px; background: #ff6b81; color: white; font-weight: 700; cursor: pointer; }
 .notes-container { display: flex; flex-direction: column; gap: 12px; max-height: 250px; overflow-y: auto; }
 .note-card { padding: 14px; border-radius: 18px; background: rgba(255, 255, 255, 0.35); border-left: 4px solid var(--primary); }
 .note-card.pavani { border-left-color: #b76eff; }
 .note-header { display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; }
 .note-body { font-size: 14px; font-weight: 500; text-align: left; }
-.heart { position: fixed; font-size: 22px; user-select: none; pointer-events: none; z-index: 1; bottom: -50px; opacity: 0; animation: floatUp 5s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-@keyframes floatUp { 0% { transform: translateY(0) scale(0.7) rotate(0deg); opacity: 0; } 15% { opacity: 0.7; } 90% { opacity: 0.4; } 100% { transform: translateY(-110vh) scale(1.1) rotate(25deg); opacity: 0; } }
+
+.wishlist-textarea { width: 100%; height: 90px; padding: 12px; border-radius: 14px; border: 1px solid var(--card-border); background: rgba(255, 255, 255, 0.3); font-family: inherit; font-size: 14px; color: var(--text-main); }
+.wishlist-item { padding: 10px 14px; border-radius: 12px; background: rgba(255, 255, 255, 0.45); margin-top: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; border: 1px solid var(--card-border); }
+.wishlist-item button { background: none; border: none; color: var(--primary); font-weight: 700; cursor: pointer; }
+
 .timeline { display: flex; flex-direction: column; gap: 20px; position: relative; padding-left: 20px; }
 .timeline::before { content: ''; position: absolute; left: 5px; top: 5px; bottom: 5px; width: 2px; background: var(--card-border); }
 .timeline-node { position: relative; }
 .timeline-marker { position: absolute; left: -20px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: var(--primary); border: 2px solid white; }
-.timeline-title { font-weight: 700; font-size: 15px; margin-bottom: 2px; }
-.timeline-desc { font-size: 13px; color: var(--text-muted); }
+
+.heart { position: fixed; font-size: 22px; user-select: none; pointer-events: none; z-index: 1; bottom: -50px; opacity: 0; animation: floatUp 5s forwards; }
+@keyframes floatUp { 0% { transform: translateY(0) scale(0.7); opacity: 0; } 15% { opacity: 0.7; } 100% { transform: translateY(-110vh) scale(1.1); opacity: 0; } }
+
+/* 💥 FLOATING EMOJI EXPLOSION PARTICLES */
+.emoji-blast {
+  position: fixed; pointer-events: none; z-index: 9999;
+  font-size: 24px; animation: blastUp 1s ease-out forwards;
+}
+@keyframes blastUp {
+  0% { opacity: 1; transform: translate(0, 0) scale(1); }
+  100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(1.5); }
+}
+
 #viewer { position: fixed; inset: 0; background: rgba(10, 10, 12, 0.96); display: none; justify-content: center; align-items: center; z-index: 1000000; padding: 20px; backdrop-filter: blur(10px); }
 #viewer img { max-width: 100%; max-height: 85vh; border-radius: 20px; }
-
-.admin-input-row { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
-.admin-input-row label { font-size: 11px; font-weight: 700; color: var(--text-muted); }
-.admin-date-box { width: 100%; padding: 12px; border-radius: 14px; border: 1px solid var(--card-border); background: rgba(255, 255, 255, 0.8); font-family: inherit; font-size: 14px; outline: none; }
 </style>
 </head>
 
-<body>
-
-<div class="glass-toast ios-blur" id="glassNotificationBanner">
-  <div class="toast-icon" id="toastIconElement">✨</div>
-  <div class="toast-body">
-    <div class="toast-title" id="toastTitleElement">Update Notification</div>
-    <div class="toast-desc" id="toastDescElement">Something changed in your world right now.</div>
-  </div>
-</div>
-
-<div class="floating-pulse-heart ios-blur" onclick="sendLiveHeartbeatSignal()">💓</div>
+<body onclick="triggerGlobalEmojiExplosion(event)">
 
 <div id="lockScreen">
   <div class="lockBox">
@@ -221,55 +401,62 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
 <div id="mainContent">
   <div class="app-slider-track" id="appSliderTrack">
 
-    <!-- TAB 1: WELCOME HOME & LIVE REAL-TIME LOGS -->
+    <!-- SCREEN 1: WELCOME SCREEN -->
     <div class="app-screen">
       <header><h1>Welcome Home</h1></header>
-      
-      <h2>🎭 Current Mood</h2>
-      <div class="mood-container" id="moodRowWidget">
-        <!-- 🟢 UPDATED EXCLUSIVE BUTTON PROMPT TEXT -->
-        <button class="mood-tag ios-blur" onclick="updateLiveUserMood('🥺 Overthinking')">click me if u're overthinking !!</button>
-      </div>
-      
-      <!-- RADAR LOG INSIGHTS PANEL -->
-      <div class="card ios-blur" id="liveRadarMetricsCard" style="padding:18px 22px; margin-bottom:20px;">
-        <div id="partnerMoodDisplay" style="font-size:14px; font-weight:700; color:var(--text-main); margin-bottom:8px;">Pavani's Status: Loading...</div>
-        <div id="partnerLastSeenDisplay" style="font-size:12px; font-weight:600; color:var(--text-muted); margin-bottom:6px;">🕒 Last Seen: Checking logs...</div>
-        <div id="partnerOverthinkingDisplay" style="font-size:12px; font-weight:600; color:#ff4d6d; font-style:italic; margin-bottom:6px;">⚠️ Alert: No active overthinking pings recorded.</div>
-        <button id="clearOverthinkingBtn" class="ios-action-btn ios-blur" style="display:none; padding:6px 12px; font-size:11px; margin-top:4px; width:auto;" onclick="clearOverthinkingAlert()">Clear Alert ✔️</button>
-      </div>
 
+      <!-- ✨ ON THIS DAY MEMORY POPUP CARD -->
+      <div class="card ios-blur" id="memoryPopup" style="margin-bottom: 20px; border-left: 4px solid var(--primary);">
+        <span style="font-size: 11px; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 1px;">✨ On This Day Memory</span>
+        <p id="memoryPopupText" style="font-size: 14px; font-weight: 600; margin-top: 6px; color: var(--text-main);">"Every moment spent with you becomes my favorite memory." ❤️</p>
+      </div>
+      
       <div class="smooth-book" id="fluidBookElement">
         <div class="book-cover-side">
           <span style="font-size: 45px; margin-bottom: 15px;">📖</span>
           <h2 style="color: white; margin: 0; font-size: 22px;">Our Story</h2>
           <p style="font-size: 12px; opacity: 0.8; margin-top: 6px;">Rishi & Pavani</p>
         </div>
+        
         <div class="book-inner-side card ios-blur">
           <span style="font-size: 40px;">✨</span>
-          <h2 style="text-align: center; margin: 12px 0; color: var(--primary); font-size: 22px;">Hiee Pavani…</h2>
-          <p style="line-height: 1.6; font-weight: 500; font-size: 14px; color: var(--text-muted);">
+          <h2 style="text-align: center; margin: 12px 0; color: var(--primary); font-size: 22px; width: 100%;">Hiee Pavani…</h2>
+          <p style="line-height: 1.6; font-weight: 500; font-size: 14px; color: var(--text-muted); text-align: center;">
             I made this little space for us… so even when we’re far apart, we can still feel close — like we’re right there with each other.
             <br><br>
-            This is our little home, filled with our memories, our smiles, our moments, and everything that makes us… us. ❤️
+            This is our little home, filled with our memories, our smiles, our moments, and everything that makes us… us.
+            <br><br>
+            Through the good days and the tough ones, this place will always remind us of what we share. ❤️
+            <br><br>
+            Take your time, explore it all… and whenever you miss me, just come here. Because no matter the distance, we’ll always have our space. 🫶
           </p>
         </div>
       </div>
     </div>
 
-    <!-- TAB 2: PHOTO VAULT -->
+    <!-- SCREEN 2: VAULT GRID -->
     <div class="app-screen">
       <header><h1>Memory Vault</h1></header>
+      
       <h2>📸 Fav Clicks</h2>
       <div class="gallery" id="photoGallery"></div>
-      
+
       <div class="upload-btn-wrapper">
         <button class="ios-action-btn ios-blur" onclick="triggerNativePhotoUpload()">➕ Upload Photo to Shared Gallery</button>
-        <input type="file" id="nativePhotoPicker" accept="image/*" style="display:none;" onchange="handleLivePhotoUpload(this)">
+        <input type="file" id="nativePhotoPicker" accept="image/*" style="display:none;" onchange="handleNativePhotoUpload(this)">
+      </div>
+
+      <h2>🎞️ Instant Camera</h2>
+      <div class="card ios-blur cam-wrapper">
+        <video id="camFeed" autoplay playsinline></video>
+        <div class="cam-controls">
+          <button type="button" class="ios-action-btn ios-blur" id="toggleCamBtn" onclick="toggleCameraDeviceStream()">Open Cam 🎥</button>
+          <button type="button" class="ios-action-btn ios-blur" id="snapBtn" onclick="takeInstantFlipbookSnapshot()" style="display:none; margin-top:10px; background:var(--primary); color:white;">Take Snap 📸</button>
+        </div>
       </div>
     </div>
 
-    <!-- TAB 3: MEDIA WATCHLIST -->
+    <!-- SCREEN 3: MEDIA & ENTERTAINMENT -->
     <div class="app-screen">
       <header><h1>Entertainment</h1></header>
       
@@ -279,36 +466,51 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
       <div class="card ios-blur" style="margin-top: 10px;">
         <p style="font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--text-muted);">Add a Comfort Movie together:</p>
         <input type="text" id="movieTitleInput" class="message-input" placeholder="Movie Title..." style="margin-bottom: 8px;">
-        <button class="ios-action-btn ios-blur" onclick="triggerNativeMovieUpload()">🎬 Choose Movie Poster from Gallery</button>
-        <input type="file" id="nativeMoviePicker" accept="image/*" style="display:none;" onchange="handleLiveMovieUpload(this)">
+        <input type="text" id="moviePosterInput" class="message-input" placeholder="Paste Poster Image URL..." style="margin-bottom: 8px;">
+        <button class="send-note-btn" style="width: 100%;" onclick="addNewSharedMovie()">Add to Watchlist 🍿</button>
       </div>
 
       <h2>🎵 Songs We Love</h2>
       <div class="musicGrid" id="musicGrid"></div>
+      
       <div class="upload-btn-wrapper" style="margin-top:20px;">
         <button class="ios-action-btn ios-blur" onclick="promptCustomSpotifyTrackId()">🎵 Link a Spotify Track Link</button>
       </div>
     </div>
 
-    <!-- TAB 4: POLL SYSTEM & SCRATCH DECK -->
+    <!-- SCREEN 4: FEELINGS & TOUCH DOODLE PAD -->
     <div class="app-screen">
       <header><h1>Feelings Space</h1></header>
-      
-      <h2>📊 Dynamic Chemistry Poll <span id="streakIndicatorDisplay" style="float:right; font-size:13px; font-weight:800; color:var(--primary);">🔥 0 Days</span></h2>
-      <div class="card ios-blur" id="dailyPollCardBox">
-        <p id="pollQuestionLabel" style="font-weight:700; font-size:14px; margin-bottom:12px; color:var(--text-main); line-height:1.4;"></p>
-        <div id="pollOptionsBlock" style="display:flex; flex-direction:column; gap:8px;"></div>
-        <div id="pollResultsBlock" style="display:none; font-size:13px; font-weight:600; line-height:1.5;"></div>
+
+      <h2>🎨 Instant Touch Doodle</h2>
+      <div class="card ios-blur" style="text-align: center;">
+        <canvas id="doodleCanvas" class="doodle-box"></canvas>
+        <div style="display:flex; gap:10px; margin-top:10px;">
+          <button class="author-btn ios-blur" onclick="clearDoodle()">Clear 🗑️</button>
+          <button class="send-note-btn" style="flex:1;" onclick="shareDoodleToGallery()">Save & Sync Doodle 💖</button>
+        </div>
       </div>
 
-      <h2>🔏 Dynamic Scratch Card</h2>
-      <div class="card ios-blur" style="text-align:center;">
-        <p style="font-size:13px; font-weight:700; color:var(--text-muted); margin-bottom:10px;" id="scratchLabelHead">Swipe to reveal secret message!</p>
-        <div class="scratch-box" id="scratchCardFrame">
-          <div class="scratch-secret-content" id="scratchSecretText">Loading surprise... ✨</div>
-          <canvas class="scratch-canvas-overlay" id="scratchCanvasOverlay"></canvas>
+      <h2>🎭 When We Miss Each Other</h2>
+      <div class="card ios-blur">
+        <p style="font-size: 13px; font-weight:600; margin-bottom:12px; color: var(--text-muted); text-align:center;">Click whenever you're thinking of each other:</p>
+        <div class="mood-select-row">
+          <button class="mood-btn ios-blur" onclick="incrementMissedCounter()">Log: I Miss You 🥺</button>
         </div>
-        <button class="ios-action-btn ios-blur" style="margin-top:12px; padding:8px; font-size:12px;" onclick="reloadRandomScratchMessage()">Get Next Message 🪄</button>
+        <div id="missedCounterDisplay" style="text-align:center; font-size:16px; font-weight:700; color:var(--primary); margin-top:12px;">0 Missed Moments Shared</div>
+      </div>
+
+      <h2>🎁 The Love Jar</h2>
+      <div class="card ios-blur jar-container">
+        <div class="love-jar" id="interactiveJar" onclick="drawComplimentJarMessage()">🫙</div>
+        <div class="jar-bubble ios-blur" id="jarBubble"></div>
+      </div>
+
+      <h2>📝 Pavani's Wishlist Notepad</h2>
+      <div class="card ios-blur">
+        <textarea id="wishlistInput" class="wishlist-textarea" placeholder="Write down things you want or dream of doing together..."></textarea>
+        <button class="send-note-btn" style="width:100%; margin-top:8px;" onclick="addWishlistItem()">Save to Wishlist ✨</button>
+        <div id="wishlistItemsBox" style="margin-top:12px;"></div>
       </div>
 
       <h2>💭 Leave a Message Board</h2>
@@ -318,89 +520,57 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
             <button type="button" class="author-btn active" id="btnHru" onclick="switchNoteAuthor('Rishi')">Rishi</button>
             <button type="button" class="author-btn ios-blur" id="btnPav" onclick="switchNoteAuthor('Pavani')">Pavani</button>
           </div>
-          <div style="display:flex; gap:10px; align-items:center;">
-            <textarea id="noteInput" class="message-input" rows="2" placeholder="Type a message when you miss them..." style="flex:1;"></textarea>
-            <button type="button" id="voiceRecordBtn" class="send-note-btn" style="background:#4cd964; padding:12px;" onclick="toggleVoiceAudioRecording()">🎙️</button>
-          </div>
+          <textarea id="noteInput" class="message-input" rows="2" placeholder="Type a message when you miss them..."></textarea>
           <button type="button" class="send-note-btn" onclick="commitNoteToBoard()">Leave Note 💖</button>
         </div>
         <div class="notes-container" id="notesBoard"></div>
       </div>
     </div>
 
-    <!-- TAB 5: COUNTERS & MEET INTERVAL ALIGNMENT PLANNER -->
+    <!-- SCREEN 5: REALTIME STATUS & SECRET CALENDAR -->
     <div class="app-screen">
       <header><h1>Current Status</h1></header>
       
       <h2>⏳ Time Together</h2>
-      <div class="card ios-blur" id="time" style="font-size: 20px; font-weight: 700; color: var(--primary); text-align: center; line-height: 1.4;"></div>
+      <div class="card ios-blur" id="time" style="font-size: 20px; font-weight: 700; color: var(--primary); text-align: center;"></div>
 
-      <h2>🏎️ Meetup Load Bar Tracker</h2>
-      <div class="card ios-blur" style="padding: 20px;">
-        <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:700;">
-          <span style="color: var(--text-main);">Next Meetup Journey</span>
-          <span id="meetupPercentageText" style="color: var(--primary);">0%</span>
-        </div>
-        <div class="progress-container"><div class="progress-fill" id="meetupProgressFill"></div></div>
-        <p id="meetupCountdownSubtext" style="font-size:11px; color:var(--text-muted); margin-top:4px; font-weight:600;">Syncing dates out of database node...</p>
-        
-        <div id="adminDatePickerSection" style="display:none; margin-top:15px; border-top:1px dashed var(--card-border); padding-top:12px;">
-          <p style="font-size:12px; font-weight:800; color:var(--primary); margin-bottom:5px;">🛠️ Rishi's Meetup Planner Panel</p>
-          <div class="admin-input-row">
-            <label>When did you last say goodbye?</label>
-            <input type="datetime-local" id="adminLastMeetInput" class="admin-date-box">
-          </div>
-          <div class="admin-input-row">
-            <label>When are you meeting face-to-face next?</label>
-            <input type="datetime-local" id="adminNextMeetInput" class="admin-date-box">
-          </div>
-          <button class="send-note-btn" style="width:100%; margin-top:10px; padding:10px; font-size:13px;" onclick="saveNewMeetupDatesFromApp()">Save Calendar Alignment 🚀</button>
-        </div>
+      <h2>🗓️ Shared Milestone Countdown</h2>
+      <div class="card ios-blur" style="text-align: center;">
+        <h4 style="color: var(--primary); font-size: 16px; margin-bottom: 6px;">Next Magic Moment ✨</h4>
+        <div id="countdownDisplay" style="font-size: 22px; font-weight: 800; color: var(--text-main);">Counting down...</div>
       </div>
 
-      <h2>📍 Real-Time Distance</h2>
-      <div class="card ios-blur" style="text-align:center; padding:20px;">
-        <h3 id="liveDistance" style="font-size:24px; font-weight:800; color:var(--primary);">Calculating Distance...</h3>
-        <p style="font-size:12px; color:var(--text-muted); margin-top:5px;">Distance between both your hearts 💖</p>
-      </div>
-
-      <h2>🤝 Total Meetups Tracker</h2>
-      <div class="card ios-blur" style="text-align:center;">
-        <h3 id="meetCounterDisplay" style="font-size:26px; font-weight:800; color:var(--primary);">0 Times Met</h3>
-      </div>
-
-      <h2>💗 Love Booth (Attributed Tracker)</h2>
+      <h2>💗 love booth </h2>
       <div class="card ios-blur" style="text-align: center;">
         <div style="display:flex; justify-content:space-around; margin-bottom:15px;">
           <div>
-            <span style="font-size:32px; cursor:pointer;" onclick="triggerAttributedVaultAction('kisses')">😙</span>
-            <h4 id="kissCountDisplay" style="color:var(--primary); font-size:14px; margin-top:5px;">0 Kisses</h4>
-            <div id="kissDetails" style="font-size:10px; color:var(--text-muted); margin-top:2px;">R:0 | P:0</div>
+            <span style="font-size:32px; cursor:pointer;" onclick="triggerVaultAction('kiss')">😙</span>
+            <h4 id="kissCountDisplay" style="color:var(--primary); font-size:16px; margin-top:5px;">0 Kisses</h4>
           </div>
           <div>
-            <span style="font-size:32px; cursor:pointer;" onclick="triggerAttributedVaultAction('hugs')">🫂</span>
-            <h4 id="hugCountDisplay" style="color:#b76eff; font-size:14px; margin-top:5px;">0 Hugs</h4>
-            <div id="hugDetails" style="font-size:10px; color:var(--text-muted); margin-top:2px;">R:0 | P:0</div>
-          </div>
-          <div>
-            <span style="font-size:32px; cursor:pointer;" onclick="triggerAttributedVaultAction('missed')">🥺</span>
-            <h4 id="missedCountDisplay" style="color:#ff9f0a; font-size:14px; margin-top:5px;">0 Missed</h4>
-            <div id="missedDetails" style="font-size:10px; color:var(--text-muted); margin-top:2px;">R:0 | P:0</div>
+            <span style="font-size:32px; cursor:pointer;" onclick="triggerVaultAction('hug')">🫂</span>
+            <h4 id="hugCountDisplay" style="color:#b76eff; font-size:16px; margin-top:5px;">0 Hugs</h4>
           </div>
         </div>
+        <p style="font-size: 12px; color: var(--text-muted); font-weight: 700;">Rishi will pay these back next time you meet! 😉</p>
       </div>
 
-      <h2>📋 Dynamic Shared Reminders</h2>
-      <div class="card ios-blur">
-        <div style="display:flex; gap:8px;">
-          <input type="text" id="reminderInput" class="message-input" placeholder="Add a mutual task..." style="padding:10px;">
-          <button class="send-note-btn" onclick="addSharedReminderItem()">➕</button>
+      <h2>📍 Distance Map Tracker</h2>
+      <div class="card ios-blur" style="padding: 16px;">
+        <div class="cartoon-map-container">
+          <div class="map-grid"></div>
+          <div class="map-line"></div>
+          <div class="map-pin" data-name="Rishi" style="top: 45%; left: 20%;"></div>
+          <div class="map-pin" data-name="Pavani" style="top: 40%; right: 20%; background:#b76eff;"></div>
         </div>
-        <div class="reminders-list" id="remindersContainerBox"></div>
+        <div style="display:flex; justify-content: space-between; font-weight:700; margin-top:12px; font-size:15px; padding:0 5px;">
+          <span id="liveDistance">612.0 kms 💖</span>
+          <span style="color: var(--primary);">Hearts Close</span>
+        </div>
       </div>
     </div>
 
-    <!-- TAB 6: STORY TIMELINE -->
+    <!-- SCREEN 6: STORY & TIMELINE -->
     <div class="app-screen">
       <header><h1>Our Story</h1></header>
       
@@ -419,10 +589,10 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
       <h2>📖 Journey Milestones</h2>
       <div class="card ios-blur">
         <div class="timeline">
-          <div class="timeline-node"><div class="timeline-marker"></div><div class="timeline-title">May 9, 2020 💕</div><div class="timeline-desc">The magic day our official journey began.</div></div>
-          <div class="timeline-node"><div class="timeline-marker"></div><div class="timeline-title">Growing Stronger ❤️</div><div class="timeline-desc">Fell completely into permanent comfort together.</div></div>
-          <div class="timeline-node"><div class="timeline-marker"></div><div class="timeline-title">Long Distance Victory ✈️</div><div class="timeline-desc">Proving that space means absolutely nothing next to true love.</div></div>
-          <div class="timeline-node"><div class="timeline-marker"></div><div class="timeline-title">Our Forever Blueprint 💍</div><div class="timeline-desc">Growing, fixing what we can, and choosing us every day.</div></div>
+          <div class="timeline-node"><div class="timeline-marker"></div><div style="font-weight:700;">May 9, 2020 💕</div><div style="font-size:13px; color:var(--text-muted);">The magic day our official journey began.</div></div>
+          <div class="timeline-node"><div class="timeline-marker"></div><div style="font-weight:700;">Growing Stronger ❤️</div><div style="font-size:13px; color:var(--text-muted);">Fell completely into permanent comfort together.</div></div>
+          <div class="timeline-node"><div class="timeline-marker"></div><div style="font-weight:700;">Long Distance Victory ✈️</div><div style="font-size:13px; color:var(--text-muted);">Proving that space means absolutely nothing next to true love.</div></div>
+          <div class="timeline-node"><div class="timeline-marker"></div><div style="font-weight:700;">Our Forever Blueprint 💍</div><div style="font-size:13px; color:var(--text-muted);">Growing, fixing what we can, and choosing us every day.</div></div>
         </div>
       </div>
     </div>
@@ -430,533 +600,510 @@ h2 { font-size: 17px; font-weight: 700; text-align: left; margin: 25px 0 14px 5p
   </div>
 
   <nav class="app-nav-bar ios-blur">
-    <button class="nav-item active" onclick="slideToIndexScreen(0, this)">
-      <span class="icon">🏠</span><span>Welcome</span>
-    </button>
-    <button class="nav-item" onclick="slideToIndexScreen(1, this)">
-      <span class="icon">📸</span><span>Vault</span>
-    </button>
-    <button class="nav-item" onclick="slideToIndexScreen(2, this)">
-      <span class="icon">🎬</span><span>Media</span>
-    </button>
-    <button class="nav-item" onclick="slideToIndexScreen(3, this)">
-      <span class="icon">💭</span><span>Feelings</span>
-    </button>
-    <button class="nav-item" onclick="slideToIndexScreen(4, this)">
-      <span class="icon">📊</span><span>Status</span>
-    </button>
-    <button class="nav-item" onclick="slideToIndexScreen(5, this)">
-      <span class="icon">💌</span><span>Story</span>
-    </button>
+    <button class="nav-item active" onclick="slideToIndexScreen(0, this)"><span class="icon">🏠</span><span>Welcome</span></button>
+    <button class="nav-item" onclick="slideToIndexScreen(1, this)"><span class="icon">📸</span><span>Vault</span></button>
+    <button class="nav-item" onclick="slideToIndexScreen(2, this)"><span class="icon">🎬</span><span>Media</span></button>
+    <button class="nav-item" onclick="slideToIndexScreen(3, this)"><span class="icon">💭</span><span>Feelings</span></button>
+    <button class="nav-item" onclick="slideToIndexScreen(4, this)"><span class="icon">📊</span><span>Status</span></button>
+    <button class="nav-item" onclick="slideToIndexScreen(5, this)"><span class="icon">💌</span><span>Story</span></button>
   </nav>
 
 </div>
 
-<div id="viewer" onclick="this.style.display='none'">
-  <img id="viewerImg" src="">
-</div>
+<div id="viewer" onclick="this.style.display='none'"><img id="viewerImg" src="" alt="View"></div>
 
 <script>
-const firebaseConfig = {
-  apiKey: "AIzaSyA-2lM2HDqTW4By-mvEM1-pI6YNfCMO",
-  authDomain: "ur-world-9ccd7.firebaseapp.com",
-  databaseURL: "https://ur-world-9ccd7-default-rtdb.firebaseio.com",
-  projectId: "ur-world-9ccd7",
-  storageBucket: "ur-world-9ccd7.firebasestorage.app",
-  messagingSenderId: "579982572210",
-  appId: "1:579982572210:web:3fb7a90550203e5b96",
-  measurementId: "G-3HFHG1YS4K"
-};
+// ⚠️ PASTE YOUR SUPABASE KEYS FOR LIVE CLOUD REALTIME SYNC BELOW ⚠️
+const SUPABASE_URL = "https://YOUR_PROJECT_ID.supabase.co";
+const SUPABASE_KEY = "YOUR_ANON_PUBLIC_KEY";
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+let supabase = null;
+if (typeof supabase !== 'undefined' && SUPABASE_URL && !SUPABASE_URL.includes("YOUR_PROJECT_ID")) {
+  try {
+    supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  } catch (e) { console.log("Local fallback mode active.", e); }
+}
 
 let currentAuthor = "Rishi";
-let isFirstLoad = true;
-let mediaRecorder = null;
-let audioChunks = [];
+let currentParticleType = "standard";
+let localStream = null;
+let lastJarIndex = -1;
 
+const jarNotes = [
+  "Rishi is always proud of you. Always. 💖",
+  "Rishi loves you more than you can possibly compute! ❤️",
+  "Reminder: You have the prettiest smile in the entire universe. 🥰",
+  "No matter how many kilometers separate us, you're always right here in my heart. 📍",
+  "Sending you a giant, tight virtual hug right now! 🫂",
+  "Thank you for being my absolute peace and favorite person. 💖",
+  "I'm probably thinking about you right this exact second. 💭",
+  "You're my forever and always, Pavani! 👑"
+];
+
+/* 🌙 DYNAMIC AUTOMATIC THEME ENGINE (DAY / NIGHT) */
+function evaluateAdaptiveTimeSky() {
+  const currentHour = new Date().getHours();
+  // Swaps to cozy dark lavender glass between 7:00 PM and 6:00 AM
+  if (currentHour >= 19 || currentHour < 6) {
+    document.body.classList.add("night-mode");
+    document.getElementById("themeColorMeta").setAttribute("content", "#1f1124");
+  } else {
+    document.body.classList.remove("night-mode");
+    document.getElementById("themeColorMeta").setAttribute("content", "#ffe5ec");
+  }
+}
+
+/* 🔓 UNLOCK SYSTEM */
 function unlockAppWithFluidTransition() {
-  if(document.getElementById("password").value === "22010503") {
-    document.getElementById("lockScreen").style.opacity = "0";
+  const inputPass = document.getElementById("password").value;
+  if(inputPass === "22010503") {
+    const lock = document.getElementById("lockScreen");
+    lock.style.opacity = "0";
+    
     setTimeout(() => {
-      document.getElementById("lockScreen").style.display = "none";
-      document.getElementById("mainContent").style.display = "block";
+      lock.style.display = "none";
+      const mainContent = document.getElementById("mainContent");
+      mainContent.style.display = "block";
+      
       setTimeout(() => {
-        document.getElementById("mainContent").style.opacity = "1";
-        document.getElementById("fluidBookElement").classList.add("opened");
-        
-        const timeString = new Date().toLocaleString([], {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'});
-        db.ref(`presence/last_seen/${currentAuthor}`).set(timeString);
+        mainContent.style.opacity = "1";
+        setTimeout(() => { document.getElementById("fluidBookElement").classList.add("opened"); }, 400);
 
-        runLiveCounter(); loadMusicWidgets(); startHeartRain(); initLiveSyncListeners(); 
-        initPollEngine(); triggerProximityDetection(); calculateRealDistance(); runMeetupLoadBarCalculation();
-        initScratchCard();
+        evaluateAdaptiveTimeSky();
+        runLiveCounter();
+        runMilestoneCountdown();
+        loadMusicWidgets();
+        startHeartRain();
+        calculateRealDistance();
+        renderNotes();
+        fetchSharedPhotos(); 
+        fetchSharedMovies(); 
+        updateActionVaultDisplays();
+        renderWishlist();
+        updateMissedDisplay();
+        initDoodleCanvas();
+        setupRealtimeSubscriptions();
       }, 50);
     }, 500);
-  } else { alert("Wrong Code 💔"); }
-}
-
-function dispatchGlassUiToast(title, text, icon) {
-  if (isFirstLoad) return;
-  document.getElementById("toastIconElement").innerText = icon;
-  document.getElementById("toastTitleElement").innerText = title;
-  document.getElementById("toastDescElement").innerText = text;
-  const toast = document.getElementById("glassNotificationBanner");
-  toast.classList.add("show");
-  if(navigator.vibrate) navigator.vibrate([40, 40]);
-  setTimeout(() => { toast.classList.remove("show"); }, 4000);
-}
-
-function initLiveSyncListeners() {
-  db.ref('presence').on('value', snap => {
-    const data = snap.val() || {};
-    const moods = data.mood || {};
-    const lastSeen = data.last_seen || {};
-    const overthinking = data.overthinking || {};
-    
-    const partner = currentAuthor === "Rishi" ? "Pavani" : "Rishi";
-    
-    if (overthinking.status === "active" && partner === "Pavani") {
-      document.getElementById("partnerMoodDisplay").innerText = "Pavani's Status: 🥺 Overthinking";
-    } else {
-      document.getElementById("partnerMoodDisplay").innerText = `${partner}'s Status: ${moods[partner] || 'Calm / Peaceful 🤍'}`;
-    }
-    
-    const lastSeenEl = document.getElementById("partnerLastSeenDisplay");
-    const overthinkingEl = document.getElementById("partnerOverthinkingDisplay");
-    const adminPanelEl = document.getElementById("adminDatePickerSection");
-    const clearBtn = document.getElementById("clearOverthinkingBtn");
-    
-    if (currentAuthor === "Rishi") {
-      lastSeenEl.style.display = "block";
-      lastSeenEl.innerText = lastSeen.Pavani ? `🕒 Last Seen: Active on app ${lastSeen.Pavani}` : `🕒 Last Seen: No recent logs found.`;
-      
-      if (overthinking.status === "active") {
-        overthinkingEl.style.display = "block";
-        overthinkingEl.innerText = `⚠️ Alert: Began Overthinking at ${overthinking.time}`;
-        clearBtn.style.display = "inline-block";
-      } else {
-        overthinkingEl.style.display = "block";
-        overthinkingEl.innerText = `⚠️ Alert: No active overthinking pings recorded.`;
-        clearBtn.style.display = "none";
-      }
-      
-      if(adminPanelEl) adminPanelEl.style.display = "block";
-    } else {
-      lastSeenEl.style.display = "none";
-      overthinkingEl.style.display = "none";
-      clearBtn.style.display = "none";
-      if(adminPanelEl) adminPanelEl.style.display = "none";
-    }
-  });
-
-  db.ref('presence/heartbeat').on('value', snap => {
-    const pulse = snap.val();
-    if (pulse && pulse.sender !== currentAuthor) {
-      dispatchGlassUiToast("Heartbeat Received 💓", `${pulse.sender} is thinking of you right now!`, "💓");
-      for(let i=0; i<6; i++) {
-        setTimeout(() => {
-          const h = document.createElement("div"); h.className = "heart"; h.innerHTML = "💖";
-          h.style.left = (Math.random() * 40 + 30) + "vw"; h.style.animationDuration = "2.5s";
-          document.body.appendChild(h); setTimeout(() => h.remove(), 2500);
-        }, i * 200);
-      }
-    }
-  });
-
-  db.ref('photos').on('value', snapshot => {
-    const gallery = document.getElementById("photoGallery"); gallery.innerHTML = "";
-    const data = snapshot.val();
-    if (data) {
-      Object.values(data).reverse().forEach(item => {
-        let img = document.createElement("img"); img.src = item.url; img.onclick = function() { openLightbox(this); }; gallery.appendChild(img);
-      });
-    }
-  });
-
-  db.ref('movies').on('value', snapshot => {
-    const carousel = document.getElementById("movieCarousel"); carousel.innerHTML = "";
-    const data = snapshot.val();
-    if (data) {
-      Object.values(data).reverse().forEach(m => {
-        let img = document.createElement("img"); img.src = m.url; img.title = m.title; img.onclick = function() { openLightbox(this); }; carousel.appendChild(img);
-      });
-    }
-  });
-
-  db.ref('notes').on('value', snapshot => {
-    const board = document.getElementById("notesBoard"); board.innerHTML = "";
-    const data = snapshot.val();
-    if (data) {
-      Object.values(data).reverse().forEach(note => {
-        let voiceWidget = "";
-        if(note.voiceData) {
-          voiceWidget = `
-            <div class="audio-card">
-              <button class="audio-play-btn" onclick="playbackVoiceCapsule('${note.voiceData}', this)">▶</button>
-              <div class="audio-wave-anim"><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div></div>
-            </div>`;
-        }
-        board.innerHTML += `<div class="note-card ${note.author === 'Pavani' ? 'pavani' : ''}"><div class="note-header"><span>${note.author === 'Pavani' ? '👩‍🦰 Pavani' : '👨 Rishi'}</span><span>${note.time}</span></div><div class="note-body">"${note.content}" ${voiceWidget}</div></div>`;
-      });
-    }
-  });
-
-  db.ref('metrics').on('value', snapshot => {
-    const data = snapshot.val() || {};
-    const k = data.kisses || { rishiCount: 0, pavaniCount: 0 };
-    const h = data.hugs || { rishiCount: 0, pavaniCount: 0 };
-    const m = data.missed || { rishiCount: 0, pavaniCount: 0 };
-    
-    document.getElementById("kissCountDisplay").innerText = `${(k.rishiCount || 0) + (k.pavaniCount || 0)} Kisses`;
-    document.getElementById("kissDetails").innerText = `Rishi: ${k.rishiCount || 0} | Pavani: ${k.pavaniCount || 0}`;
-
-    document.getElementById("hugCountDisplay").innerText = `${(h.rishiCount || 0) + (h.pavaniCount || 0)} Hugs`;
-    document.getElementById("hugDetails").innerText = `Rishi: ${h.rishiCount || 0} | Pavani: ${h.pavaniCount || 0}`;
-
-    document.getElementById("missedCountDisplay").innerText = `${(m.rishiCount || 0) + (m.pavaniCount || 0)} Missed`;
-    document.getElementById("missedDetails").innerText = `Rishi: ${m.rishiCount || 0} | Pavani: ${m.pavaniCount || 0}`;
-  });
-
-  db.ref('reminders').on('value', snapshot => {
-    const box = document.getElementById("remindersContainerBox"); box.innerHTML = "";
-    const data = snapshot.val();
-    if (data) {
-      Object.keys(data).forEach(key => {
-        const item = data[key];
-        box.innerHTML += `
-          <div class="reminder-row ${item.status === 'done' ? 'done' : ''}">
-            <span onclick="toggleReminderState('${key}', '${item.status}')">📌 ${item.text}</span>
-            <small style="font-size:10px; opacity:0.6;">by ${item.creator}</small>
-          </div>`;
-      });
-    }
-  });
-
-  db.ref('metrics/meetups').on('value', snapshot => {
-    document.getElementById("meetCounterDisplay").innerText = `${snapshot.val() || 0} Times Met`;
-  });
-
-  setTimeout(() => { isFirstLoad = false; }, 2000);
-}
-
-function sendLiveHeartbeatSignal() {
-  db.ref('presence/heartbeat').set({ sender: currentAuthor, timestamp: new Date().getTime() });
-  dispatchGlassUiToast("Heartbeat Transmitted ⚡", "Sent a soft haptic thinking of you pulse!", "💓");
-}
-
-function runMeetupLoadBarCalculation() {
-  db.ref('meetup_dates').on('value', (snapshot) => {
-    const dates = snapshot.val();
-    
-    const lastMeetStr = dates && dates.lastMeet ? dates.lastMeet : "2026-06-15T00:00:00";
-    const nextMeetStr = dates && dates.nextMeet ? dates.nextMeet : "2026-08-01T00:00:00";
-    
-    const lastMeet = new Date(lastMeetStr).getTime(); 
-    const nextMeet = new Date(nextMeetStr).getTime(); 
-    const now = new Date().getTime();
-    
-    const totalDuration = nextMeet - lastMeet;
-    const currentElapsed = now - lastMeet;
-    
-    let percent = Math.floor((currentElapsed / totalDuration) * 100);
-    if(percent < 0) percent = 0; if(percent > 100) percent = 100;
-    
-    document.getElementById("meetupPercentageText").innerText = `${percent}%`;
-    document.getElementById("meetupProgressFill").style.width = `${percent}%`;
-    
-    const daysLeft = Math.ceil((nextMeet - now) / (1000 * 60 * 60 * 24));
-    document.getElementById("meetupCountdownSubtext").innerText = daysLeft > 0 ? `🔥 Everything is loading smoothly... ${daysLeft} days until alignment!` : "🎉 Journey complete! Time to meet! 🏎️";
-  });
-}
-
-function saveNewMeetupDatesFromApp() {
-  const lastVal = document.getElementById("adminLastMeetInput").value;
-  const nextVal = document.getElementById("adminNextMeetInput").value;
-  if(!lastVal || !nextVal) { alert("Please input both calendar dates! 📅"); return; }
-  db.ref('meetup_dates').set({
-    lastMeet: new Date(lastVal).toISOString(),
-    nextMeet: new Date(nextVal).toISOString()
-  }).then(() => { alert("Database values updated! Progress bar has resynced. 🏎️"); });
-}
-
-function calculateRealDistance() {
-  const el = document.getElementById("liveDistance"); if (!el || !navigator.geolocation) return;
-  navigator.geolocation.getCurrentPosition((pos) => {
-    db.ref(`presence/locations/${currentAuthor}`).set({ lat: pos.coords.latitude, lon: pos.coords.longitude });
-    const partner = currentAuthor === "Rishi" ? "Pavani" : "Rishi";
-    db.ref(`presence/locations/${partner}`).on('value', (snapshot) => {
-      const partnerLoc = snapshot.val();
-      if (!partnerLoc) { el.innerText = "612.0 kms 💖"; return; }
-      const r = 6371; 
-      const dLat = (partnerLoc.lat - pos.coords.latitude) * Math.PI / 180; 
-      const dLon = (partnerLoc.lon - pos.coords.longitude) * Math.PI / 180;
-      const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(pos.coords.latitude * Math.PI / 180) * Math.cos(partnerLoc.lat * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
-      el.innerHTML = `${(r * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)))).toFixed(1)} kms 💖`;
-    });
-  }, () => { el.innerText = "612.0 kms 💖"; }, { enableHighAccuracy: false, timeout: 4000 });
-}
-
-function triggerAttributedVaultAction(category) {
-  db.ref(`metrics/${category}/${currentAuthor === 'Rishi' ? 'rishiCount' : 'pavaniCount'}`).transaction(c => (c || 0) + 1);
-  if(navigator.vibrate) navigator.vibrate(50);
-}
-
-function triggerProximityDetection() {
-  if (!navigator.geolocation) return;
-  navigator.geolocation.getCurrentPosition(pos => {
-    db.ref(`presence/locations/${currentAuthor}`).set({ lat: pos.coords.latitude, lon: pos.coords.longitude });
-    const partner = currentAuthor === "Rishi" ? "Pavani" : "Rishi";
-    db.ref(`presence/locations/${partner}`).once('value', snapshot => {
-      const p = snapshot.val(); if(!p) return;
-      const distance = Math.sqrt(Math.pow(pos.coords.latitude - p.lat, 2) + Math.pow(pos.coords.longitude - p.lon, 2));
-      if (distance < 0.001) { 
-        const today = new Date().toDateString();
-        if(localStorage.getItem("last_meet_registered") !== today) {
-          db.ref('metrics/meetups').transaction(c => (c || 0) + 1);
-          localStorage.setItem("last_meet_registered", today);
-        }
-      }
-    });
-  });
-}
-
-function triggerNativeMovieUpload() { document.getElementById("nativeMoviePicker").click(); }
-function handleLiveMovieUpload(inputNode) {
-  const title = document.getElementById("movieTitleInput").value.trim() || "Our Movie choice";
-  if(inputNode.files && inputNode.files[0]) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      db.ref('movies').push({ url: e.target.result, title: title, author: currentAuthor });
-      document.getElementById("movieTitleInput").value = "";
-    }
-    reader.readAsDataURL(inputNode.files[0]);
-  }
-}
-
-async function toggleVoiceAudioRecording() {
-  const btn = document.getElementById("voiceRecordBtn");
-  if (mediaRecorder && mediaRecorder.state === "recording") {
-    mediaRecorder.stop(); btn.innerText = "🎙️"; btn.style.background = "#4cd964";
   } else {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      mediaRecorder = new MediaRecorder(stream); audioChunks = [];
-      mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-      mediaRecorder.onstop = () => {
-        const reader = new FileReader(); reader.readAsDataURL(new Blob(audioChunks, { type: 'audio/mp3' }));
-        reader.onloadend = () => { window.lastCapturedVoiceBase64 = reader.result; };
-      };
-      mediaRecorder.start(); btn.innerText = "🛑"; btn.style.background = "#ff3b30";
-    } catch(err) { alert("Mic configuration error."); }
-  }
-}
-function playbackVoiceCapsule(base64Data, element) {
-  const audio = new Audio(base64Data); const card = element.parentElement;
-  card.classList.add("playing"); element.innerText = "⏸"; audio.play();
-  audio.onended = () => { card.classList.remove("playing"); element.innerText = "▶"; };
-}
-
-function triggerNativePhotoUpload() { document.getElementById("nativePhotoPicker").click(); }
-function handleLivePhotoUpload(inputNode) {
-  if(inputNode.files && inputNode.files[0]) {
-    const reader = new FileReader();
-    reader.onload = function(e) { db.ref('photos').push({ url: e.target.result, author: currentAuthor }); }
-    reader.readAsDataURL(inputNode.files[0]);
+    alert("Wrong Code 💔");
   }
 }
 
-const comfortPoolMessages = [
-  "Hey Pavani... take a deep breath. Rishi is right here with you, always. You're safe. ❤️",
-  "Don't let the thoughts feel too heavy, okay? You mean the absolute world to Rishi. 🫂",
-  "In this exact second, just know that Rishi loves you endlessly and you're doing amazing. ✨",
-  "Everything is going to be perfectly fine. Close your eyes for a moment, Rishi is holding your hand. 💖",
-  "Your comfort is his highest priority. You're never dealing with anything alone, Pavani. 👑"
-];
+/* ⚡ REALTIME DATABASE LISTENERS (SUPABASE) */
+function setupRealtimeSubscriptions() {
+  if (!supabase) return;
 
-function updateLiveUserMood(moodText) { 
-  db.ref(`presence/mood/${currentAuthor}`).set(moodText);
+  // Listen live for photos & doodles
+  supabase.channel('public:photos')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'photos' }, () => {
+      fetchSharedPhotos();
+    }).subscribe();
+
+  // Listen live for movies
+  supabase.channel('public:movies')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'movies' }, () => {
+      fetchSharedMovies();
+    }).subscribe();
+}
+
+/* 🎨 TOUCH DOODLE PAD */
+let canvas, ctx, isDrawing = false;
+function initDoodleCanvas() {
+  canvas = document.getElementById("doodleCanvas");
+  if (!canvas) return;
+  ctx = canvas.getContext("2d");
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+  ctx.strokeStyle = "#ff4d6d";
+  ctx.lineWidth = 3;
+  ctx.lineCap = "round";
+
+  const getPos = (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    return { x: clientX - rect.left, y: clientY - rect.top };
+  };
+
+  const startDraw = (e) => { isDrawing = true; const pos = getPos(e); ctx.beginPath(); ctx.moveTo(pos.x, pos.y); };
+  const draw = (e) => { if (!isDrawing) return; const pos = getPos(e); ctx.lineTo(pos.x, pos.y); ctx.stroke(); };
+  const stopDraw = () => { isDrawing = false; };
+
+  canvas.addEventListener("mousedown", startDraw);
+  canvas.addEventListener("mousemove", draw);
+  canvas.addEventListener("mouseup", stopDraw);
+  canvas.addEventListener("touchstart", startDraw);
+  canvas.addEventListener("touchmove", draw);
+  canvas.addEventListener("touchend", stopDraw);
+}
+
+function clearDoodle() {
+  if (ctx && canvas) ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+async function shareDoodleToGallery() {
+  if (!canvas) return;
+  const doodleData = canvas.toDataURL("image/png");
+  if (supabase) {
+    await supabase.from('photos').insert([{ url: doodleData }]);
+    fetchSharedPhotos();
+  } else {
+    alert("Doodle saved to view! Connect database keys to sync live. 💖");
+  }
+  clearDoodle();
+}
+
+/* 💥 FLOATING EMOJI EXPLOSIONS */
+function triggerGlobalEmojiExplosion(e) {
+  // Avoid bursting when tapping inputs or buttons
+  if (["INPUT", "BUTTON", "TEXTAREA", "CANVAS"].includes(e.target.tagName)) return;
   
-  if (moodText.includes("Overthinking")) {
-    const clickTime = new Date().toLocaleString([], {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'});
-    db.ref('presence/overthinking').set({ status: "active", time: clickTime });
+  const emojis = ["💖", "✨", "🥺", "💋", "🌸", "👑"];
+  for (let i = 0; i < 4; i++) {
+    const particle = document.createElement("div");
+    particle.className = "emoji-blast";
+    particle.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+    particle.style.left = e.clientX + "px";
+    particle.style.top = e.clientY + "px";
     
-    if(currentAuthor === "Pavani") {
-      const pickRandomComfort = comfortPoolMessages[Math.floor(Math.random() * comfortPoolMessages.length)];
-      alert(pickRandomComfort);
-    }
+    const dx = (Math.random() - 0.5) * 120 + "px";
+    const dy = (Math.random() - 0.8) * 150 + "px";
+    particle.style.setProperty('--dx', dx);
+    particle.style.setProperty('--dy', dy);
+    
+    document.body.appendChild(particle);
+    setTimeout(() => particle.remove(), 1000);
   }
 }
 
-function clearOverthinkingAlert() {
-  db.ref('presence/overthinking/status').set("resolved");
-  db.ref('presence/mood/Pavani').set("Calm 🤍");
-}
+/* 🗓️ SECRET CALENDAR COUNTDOWN */
+function runMilestoneCountdown() {
+  // Set your next special target date here (e.g. Next Meetup / Anniversary)
+  const targetDate = new Date("2026-12-31T00:00:00");
+  const display = document.getElementById("countdownDisplay");
 
-function addSharedReminderItem() {
-  const input = document.getElementById("reminderInput"); if (!input.value.trim()) return;
-  db.ref('reminders').push({ text: input.value.trim(), creator: currentAuthor, status: 'pending' }); input.value = "";
-}
-function toggleReminderState(id, currentStatus) { db.ref(`reminders/${id}/status`).set(currentStatus === 'pending' ? 'done' : 'pending'); }
-
-const pollQuestions = [
-  { q: "How many times do you think Rishi will kiss you the next exact second you both meet face to face? 😏", o: ["20 Kisses 💋", "30 Kisses 💋", "35+ Kisses (Non-Stop) 🔥"] },
-  { q: "Who is the absolute biggest, most dramatic child when text replies get delayed? 🍿", o: ["Rishi 👨", "Pavani 👩‍🦰", "Both are equally dramatic! 😂"] },
-  { q: "What's our undisputed absolute favorite teasing inside joke statement line?", o: ["Midnight Call Routine 📞", "Shopping Fit Debates 👖", "Getting Lost Walking Around 🗺️"] }
-];
-function initPollEngine() {
-  const todayIndex = new Date().getDate() % pollQuestions.length; const currentPoll = pollQuestions[todayIndex];
-  document.getElementById("pollQuestionLabel").innerText = currentPoll.q;
-  const container = document.getElementById("pollOptionsBlock"); container.innerHTML = "";
-  currentPoll.o.forEach((opt, idx) => { container.innerHTML += `<button class="ios-action-btn ios-blur" style="margin-bottom:6px; font-size:13px;" onclick="submitPollVote(${todayIndex}, ${idx})">${opt}</button>`; });
-  
-  db.ref(`polls/day_${todayIndex}`).on('value', snap => {
-    const votes = snap.val() || {};
-    db.ref('polls/streak_counter').on('value', countSnap => {
-      document.getElementById("streakIndicatorDisplay").innerText = `🔥 ${countSnap.val() || 0} Days`;
-    });
-    if(votes.Rishi !== undefined && votes.Pavani !== undefined) {
-      document.getElementById("pollOptionsBlock").style.display = "none";
-      const results = document.getElementById("pollResultsBlock"); results.style.display = "block";
-      results.innerHTML = `<p style="color:var(--primary); font-weight:800; margin-bottom:6px;">Answers Unveiled! 🎉</p><p>👨 Rishi picked: <b>${currentPoll.o[votes.Rishi]}</b></p><p>👩‍🦰 Pavani picked: <b>${currentPoll.o[votes.Pavani]}</b></p>`;
-    } else if (votes[currentAuthor] !== undefined) {
-      container.innerHTML = `<p style="font-size:13px; font-weight:700; color:var(--text-muted); text-align:center; padding:10px;">Submitted response! Waiting for your partner to pick to unlock choices...⏳</p>`;
+  function update() {
+    const now = new Date();
+    const diff = targetDate - now;
+    if (diff <= 0) {
+      display.innerText = "The day is here! ❤️";
+      return;
     }
-  });
-}
-function submitPollVote(pollId, optionId) { 
-  db.ref(`polls/day_${pollId}/${currentAuthor}`).set(optionId).then(() => {
-    db.ref(`polls/day_${pollId}`).once('value', snap => {
-      const d = snap.val() || {};
-      if(d.Rishi !== undefined && d.Pavani !== undefined) {
-        db.ref('polls/streak_counter').transaction(c => (c || 0) + 1);
-      }
-    });
-  });
-}
-
-const surpriseScratchMessages = [
-  "Rishi is currently missing you 100x more than you think! 🥺",
-  "Reminder: You possess the most breathtaking smile in the universe. 🥰",
-  "Rishi's favorite location in the entire world is right next to you. 🤍",
-  "You are his permanent piece of comfort and absolute home, Pavani. 👑",
-  "A massive, extra tight warm hug is being broadcast to you right now! 🫂"
-];
-
-function initScratchCard() {
-  const freshText = surpriseScratchMessages[Math.floor(Math.random() * surpriseScratchMessages.length)];
-  document.getElementById("scratchSecretText").innerText = freshText;
-
-  setTimeout(() => {
-    const canvas = document.getElementById("scratchCanvasOverlay"); 
-    if(!canvas) return;
-    const ctx = canvas.getContext("2d");
-    
-    canvas.width = canvas.parentElement.clientWidth || 300; 
-    canvas.height = canvas.parentElement.clientHeight || 160;
-    
-    ctx.globalCompositeOperation = 'source-over'; 
-    ctx.fillStyle = "#cfd8dc"; 
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-    
-    ctx.fillStyle = "#78909c"; 
-    ctx.font = "bold 14px 'Plus Jakarta Sans', sans-serif"; 
-    ctx.textAlign = "center"; 
-    ctx.textBaseline = "middle";
-    ctx.fillText("Swipe to Scratch Message 🪄", canvas.width/2, canvas.height/2);
-    
-    let isDrawing = false;
-    function scratch(e) {
-      if(!isDrawing) return; 
-      e.preventDefault();
-      const rect = canvas.getBoundingClientRect();
-      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-      const x = clientX - rect.left; 
-      const y = clientY - rect.top;
-      
-      ctx.globalCompositeOperation = 'destination-out'; 
-      ctx.beginPath(); 
-      ctx.arc(x, y, 25, 0, Math.PI*2); 
-      ctx.fill();
-    }
-    
-    canvas.onmousedown = () => isDrawing = true; 
-    canvas.onmouseup = () => isDrawing = false; 
-    canvas.onmousemove = scratch;
-    
-    canvas.ontouchstart = () => isDrawing = true; 
-    canvas.ontouchend = () => isDrawing = false; 
-    canvas.ontouchmove = scratch;
-  }, 400); 
-}
-
-function reloadRandomScratchMessage() {
-  const randText = surpriseScratchMessages[Math.floor(Math.random() * surpriseScratchMessages.length)];
-  document.getElementById("scratchSecretText").innerText = randText;
-  
-  const oldCanvas = document.getElementById("scratchCanvasOverlay");
-  if(oldCanvas) {
-    const ctx = oldCanvas.getContext("2d");
-    ctx.globalCompositeOperation = 'source-over';
-    ctx.fillStyle = "#cfd8dc";
-    ctx.fillRect(0, 0, oldCanvas.width, oldCanvas.height);
-    ctx.fillStyle = "#78909c";
-    ctx.fillText("Swipe to Scratch Message 🪄", oldCanvas.width/2, oldCanvas.height/2);
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const mins = Math.floor((diff / (1000 * 60)) % 60);
+    display.innerText = `${days}d : ${hours}h : ${mins}m left 💖`;
   }
+  update();
+  setInterval(update, 60000);
 }
 
-let charIndex = 0; let letterStarted = false;
-const msg = `Pavaniii,\n\nidk how to say all this properly but I just wanted to tell you… you mean a lot to me. Like really a lot.\n\nWe’ve been through some tough things… misunderstandings, pain, and those moments where it felt heavy for both of us. But even then, my feelings for you never changed. If anything, it made me realize how much you matter in my life.\n\nI still think abt you all the time, still miss you even when we’re not talking, and honestly my day just feels better when it’s you.\n\nSometimes I remember those small moments… like when we used to talk for hours and laugh at the most random things. Those moments weren’t just time pass for me… they meant everything.\n\nI know we’re not perfect, but I’m willing to try more, understand you better, and handle things in a way that doesn’t hurt us again.\n\nI just want you to know I’m here… for you, for us, and for everything we’re building together ❤️\nI love you soo much 🫂`.trim();
-
-function startTypewriterLetterStream(){
-  if (letterStarted) return; letterStarted = true;
-  document.getElementById("envelope").classList.add("open"); document.getElementById("gift").style.display = "none";
-  const el = document.getElementById("text"); const cur = document.getElementById("cursorElement"); cur.className = "cursor active";
-  function type(){
-    if (charIndex < msg.length){ el.innerHTML += msg[charIndex] === "\n" ? "<br>" : msg[charIndex]; charIndex++; setTimeout(type, 40); }
-    else { cur.className = "cursor"; }
-  }
-  setTimeout(type, 650);
-}
-
+/* 🗂️ NAVIGATION */
 function slideToIndexScreen(pageIndex, navElement) {
   document.getElementById("appSliderTrack").style.transform = `translateX(-${pageIndex * 100}vw)`;
-  document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active')); navElement.classList.add('active');
-  if(pageIndex === 3) { initScratchCard(); }
+  document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+  navElement.classList.add('active');
+  if (pageIndex !== 1 && localStream) toggleCameraDeviceStream();
 }
 
-function switchNoteAuthor(a) {
-  currentAuthor = a; document.getElementById("btnHru").classList.toggle("active", a === "Rishi"); document.getElementById("btnPav").classList.toggle("active", a === "Pavani");
-  db.ref('presence/mood').setValue(null);
+/* 🫂 VAULT ACTIONS */
+function triggerVaultAction(type) {
+  let count = parseInt(localStorage.getItem(`vault_${type}_bank`) || "0") + 1;
+  localStorage.setItem(`vault_${type}_bank`, count);
+  updateActionVaultDisplays();
+  currentParticleType = (type === 'kiss') ? 'cute' : 'cozy';
+  triggerConfettiBlastEffect();
+}
+
+function updateActionVaultDisplays() {
+  document.getElementById("kissCountDisplay").innerText = `${localStorage.getItem("vault_kiss_bank") || "0"} Kisses`;
+  document.getElementById("hugCountDisplay").innerText = `${localStorage.getItem("vault_hug_bank") || "0"} Hugs`;
+}
+
+function incrementMissedCounter() {
+  let count = parseInt(localStorage.getItem("mutual_missed_moments") || "0") + 1;
+  localStorage.setItem("mutual_missed_moments", count);
+  currentParticleType = 'miss';
+  updateMissedDisplay();
+}
+
+function updateMissedDisplay() {
+  document.getElementById("missedCounterDisplay").innerText = `${localStorage.getItem("mutual_missed_moments") || "0"} Missed Moments Shared`;
+}
+
+/* 📝 WISHLIST */
+function addWishlistItem() {
+  const textarea = document.getElementById("wishlistInput");
+  const text = textarea.value.trim();
+  if(!text) return;
+  let items = JSON.parse(localStorage.getItem("pavani_wishlist_data") || "[]");
+  items.push({ id: Date.now(), text: text });
+  localStorage.setItem("pavani_wishlist_data", JSON.stringify(items));
+  textarea.value = "";
+  renderWishlist();
+}
+
+function deleteWishlistItem(id) {
+  let items = JSON.parse(localStorage.getItem("pavani_wishlist_data") || "[]");
+  localStorage.setItem("pavani_wishlist_data", JSON.stringify(items.filter(item => item.id !== id)));
+  renderWishlist();
+}
+
+function renderWishlist() {
+  const target = document.getElementById("wishlistItemsBox");
+  let items = JSON.parse(localStorage.getItem("pavani_wishlist_data") || "[]");
+  if(items.length === 0) {
+    target.innerHTML = `<p style="font-size:12px; font-style:italic; color:var(--text-muted); text-align:center;">Your wishlist is empty. Add your dreams above! ✨</p>`;
+    return;
+  }
+  target.innerHTML = items.map(item => `<div class="wishlist-item"><span>✨ ${item.text}</span><button onclick="deleteWishlistItem(${item.id})">✕</button></div>`).join('');
+}
+
+/* 📸 PHOTO CONTROLLERS */
+function triggerNativePhotoUpload() { document.getElementById("nativePhotoPicker").click(); }
+
+async function handleNativePhotoUpload(inputNode) {
+  if (!supabase) { alert("Connect database keys to upload! 📸"); return; }
+  if(inputNode.files && inputNode.files[0]) {
+    const reader = new FileReader();
+    reader.onload = async function(e) {
+      await supabase.from('photos').insert([{ url: e.target.result }]);
+      fetchSharedPhotos();
+    }
+    reader.readAsDataURL(inputNode.files[0]);
+  }
+}
+
+async function fetchSharedPhotos() {
+  const gallery = document.getElementById("photoGallery");
+  if (!supabase) { gallery.innerHTML = `<p style="font-size:12px; grid-column: span 5; font-style:italic; color:var(--text-muted); text-align:center; padding: 20px 0;">Offline preview mode. Connect cloud keys to share live! 📸</p>`; return; }
+  try {
+    const { data, error } = await supabase.from('photos').select('url').order('id', { ascending: false });
+    if (!error && data) {
+      gallery.innerHTML = data.length === 0 ? `<p style="font-size:12px; grid-column: span 5; font-style:italic; color:var(--text-muted); text-align:center;">No photos yet.</p>` : '';
+      data.forEach(item => {
+        let img = document.createElement("img");
+        img.src = item.url;
+        img.onclick = function() { openLightbox(this); };
+        gallery.appendChild(img);
+      });
+    }
+  } catch (err) { console.log(err); }
+}
+
+/* 🎞️ CAMERA */
+async function toggleCameraDeviceStream() {
+  const video = document.getElementById("camFeed");
+  const toggleBtn = document.getElementById("toggleCamBtn");
+  const snapBtn = document.getElementById("snapBtn");
+
+  if (localStream) {
+    localStream.getTracks().forEach(track => track.stop());
+    localStream = null;
+    video.style.display = "none"; snapBtn.style.display = "none";
+    toggleBtn.innerText = "Open Cam 🎥";
+  } else {
+    try {
+      localStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false });
+      video.srcObject = localStream;
+      video.style.display = "block"; snapBtn.style.display = "block";
+      toggleBtn.innerText = "Close Cam ❌";
+    } catch (err) { alert("Camera access requires HTTPS or local server. 💔"); }
+  }
+}
+
+async function takeInstantFlipbookSnapshot() {
+  const video = document.getElementById("camFeed");
+  if (!localStream || !supabase) return;
+  const canvas = document.createElement("canvas");
+  canvas.width = video.videoWidth || 640; canvas.height = video.videoHeight || 480;
+  const ctx = canvas.getContext("2d");
+  ctx.translate(canvas.width, 0); ctx.scale(-1, 1);
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+  await supabase.from('photos').insert([{ url: canvas.toDataURL("image/jpeg") }]);
+  fetchSharedPhotos(); toggleCameraDeviceStream();
+}
+
+/* 🍿 MOVIES */
+async function addNewSharedMovie() {
+  if (!supabase) return;
+  const title = document.getElementById("movieTitleInput").value.trim();
+  const posterUrl = document.getElementById("moviePosterInput").value.trim();
+  if (!title || !posterUrl) return;
+  await supabase.from('movies').insert([{ title: title, poster_url: posterUrl }]);
+  document.getElementById("movieTitleInput").value = "";
+  document.getElementById("moviePosterInput").value = "";
+  fetchSharedMovies();
+}
+
+async function fetchSharedMovies() {
+  const carousel = document.getElementById("movieCarousel");
+  if (!supabase) { carousel.innerHTML = `<p style="font-size: 12px; font-style: italic; color: var(--text-muted); padding: 10px;">Offline view. Set cloud keys to sync watchlists! 🍿</p>`; return; }
+  try {
+    const { data, error } = await supabase.from('movies').select('title, poster_url').order('id', { ascending: false });
+    if (!error && data) {
+      carousel.innerHTML = data.length === 0 ? `<p style="font-size: 12px; font-style: italic; color: var(--text-muted);">Watchlist empty.</p>` : '';
+      carousel.innerHTML = data.map(m => `<img src="${m.poster_url}" alt="${m.title}" title="${m.title}" onclick="openLightbox(this)">`).join('');
+    }
+  } catch (err) { console.log(err); }
+}
+
+/* 🫙 COMPLIMENT JAR */
+function drawComplimentJarMessage() {
+  const jar = document.getElementById("interactiveJar");
+  const bubble = document.getElementById("jarBubble");
+  jar.classList.add("shake");
+  bubble.style.display = "none";
+  triggerConfettiBlastEffect();
+
+  setTimeout(() => {
+    jar.classList.remove("shake");
+    let randomIndex;
+    do { randomIndex = Math.floor(Math.random() * jarNotes.length); } while (randomIndex === lastJarIndex && jarNotes.length > 1);
+    lastJarIndex = randomIndex;
+    bubble.innerText = jarNotes[randomIndex];
+    bubble.style.display = "block";
+  }, 400);
+}
+
+function triggerConfettiBlastEffect() {
+  const jar = document.getElementById("interactiveJar");
+  const rect = jar.getBoundingClientRect();
+  for(let i=0; i<20; i++) {
+    const particle = document.createElement("div");
+    particle.className = "confetti-particle";
+    particle.style.background = `hsl(${Math.random() * 360}, 100%, 70%)`;
+    particle.style.left = (rect.left + rect.width / 2) + "px";
+    particle.style.top = (rect.top + rect.height / 2) + "px";
+    const angle = Math.random() * Math.PI * 2;
+    const velocity = Math.random() * 90 + 40;
+    particle.style.setProperty('--x', Math.cos(angle) * velocity + "px");
+    particle.style.setProperty('--y', Math.sin(angle) * velocity + "px");
+    document.body.appendChild(particle);
+    setTimeout(() => particle.remove(), 600);
+  }
+}
+
+/* 🎵 MUSIC */
+const customTracksArray = ["3vCzLB6kS2lGcIpm1OOUsy", "6lanRgr6wXibZr8KgzXxBl", "3hB9lDLyAClYVZivMMl20N", "7FwYs4qSJCJi2Hd6ZV8Q3M", "4QNSMIeCknaH5m0EM2yNTI"];
+function promptCustomSpotifyTrackId() {
+  const inputUrl = prompt("Paste your Spotify Track Link or ID:");
+  if(inputUrl) {
+    let trackId = inputUrl.includes("track/") ? inputUrl.split("track/")[1].split("?")[0] : inputUrl;
+    let storedTracks = JSON.parse(localStorage.getItem("our_saved_track_ids") || "[]");
+    storedTracks.push(trackId);
+    localStorage.setItem("our_saved_track_ids", JSON.stringify(storedTracks));
+    loadMusicWidgets();
+  }
+}
+
+function loadMusicWidgets(){
+  const grid = document.getElementById("musicGrid");
+  grid.innerHTML = ""; 
+  let storedTracks = JSON.parse(localStorage.getItem("our_saved_track_ids") || "[]");
+  [...customTracksArray, ...storedTracks].forEach(id => {
+    let card = document.createElement("div"); card.className = "musicCard";
+    card.innerHTML = `<iframe src="https://open.spotify.com/embed/track/${id}?utm_source=generator&theme=0" loading="lazy"></iframe>`;
+    grid.appendChild(card);
+  });
+}
+
+/* 📝 NOTES */
+function switchNoteAuthor(author) {
+  currentAuthor = author;
+  document.getElementById("btnHru").classList.toggle("active", author === "Rishi");
+  document.getElementById("btnPav").classList.toggle("active", author === "Pavani");
+  document.getElementById("noteInput").placeholder = `Leaving a note as ${author}...`;
 }
 
 function commitNoteToBoard() {
-  const input = document.getElementById("noteInput"); if(!input.value.trim() && !window.lastCapturedVoiceBase64) return;
-  db.ref('notes').push({ author: currentAuthor, content: input.value.trim() || "Voice capsule snapshot", time: new Date().toLocaleString([], {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'}), voiceData: window.lastCapturedVoiceBase64 || null });
-  input.value = ""; window.lastCapturedVoiceBase64 = null;
+  const input = document.getElementById("noteInput");
+  const text = input.value.trim();
+  if(!text) return;
+  let notes = JSON.parse(localStorage.getItem("our_miss_you_notes") || "[]");
+  notes.unshift({ id: Date.now(), author: currentAuthor, content: text, time: new Date().toLocaleString([], {month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'}) });
+  localStorage.setItem("our_miss_you_notes", JSON.stringify(notes));
+  input.value = ""; renderNotes();
 }
-function promptCustomSpotifyTrackId() {
-  const val = prompt("Paste your favorite Spotify Track Link or Track ID here:");
-  if(val) {
-    let id = val.includes("track/") ? val.split("track/")[1].split("?")[0] : val;
-    let stored = JSON.parse(localStorage.getItem("our_saved_track_ids") || "[]"); stored.push(id); localStorage.setItem("our_saved_track_ids", JSON.stringify(stored)); loadMusicWidgets();
-  }
+
+function renderNotes() {
+  const board = document.getElementById("notesBoard");
+  let notes = JSON.parse(localStorage.getItem("our_miss_you_notes") || "[]");
+  if(notes.length === 0) { board.innerHTML = `<p style="color: var(--text-muted); font-size: 14px; text-align: center; font-style: italic;">No notes left yet. Leave one when you're thinking of her! 💭</p>`; return; }
+  board.innerHTML = notes.map(note => `<div class="note-card ${note.author === 'Pavani' ? 'pavani' : ''}"><div class="note-header"><span>${note.author === 'Pavani' ? '👩‍🦰 Pavani' : '👨 Rishi'}</span><span>${note.time}</span></div><div class="note-body">"${note.content}"</div></div>`).join('');
 }
-function loadMusicWidgets(){
-  const grid = document.getElementById("musicGrid"); grid.innerHTML = "";
-  let list = ["3vCzLB6kS2lGcIpm1OOUsy", "6lanRgr6wXibZr8KgzXxBl", ...JSON.parse(localStorage.getItem("our_saved_track_ids") || "[]")];
-  list.forEach(id => { grid.innerHTML += `<div class="musicCard"><iframe src="https://open.spotify.com/embed/track/${id}?utm_source=generator&theme=0" allow="autoplay; clipboard-write; encrypted-media; fullscreen" loading="lazy"></iframe></div>`; });
+
+/* 📍 REAL DISTANCE LOGIC */
+const MY_LATITUDE = 17.3850, MY_LONGITUDE = 78.4867;
+function calculateRealDistance() {
+  const distanceElement = document.getElementById("liveDistance");
+  if (!navigator.geolocation) return;
+  navigator.geolocation.getCurrentPosition((pos) => {
+    const R = 6371;
+    const dLat = deg2rad(pos.coords.latitude - MY_LATITUDE), dLon = deg2rad(pos.coords.longitude - MY_LONGITUDE);
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(deg2rad(MY_LATITUDE)) * Math.cos(deg2rad(pos.coords.latitude)) * Math.sin(dLon/2) * Math.sin(dLon/2);
+    distanceElement.innerHTML = `${(R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)))).toFixed(1)} kms 💖`;
+  });
 }
+function deg2rad(deg) { return deg * (Math.PI/180); }
+
+/* ⏳ TIME COUNTER & PARTICLES */
 function runLiveCounter() {
   const start = new Date("2020-05-09T00:00:00");
-  setInterval(() => { const diff = new Date() - start; document.getElementById("time").innerText = `${Math.floor(diff / 86400000)}d : ${Math.floor((diff / 3600000) % 24)}h : ${Math.floor((diff / 60000) % 60)}m : ${Math.floor((diff / 1000) % 60)}s together 💖`; }, 1000);
+  function updateCounter() {
+    const diff = new Date() - start;
+    document.getElementById("time").innerText = `${Math.floor(diff / 86400000)}d : ${Math.floor((diff / 3600000) % 24)}h : ${Math.floor((diff / 60000) % 60)}m : ${Math.floor((diff / 1000) % 60)}s together 💖`;
+  }
+  updateCounter(); setInterval(updateCounter, 1000); 
 }
+
+let charIndex = 0, letterStarted = false;
+const msg = `Pavaniii,\n\nidk how to say all this properly but I just wanted to tell you… you mean a lot to me. Like really a lot.\n\nWe’ve been through some tough things… misunderstandings, pain, and those moments where it felt heavy for both of us. But even then, my feelings for you never changed. If anything, it made me realize how much you matter in my life.\n\nI still think abt you all the time, still miss you even when we’re not talking, and honestly my day just feels better when it’s you.\n\nSometimes I remember those small moments… like when we used to talk for hours and laugh at the most random things. Those moments weren’t just time pass for me… they meant everything.\n\nI know we’re not perfect, but I’m willing to try more, understand you better, and handle things in a way that doesn’t hurt us again.\n\nI just want you to know I’m here… for you, for us, and for everything we’re building together ❤️\nI love you soo much 🫂`.trim();
+
+function startTypewriterLetterStream(){
+  if (letterStarted) return;
+  letterStarted = true;
+  document.getElementById("envelope").classList.add("open");
+  document.getElementById("gift").style.display = "none";
+  const el = document.getElementById("text");
+  function type(){
+    if (charIndex < msg.length){
+      el.innerHTML += msg[charIndex] === "\n" ? "<br>" : msg[charIndex];
+      charIndex++; setTimeout(type, 40);
+    }
+  }
+  setTimeout(type, 650); 
+}
+
 function startHeartRain() {
-  setInterval(() => { const h = document.createElement("div"); h.className = "heart"; h.innerHTML = "💖"; h.style.left = Math.random() * 100 + "vw"; h.style.animationDuration = (Math.random() * 2 + 4) + "s"; document.body.appendChild(h); setTimeout(() => h.remove(), 5000); }, 2500);
+  setInterval(() => {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = currentParticleType === "miss" ? "🥺" : (currentParticleType === "cozy" ? "✨" : "💖");
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = (Math.random() * 2 + 4) + "s";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 5000);
+  }, 2000);
 }
-function openLightbox(img) { document.getElementById("viewerImg").src = img.src; document.getElementById("viewer").style.display = "flex"; }
+
+function openLightbox(imgElement) {
+  document.getElementById("viewerImg").src = imgElement.src;
+  document.getElementById("viewer").style.display = "flex";
+}
+
+/* 📱 SERVICE WORKER FOR PWA INSTALLATION */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    const swBlob = new Blob([`
+      self.addEventListener('install', e => self.skipWaiting());
+      self.addEventListener('fetch', e => e.respondWith(fetch(e.request)));
+    `], { type: 'application/javascript' });
+    navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(err => console.log(err));
+  });
+}
 </script>
+
 </body>
 </html>
