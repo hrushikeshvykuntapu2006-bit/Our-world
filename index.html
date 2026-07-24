@@ -74,6 +74,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Ambient Sparkle / Glow Overlay */
 body::before {
   content: '';
   position: fixed;
@@ -92,6 +93,7 @@ body::before {
   box-shadow: var(--shadow);
 }
 
+/* 🍬 CUTE PILLOW CARD STYLING */
 .card {
   padding: 24px;
   border-radius: 32px;
@@ -125,7 +127,7 @@ body::before {
 .toast-title { font-size: 14px; font-weight: 800; color: var(--text-main); }
 .toast-desc { font-size: 12px; font-weight: 500; color: var(--text-muted); margin-top: 1px; }
 
-/* 🔒 LOCK SCREEN MODULE WITH PROFILE TOGGLE */
+/* 🔒 CUTE PASTEL LOCK SCREEN */
 #lockScreen {
   position: fixed;
   inset: 0;
@@ -151,38 +153,7 @@ body::before {
   max-width: 340px;
   width: 100%;
 }
-.lockBox h2 { margin-bottom: 20px; font-weight: 900; color: var(--primary); font-size: 30px; letter-spacing: -0.5px; }
-
-.user-selector-group {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 18px;
-}
-.user-select-btn {
-  flex: 1;
-  padding: 12px;
-  border-radius: 18px;
-  border: 1.5px solid var(--card-border);
-  background: var(--input-bg);
-  color: var(--text-main);
-  font-weight: 800;
-  font-size: 13px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-.user-select-btn.active-rishi {
-  background: var(--primary);
-  color: white;
-  border-color: transparent;
-  box-shadow: 0 4px 14px rgba(255, 77, 109, 0.35);
-}
-.user-select-btn.active-pavani {
-  background: #b76eff;
-  color: white;
-  border-color: transparent;
-  box-shadow: 0 4px 14px rgba(183, 110, 255, 0.35);
-}
-
+.lockBox h2 { margin-bottom: 22px; font-weight: 900; color: var(--primary); font-size: 30px; letter-spacing: -0.5px; }
 .lockBox input { 
   padding: 16px 20px; 
   width: 100%; 
@@ -196,7 +167,7 @@ body::before {
   font-weight: 700; 
   letter-spacing: 3px; 
 }
-.lockBox button.unlock-btn { 
+.lockBox button { 
   margin-top: 20px; 
   padding: 16px 30px; 
   width: 100%; 
@@ -209,7 +180,7 @@ body::before {
   cursor: pointer; 
   box-shadow: 0 8px 20px rgba(255, 77, 109, 0.35);
 }
-.lockBox button.unlock-btn:active { transform: scale(0.96); }
+.lockBox button:active { transform: scale(0.96); }
 
 #mainContent { display: none; height: 100vh; width: 100vw; position: relative; overflow: hidden; opacity: 0; transition: opacity 0.6s ease-in-out; }
 .app-slider-track { display: flex; height: 100%; width: 700vw; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -218,6 +189,7 @@ body::before {
 header h1 { font-size: 28px; font-weight: 900; letter-spacing: -0.5px; background: linear-gradient(135deg, var(--primary), #b76eff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 25px; text-align: center; }
 h2 { font-size: 17px; font-weight: 800; text-align: left; margin: 25px 0 14px 5px; letter-spacing: -0.2px; }
 
+/* 🌸 CUTE AVATAR & BADGE STYLING */
 .avatar-badge {
   display: inline-flex;
   align-items: center;
@@ -253,6 +225,7 @@ h2 { font-size: 17px; font-weight: 800; text-align: left; margin: 25px 0 14px 5p
 .movies::-webkit-scrollbar { display: none; }
 .movies img { width: 145px; height: 215px; object-fit: cover; border-radius: 24px; flex: 0 0 auto; scroll-snap-align: start; cursor: pointer; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); }
 
+/* 📖 3D BOOK STYLING */
 .smooth-book { width: 100%; max-width: 340px; height: 430px; margin: 0 auto; position: relative; perspective: 1500px; transform-style: preserve-3d; }
 .book-cover-side { position: absolute; inset: 0; background: linear-gradient(135deg, var(--primary), #ff758c); color: white; border-radius: 6px 28px 28px 6px; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 20px 40px rgba(255, 77, 109, 0.3); transform-origin: left center; transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1); z-index: 2; backface-visibility: hidden; border-left: 4px solid rgba(255,255,255,0.4); }
 .book-inner-side { position: absolute; inset: 0; border-radius: 6px 28px 28px 6px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 26px; text-align: center; z-index: 1; overflow-y: auto; }
@@ -272,6 +245,7 @@ h2 { font-size: 17px; font-weight: 800; text-align: left; margin: 25px 0 14px 5p
 .scratch-secret-content { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; background: white; padding: 20px; text-align: center; font-weight: 800; font-size: 14px; color: var(--primary); z-index: 1; }
 .scratch-canvas-overlay { position: absolute; inset: 0; z-index: 5; cursor: pointer; display: block; }
 
+/* 🏎️ CUTE PROGRESS BAR TRACK WITH MOVING PLANE */
 .progress-container { width: 100%; background: var(--input-bg); height: 16px; border-radius: 12px; overflow: visible; margin: 16px 0; border: 1.5px solid var(--card-border); position: relative; }
 .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), #b76eff); width: 0%; border-radius: 12px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); position: relative; }
 .progress-plane-icon { position: absolute; right: -12px; top: -8px; font-size: 20px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15)); transform: rotate(15deg); }
@@ -279,6 +253,7 @@ h2 { font-size: 17px; font-weight: 800; text-align: left; margin: 25px 0 14px 5p
 .floating-pulse-heart { position: fixed; bottom: 100px; right: 20px; width: 54px; height: 54px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 26px; z-index: 9999; cursor: pointer; box-shadow: 0 10px 30px rgba(255, 77, 109, 0.4); animation: floatPulse 2s infinite alternate; background: var(--card-bg); border: 1.5px solid var(--card-border); }
 @keyframes floatPulse { from { transform: translateY(0) scale(1); } to { transform: translateY(-8px) scale(1.08); } }
 
+/* 💌 CUTE ENVELOPE */
 .letter-box-container { cursor: pointer; text-align: center; margin-top: 15px; }
 .envelope { position: relative; width: 170px; height: 115px; margin: 15px auto; perspective: 600px; }
 .envelope .body { position: absolute; bottom: 0; width: 100%; height: 80px; background: #ffffff; border-radius: 0 0 20px 20px; border: 1.5px solid #ffe5ec; z-index: 2; box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
@@ -291,7 +266,7 @@ h2 { font-size: 17px; font-weight: 800; text-align: left; margin: 25px 0 14px 5p
 .cursor.active::after { content: "|"; font-weight: 800; color: var(--primary); animation: blink 1s steps(2, start) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 
-.app-nav-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 85px; z-index: 1000; border-radius: 36px 36px 0 0; display: flex; justify-space-around: align-items: center; padding-bottom: env(safe-area-inset-bottom); background: var(--nav-bg); backdrop-filter: blur(40px) saturate(220%); border-top: 1.5px solid var(--card-border); }
+.app-nav-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 85px; z-index: 1000; border-radius: 36px 36px 0 0; display: flex; justify-content: space-around; align-items: center; padding-bottom: env(safe-area-inset-bottom); background: var(--nav-bg); backdrop-filter: blur(40px) saturate(220%); border-top: 1.5px solid var(--card-border); }
 .nav-item { display: flex; flex-direction: column; align-items: center; background: none; border: none; color: var(--text-muted); font-family: inherit; font-weight: 700; font-size: 10px; gap: 4px; cursor: pointer; position: relative; }
 .nav-item span.icon { font-size: 20px; transition: transform 0.2s ease; }
 .nav-item.active { color: var(--primary); }
@@ -347,6 +322,7 @@ h2 { font-size: 17px; font-weight: 800; text-align: left; margin: 25px 0 14px 5p
 .doodle-container { position: relative; width: 100%; height: 170px; background: var(--input-bg); border-radius: 24px; overflow: hidden; margin-top: 10px; border: 1.5px dashed var(--card-border); }
 #liveDoodleCanvas { width: 100%; height: 100%; touch-action: none; }
 
+/* 😙 ELASTIC BOUNCE FOR LOVE BOOTH COUNTERS */
 .bounce-stat { display: inline-block; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 .bounce-stat:active { transform: scale(1.3) rotate(-5deg); }
 </style>
@@ -364,19 +340,13 @@ h2 { font-size: 17px; font-weight: 800; text-align: left; margin: 25px 0 14px 5p
 
 <div class="floating-pulse-heart ios-blur" onclick="sendLiveHeartbeatSignal()">💓</div>
 
-<!-- 🔒 LOCK SCREEN WITH USER SELECTOR -->
+<!-- 🔒 LOCK SCREEN MODULE (PASSWORD: 050301) -->
 <div id="lockScreen">
   <div class="lockBox">
     <h2>💖 Our World</h2>
-    
-    <div class="user-selector-group">
-      <button type="button" id="loginBtnRishi" class="user-select-btn active-rishi" onclick="selectLoginUser('Rishi')">👨 Rishi</button>
-      <button type="button" id="loginBtnPavani" class="user-select-btn" onclick="selectLoginUser('Pavani')">👩‍🦰 Pavani</button>
-    </div>
-
     <input type="password" id="password" placeholder="Enter Secret Date..." autofocus>
     <br>
-    <button class="unlock-btn" onclick="unlockAppWithFluidTransition()">Unlock</button>
+    <button onclick="unlockAppWithFluidTransition()">Unlock</button>
   </div>
 </div>
 
@@ -388,6 +358,7 @@ h2 { font-size: 17px; font-weight: 800; text-align: left; margin: 25px 0 14px 5p
     <div class="app-screen">
       <header><h1>Welcome Home</h1></header>
 
+      <!-- Theme Mode Status Badge -->
       <div class="card" style="display:flex; justify-content:space-between; align-items:center; padding:16px 22px;">
         <span style="font-size:14px; font-weight:800;">Theme Engine</span>
         <span id="theme-status" class="avatar-badge">☀️ Day Mode</span>
@@ -435,7 +406,7 @@ h2 { font-size: 17px; font-weight: 800; text-align: left; margin: 25px 0 14px 5p
         <div id="interactiveMap"></div>
         <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-muted); margin-top:12px; font-weight:800;">
           <span class="avatar-badge">📍 You: ☀️ 28°C</span>
-          <span class="avatar-badge">📍 Partner: 🌙 22°C</span>
+          <span class="avatar-badge">📍 Pavani: 🌙 22°C</span>
         </div>
       </div>
 
@@ -542,6 +513,7 @@ h2 { font-size: 17px; font-weight: 800; text-align: left; margin: 25px 0 14px 5p
           <span id="meetupPercentageText" style="color: var(--primary);">0%</span>
         </div>
         
+        <!-- Animated Progress Container with Moving Plane Icon -->
         <div class="progress-container">
           <div class="progress-fill" id="meetupProgressFill">
             <span class="progress-plane-icon">✈️</span>
@@ -629,6 +601,7 @@ h2 { font-size: 17px; font-weight: 800; text-align: left; margin: 25px 0 14px 5p
 
   </div>
 
+  <!-- NAVIGATION BAR -->
   <nav class="app-nav-bar">
     <button class="nav-item active" onclick="slideToIndexScreen(0, this)">
       <span class="icon">🏠</span><span>Home</span>
@@ -683,25 +656,9 @@ let supabaseClient = null;
 let realtimeChannel = null;
 
 let currentAuthor = "Rishi";
-let selectedUser = "Rishi";
 let isFirstLoad = true;
 let mediaRecorder = null;
 let audioChunks = [];
-
-// PROFILE SELECTOR LOGIC
-function selectLoginUser(user) {
-  selectedUser = user;
-  const btnR = document.getElementById("loginBtnRishi");
-  const btnP = document.getElementById("loginBtnPavani");
-  
-  if (user === "Rishi") {
-    btnR.className = "user-select-btn active-rishi";
-    btnP.className = "user-select-btn";
-  } else {
-    btnP.className = "user-select-btn active-pavani";
-    btnR.className = "user-select-btn";
-  }
-}
 
 // =========================================================
 // 2. UNLOCK & APP INITIALIZATION
@@ -710,8 +667,6 @@ function unlockAppWithFluidTransition() {
   const enteredPass = document.getElementById("password").value;
   
   if(enteredPass === "050301" || enteredPass === "22010503") {
-    currentAuthor = selectedUser;
-    
     document.getElementById("lockScreen").style.opacity = "0";
     setTimeout(() => {
       document.getElementById("lockScreen").style.display = "none";
@@ -722,8 +677,6 @@ function unlockAppWithFluidTransition() {
 
         const timeString = new Date().toLocaleString([], {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'});
         db.ref(`presence/last_seen/${currentAuthor}`).set(timeString);
-
-        if(typeof switchNoteAuthor === 'function') switchNoteAuthor(currentAuthor);
 
         applyDynamicTheme();
         runLiveCounter(); 
@@ -744,11 +697,11 @@ function unlockAppWithFluidTransition() {
 }
 
 // =========================================================
-// 3. AUTOMATIC DYNAMIC THEME ENGINE
+// 3. AUTOMATIC DYNAMIC THEME ENGINE (DAY/NIGHT)
 // =========================================================
 function applyDynamicTheme() {
   const currentHour = new Date().getHours();
-  const isNight = currentHour >= 19 || currentHour < 6;
+  const isNight = currentHour >= 19 || currentHour < 6; // Evening mode after 7:00 PM
 
   if (isNight) {
     document.body.classList.add("night-mode");
