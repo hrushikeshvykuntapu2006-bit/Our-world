@@ -35,7 +35,7 @@
   --card-bg: rgba(255, 255, 255, 0.55);
   --card-border: rgba(255, 255, 255, 0.85);
   --shadow: 0 16px 40px -10px rgba(255, 77, 109, 0.12), 0 8px 20px -6px rgba(183, 110, 255, 0.08);
-  --nav-bg: rgba(255, 255, 255, 0.75);
+  --nav-bg: rgba(255, 255, 255, 0.65);
   --input-bg: rgba(255, 255, 255, 0.9);
   --map-filter: none;
 }
@@ -50,7 +50,7 @@ body.night-mode {
   --primary: #d8b4fe;
   --primary-hover: #c084fc;
   --primary-soft: rgba(192, 132, 252, 0.2);
-  --nav-bg: rgba(20, 15, 38, 0.85);
+  --nav-bg: rgba(20, 15, 38, 0.75);
   --input-bg: rgba(255, 255, 255, 0.14);
   --shadow: 0 16px 40px -10px rgba(192, 132, 252, 0.2);
   --map-filter: brightness(0.7) invert(1) contrast(3) hue-rotate(200deg) saturate(0.4);
@@ -125,7 +125,7 @@ body::before {
 .toast-title { font-size: 14px; font-weight: 800; color: var(--text-main); }
 .toast-desc { font-size: 12px; font-weight: 500; color: var(--text-muted); margin-top: 1px; }
 
-/* 🔒 LOCK SCREEN MODULE */
+/* 🔒 LOCK SCREEN MODULE WITH PROFILE TOGGLE */
 #lockScreen {
   position: fixed;
   inset: 0;
@@ -151,7 +151,37 @@ body::before {
   max-width: 340px;
   width: 100%;
 }
-.lockBox h2 { margin-bottom: 22px; font-weight: 900; color: var(--primary); font-size: 30px; letter-spacing: -0.5px; }
+.lockBox h2 { margin-bottom: 20px; font-weight: 900; color: var(--primary); font-size: 30px; letter-spacing: -0.5px; }
+
+.user-selector-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.user-select-btn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 18px;
+  border: 1.5px solid var(--card-border);
+  background: var(--input-bg);
+  color: var(--text-main);
+  font-weight: 800;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.user-select-btn.active-rishi {
+  background: var(--primary);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 4px 14px rgba(255, 77, 109, 0.35);
+}
+.user-select-btn.active-pavani {
+  background: #b76eff;
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 4px 14px rgba(183, 110, 255, 0.35);
+}
 
 .lockBox input { 
   padding: 16px 20px; 
@@ -183,7 +213,7 @@ body::before {
 
 #mainContent { display: none; height: 100vh; width: 100vw; position: relative; overflow: hidden; opacity: 0; transition: opacity 0.6s ease-in-out; }
 .app-slider-track { display: flex; height: 100%; width: 700vw; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
-.app-screen { width: 100vw; height: 100%; flex-shrink: 0; padding: 40px 20px 120px 20px; overflow-y: auto; }
+.app-screen { width: 100vw; height: 100%; flex-shrink: 0; padding: 40px 20px 110px 20px; overflow-y: auto; }
 
 header h1 { font-size: 28px; font-weight: 900; letter-spacing: -0.5px; background: linear-gradient(135deg, var(--primary), #b76eff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 25px; text-align: center; }
 h2 { font-size: 17px; font-weight: 800; text-align: left; margin: 25px 0 14px 5px; letter-spacing: -0.2px; }
@@ -223,46 +253,9 @@ h2 { font-size: 17px; font-weight: 800; text-align: left; margin: 25px 0 14px 5p
 .movies::-webkit-scrollbar { display: none; }
 .movies img { width: 145px; height: 215px; object-fit: cover; border-radius: 24px; flex: 0 0 auto; scroll-snap-align: start; cursor: pointer; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); }
 
-/* 📖 3D BOOK DISPLAY FIX */
-.smooth-book { 
-  width: 100%; 
-  max-width: 320px; 
-  height: 390px; 
-  margin: 15px auto 30px auto; 
-  position: relative; 
-  perspective: 1500px; 
-  transform-style: preserve-3d; 
-}
-.book-cover-side { 
-  position: absolute; 
-  inset: 0; 
-  background: linear-gradient(135deg, var(--primary), #ff758c); 
-  color: white; 
-  border-radius: 6px 28px 28px 6px; 
-  display: flex; 
-  flex-direction: column; 
-  justify-content: center; 
-  align-items: center; 
-  box-shadow: 0 20px 40px rgba(255, 77, 109, 0.3); 
-  transform-origin: left center; 
-  transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1); 
-  z-index: 2; 
-  backface-visibility: hidden; 
-  border-left: 4px solid rgba(255,255,255,0.4); 
-}
-.book-inner-side { 
-  position: absolute; 
-  inset: 0; 
-  border-radius: 6px 28px 28px 6px; 
-  display: flex; 
-  flex-direction: column; 
-  justify-content: center; 
-  align-items: center; 
-  padding: 24px; 
-  text-align: center; 
-  z-index: 1; 
-  overflow-y: auto; 
-}
+.smooth-book { width: 100%; max-width: 340px; height: 430px; margin: 0 auto; position: relative; perspective: 1500px; transform-style: preserve-3d; }
+.book-cover-side { position: absolute; inset: 0; background: linear-gradient(135deg, var(--primary), #ff758c); color: white; border-radius: 6px 28px 28px 6px; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 20px 40px rgba(255, 77, 109, 0.3); transform-origin: left center; transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1); z-index: 2; backface-visibility: hidden; border-left: 4px solid rgba(255,255,255,0.4); }
+.book-inner-side { position: absolute; inset: 0; border-radius: 6px 28px 28px 6px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 26px; text-align: center; z-index: 1; overflow-y: auto; }
 .smooth-book.opened .book-cover-side { transform: rotateY(-140deg); }
 
 .audio-card { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-radius: 22px; background: var(--input-bg); border: 1px solid var(--card-border); margin-top: 8px; }
@@ -283,7 +276,7 @@ h2 { font-size: 17px; font-weight: 800; text-align: left; margin: 25px 0 14px 5p
 .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), #b76eff); width: 0%; border-radius: 12px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); position: relative; }
 .progress-plane-icon { position: absolute; right: -12px; top: -8px; font-size: 20px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15)); transform: rotate(15deg); }
 
-.floating-pulse-heart { position: fixed; bottom: 95px; right: 18px; width: 52px; height: 54px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 24px; z-index: 9999; cursor: pointer; box-shadow: 0 10px 30px rgba(255, 77, 109, 0.4); animation: floatPulse 2s infinite alternate; background: var(--card-bg); border: 1.5px solid var(--card-border); }
+.floating-pulse-heart { position: fixed; bottom: 100px; right: 20px; width: 54px; height: 54px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 26px; z-index: 9999; cursor: pointer; box-shadow: 0 10px 30px rgba(255, 77, 109, 0.4); animation: floatPulse 2s infinite alternate; background: var(--card-bg); border: 1.5px solid var(--card-border); }
 @keyframes floatPulse { from { transform: translateY(0) scale(1); } to { transform: translateY(-8px) scale(1.08); } }
 
 .letter-box-container { cursor: pointer; text-align: center; margin-top: 15px; }
@@ -298,49 +291,11 @@ h2 { font-size: 17px; font-weight: 800; text-align: left; margin: 25px 0 14px 5p
 .cursor.active::after { content: "|"; font-weight: 800; color: var(--primary); animation: blink 1s steps(2, start) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 
-/* 📱 CLEAN HORIZONTALLY SCROLLABLE NAVIGATION BAR */
-.app-nav-bar { 
-  position: fixed; 
-  bottom: 0; 
-  left: 0; 
-  right: 0; 
-  height: 75px; 
-  z-index: 1000; 
-  border-radius: 28px 28px 0 0; 
-  display: flex; 
-  align-items: center; 
-  justify-content: flex-start; 
-  padding: 0 10px; 
-  padding-bottom: env(safe-area-inset-bottom); 
-  background: var(--nav-bg); 
-  backdrop-filter: blur(40px) saturate(220%); 
-  -webkit-backdrop-filter: blur(40px) saturate(220%); 
-  border-top: 1.5px solid var(--card-border); 
-  overflow-x: auto; 
-  scrollbar-width: none; 
-}
-.app-nav-bar::-webkit-scrollbar { display: none; }
-
-.nav-item { 
-  display: flex; 
-  flex-direction: column; 
-  align-items: center; 
-  justify-content: center; 
-  background: none; 
-  border: none; 
-  color: var(--text-muted); 
-  font-family: inherit; 
-  font-weight: 700; 
-  font-size: 10px; 
-  gap: 3px; 
-  cursor: pointer; 
-  flex: 0 0 14.28%; 
-  min-width: 52px; 
-  white-space: nowrap; 
-}
-.nav-item span.icon { font-size: 18px; transition: transform 0.2s ease; }
+.app-nav-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 85px; z-index: 1000; border-radius: 36px 36px 0 0; display: flex; justify-space-around: align-items: center; padding-bottom: env(safe-area-inset-bottom); background: var(--nav-bg); backdrop-filter: blur(40px) saturate(220%); border-top: 1.5px solid var(--card-border); }
+.nav-item { display: flex; flex-direction: column; align-items: center; background: none; border: none; color: var(--text-muted); font-family: inherit; font-weight: 700; font-size: 10px; gap: 4px; cursor: pointer; position: relative; }
+.nav-item span.icon { font-size: 20px; transition: transform 0.2s ease; }
 .nav-item.active { color: var(--primary); }
-.nav-item.active span.icon { transform: scale(1.18); }
+.nav-item.active span.icon { transform: scale(1.2); }
 
 .reminders-list { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
 .reminder-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: var(--input-bg); border-radius: 18px; border: 1.5px solid var(--card-border); font-weight: 600; }
@@ -409,10 +364,16 @@ h2 { font-size: 17px; font-weight: 800; text-align: left; margin: 25px 0 14px 5p
 
 <div class="floating-pulse-heart ios-blur" onclick="sendLiveHeartbeatSignal()">💓</div>
 
-<!-- 🔒 LOCK SCREEN MODULE -->
+<!-- 🔒 LOCK SCREEN WITH USER SELECTOR -->
 <div id="lockScreen">
   <div class="lockBox">
     <h2>💖 Our World</h2>
+    
+    <div class="user-selector-group">
+      <button type="button" id="loginBtnRishi" class="user-select-btn active-rishi" onclick="selectLoginUser('Rishi')">👨 Rishi</button>
+      <button type="button" id="loginBtnPavani" class="user-select-btn" onclick="selectLoginUser('Pavani')">👩‍🦰 Pavani</button>
+    </div>
+
     <input type="password" id="password" placeholder="Enter Secret Date..." autofocus>
     <br>
     <button class="unlock-btn" onclick="unlockAppWithFluidTransition()">Unlock</button>
@@ -439,7 +400,7 @@ h2 { font-size: 17px; font-weight: 800; text-align: left; margin: 25px 0 14px 5p
 
       <div class="card" id="liveRadarMetricsCard" style="padding:20px 24px; margin-bottom:20px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-          <div id="partnerMoodDisplay" style="font-size:14px; font-weight:800; color:var(--text-main);">Partner Status: Loading...</div>
+          <div id="partnerMoodDisplay" style="font-size:14px; font-weight:800; color:var(--text-main);">Pavani's Status: Loading...</div>
           <span class="pulse-dot"></span>
         </div>
         <div id="partnerLastSeenDisplay" style="font-size:12px; font-weight:700; color:var(--text-muted); margin-bottom:6px;">🕒 Last Seen: Checking logs...</div>
@@ -722,54 +683,64 @@ let supabaseClient = null;
 let realtimeChannel = null;
 
 let currentAuthor = "Rishi";
+let selectedUser = "Rishi";
 let isFirstLoad = true;
 let mediaRecorder = null;
 let audioChunks = [];
 
+// PROFILE SELECTOR LOGIC
+function selectLoginUser(user) {
+  selectedUser = user;
+  const btnR = document.getElementById("loginBtnRishi");
+  const btnP = document.getElementById("loginBtnPavani");
+  
+  if (user === "Rishi") {
+    btnR.className = "user-select-btn active-rishi";
+    btnP.className = "user-select-btn";
+  } else {
+    btnP.className = "user-select-btn active-pavani";
+    btnR.className = "user-select-btn";
+  }
+}
+
 // =========================================================
-// 2. UNLOCK LOGIC & PASSCODES
+// 2. UNLOCK & APP INITIALIZATION
 // =========================================================
 function unlockAppWithFluidTransition() {
-  const enteredPass = document.getElementById("password").value.trim();
+  const enteredPass = document.getElementById("password").value;
   
-  // PASSCODE ASSIGNMENT LOGIC
-  if (enteredPass === "050301") {
-    currentAuthor = "Rishi";
-  } else if (enteredPass === "220103") {
-    currentAuthor = "Pavani";
-  } else {
-    alert("Wrong Secret Code 💔");
-    return;
-  }
-
-  document.getElementById("lockScreen").style.opacity = "0";
-  setTimeout(() => {
-    document.getElementById("lockScreen").style.display = "none";
-    document.getElementById("mainContent").style.display = "block";
+  if(enteredPass === "050301" || enteredPass === "22010503") {
+    currentAuthor = selectedUser;
+    
+    document.getElementById("lockScreen").style.opacity = "0";
     setTimeout(() => {
-      document.getElementById("mainContent").style.opacity = "1";
-      document.getElementById("fluidBookElement").classList.add("opened");
+      document.getElementById("lockScreen").style.display = "none";
+      document.getElementById("mainContent").style.display = "block";
+      setTimeout(() => {
+        document.getElementById("mainContent").style.opacity = "1";
+        document.getElementById("fluidBookElement").classList.add("opened");
 
-      const timeString = new Date().toLocaleString([], {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'});
-      db.ref(`presence/last_seen/${currentAuthor}`).set(timeString);
+        const timeString = new Date().toLocaleString([], {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'});
+        db.ref(`presence/last_seen/${currentAuthor}`).set(timeString);
 
-      if (typeof switchNoteAuthor === 'function') switchNoteAuthor(currentAuthor);
+        if(typeof switchNoteAuthor === 'function') switchNoteAuthor(currentAuthor);
 
-      applyDynamicTheme();
-      runLiveCounter(); 
-      loadMusicWidgets(); 
-      startHeartRain(); 
-      initLiveSyncListeners(); 
-      initPollEngine(); 
-      triggerProximityDetection(); 
-      calculateRealDistance(); 
-      runMeetupLoadBarCalculation();
-      initScratchCard();
-      initInteractiveMap();
-      initTouchCanvas();
-      initSupabaseRealtime();
-    }, 50);
-  }, 500);
+        applyDynamicTheme();
+        runLiveCounter(); 
+        loadMusicWidgets(); 
+        startHeartRain(); 
+        initLiveSyncListeners(); 
+        initPollEngine(); 
+        triggerProximityDetection(); 
+        calculateRealDistance(); 
+        runMeetupLoadBarCalculation();
+        initScratchCard();
+        initInteractiveMap();
+        initTouchCanvas();
+        initSupabaseRealtime();
+      }, 50);
+    }, 500);
+  } else { alert("Wrong Code 💔"); }
 }
 
 // =========================================================
