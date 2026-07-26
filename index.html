@@ -151,32 +151,7 @@ body::before {
   max-width: 340px;
   width: 100%;
 }
-.lockBox h2 { margin-bottom: 18px; font-weight: 900; color: var(--primary); font-size: 30px; letter-spacing: -0.5px; }
-
-/* PROFILE TOGGLE BUTTONS */
-.user-toggle-row {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 18px;
-}
-.user-toggle-btn {
-  flex: 1;
-  padding: 12px;
-  border-radius: 18px;
-  border: 1.5px solid var(--card-border);
-  background: var(--input-bg);
-  color: var(--text-main);
-  font-weight: 800;
-  font-size: 13px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-.user-toggle-btn.active {
-  background: linear-gradient(135deg, var(--primary), #ff758c);
-  color: white;
-  border-color: transparent;
-  box-shadow: 0 4px 14px rgba(255, 77, 109, 0.3);
-}
+.lockBox h2 { margin-bottom: 22px; font-weight: 900; color: var(--primary); font-size: 30px; letter-spacing: -0.5px; }
 
 .lockBox input { 
   padding: 16px 20px; 
@@ -434,16 +409,10 @@ h2 { font-size: 17px; font-weight: 800; text-align: left; margin: 25px 0 14px 5p
 
 <div class="floating-pulse-heart ios-blur" onclick="sendLiveHeartbeatSignal()">💓</div>
 
-<!-- 🔒 LOCK SCREEN MODULE WITH PROFILE SELECTION -->
+<!-- 🔒 LOCK SCREEN MODULE -->
 <div id="lockScreen">
   <div class="lockBox">
     <h2>💖 Our World</h2>
-    
-    <div class="user-toggle-row">
-      <button type="button" id="toggleRishi" class="user-toggle-btn active" onclick="setSelectedUser('Rishi')">👨 Rishi</button>
-      <button type="button" id="togglePavani" class="user-toggle-btn" onclick="setSelectedUser('Pavani')">👩‍🦰 Pavani</button>
-    </div>
-
     <input type="password" id="password" placeholder="Enter Secret Date..." autofocus>
     <br>
     <button class="unlock-btn" onclick="unlockAppWithFluidTransition()">Unlock</button>
@@ -753,26 +722,21 @@ let supabaseClient = null;
 let realtimeChannel = null;
 
 let currentAuthor = "Rishi";
-let selectedLoginIdentity = "Rishi";
 let isFirstLoad = true;
 let mediaRecorder = null;
 let audioChunks = [];
 
 // =========================================================
-// 2. PROFILE TOGGLE & SHARED PASSCODE UNLOCK LOGIC
+// 2. UNLOCK & PASSCODE IDENTITY LOGIC
 // =========================================================
-function setSelectedUser(user) {
-  selectedLoginIdentity = user;
-  document.getElementById("toggleRishi").classList.toggle("active", user === "Rishi");
-  document.getElementById("togglePavani").classList.toggle("active", user === "Pavani");
-}
-
 function unlockAppWithFluidTransition() {
   const enteredPass = document.getElementById("password").value.trim();
   
-  // SHARED PASSCODE VALIDATION (050301)
+  // LOGIN PASSCODE IDENTITY ROUTING
   if (enteredPass === "050301") {
-    currentAuthor = selectedLoginIdentity; // Assigns selected user profile
+    currentAuthor = "Rishi";
+  } else if (enteredPass === "220103") {
+    currentAuthor = "Pavani";
   } else {
     alert("Wrong Secret Code 💔");
     return;
